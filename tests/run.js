@@ -243,6 +243,38 @@ test('build: expandIncludes fails on a missing or circular fragment', () => {
     fs.rmSync(cycle, { recursive: true, force: true });
 });
 
+test('build: minify writes a source map next to every JS and CSS file', async () => {
+    const os = require('os');
+    const { minify } = require(path.join(TOOLS, 'build'));
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'kobool-map-'));
+    fs.mkdirSync(path.join(dir, 'css'), { recursive: true });
+    fs.writeFileSync(path.join(dir, 'app.js'), 'const answer = 42;\nconsole.log(answer);\n');
+    fs.writeFileSync(path.join(dir, 'css', 'base.css'), '.a { color: red; }\n');
+
+    await minify(dir);
+
+    const js = fs.readFileSync(path.join(dir, 'app.js'), 'utf8');
+    const css = fs.readFileSync(path.join(dir, 'css', 'base.css'), 'utf8');
+    const jsMap = JSON.parse(fs.readFileSync(path.join(dir, 'app.js.map'), 'utf8'));
+    const cssMap = JSON.parse(fs.readFileSync(path.join(dir, 'css', 'base.css.map'), 'utf8'));
+    fs.rmSync(dir, { recursive: true, force: true });
+
+    assert.match(js, /\/\/# sourceMappingURL=app\.js\.map\n$/);
+    assert.match(css, /\/\*# sourceMappingURL=base\.css\.map \*\/\n$/);
+    assert.ok(!/console\.log\(answer\)/.test(js), 'the JS must be minified');
+
+    for (const map of [jsMap, cssMap]) {
+        assert.strictEqual(map.version, 3);
+        assert.strictEqual(map.sources.length, 1);
+        assert.strictEqual(map.sourcesContent.length, 1, 'the original source must be embedded');
+        assert.ok(map.mappings.length > 0, 'the map must carry mappings');
+    }
+    assert.strictEqual(jsMap.sources[0], path.join(dir, 'app.js'));
+    assert.strictEqual(cssMap.sources[0], path.join(dir, 'css', 'base.css'));
+    assert.ok(path.isAbsolute(jsMap.sources[0]), 'sources must be absolute paths');
+    assert.ok(path.isAbsolute(cssMap.sources[0]), 'sources must be absolute paths');
+});
+
 test('strings: addQueryParam appends to bare and already-queried URLs', () => {
     const vm = require('vm');
     const code = fs.readFileSync(path.join(ROOT, 'shared', 'strings.js'), 'utf8');
@@ -538,6 +570,59 @@ test('proxy: non-proxied path returns 404', () => {
     assert.strictEqual(res._status, 404);
 });
 
+test('serve: --spa falls back to index.html for unknown routes only', async () => {
+    const os = require('os');
+    const http = require('http');
+    const { createServer, parseArgs } = require(path.join(TOOLS, 'serve'));
+
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'kobool-spa-'));
+    fs.writeFileSync(path.join(dir, 'index.html'), '<html><body>shell</body></html>');
+    fs.writeFileSync(path.join(dir, '404.html'), '<html><body>missing</body></html>');
+
+    const get = (server, urlPath, accept) => new Promise((resolve, reject) => {
+        const { port } = server.address();
+        const req = http.get({ host: '127.0.0.1', port, path: urlPath, headers: { accept } }, (res) => {
+            let body = '';
+            res.setEncoding('utf8');
+            res.on('data', (chunk) => { body += chunk; });
+            res.on('end', () => resolve({ status: res.statusCode, body }));
+        });
+        req.on('error', reject);
+    });
+
+    const spa = createServer({ root: dir, spa: true });
+    const plain = createServer({ root: dir });
+    await new Promise((resolve) => spa.listen(0, '127.0.0.1', resolve));
+    await new Promise((resolve) => plain.listen(0, '127.0.0.1', resolve));
+
+    try {
+        const route = await get(spa, '/some/deep/link', 'text/html');
+        assert.strictEqual(route.status, 200);
+        assert.match(route.body, /shell/);
+
+        // Missing assets must still 404 so broken URLs stay visible.
+        const asset = await get(spa, '/missing.js', '*/*');
+        assert.strictEqual(asset.status, 404);
+        assert.match(asset.body, /missing/);
+
+        // Non-navigation requests (e.g. fetch) keep the 404 page.
+        const api = await get(spa, '/some/deep/link', 'application/json');
+        assert.strictEqual(api.status, 404);
+
+        // Without --spa the dev server keeps production behavior.
+        const off = await get(plain, '/some/deep/link', 'text/html');
+        assert.strictEqual(off.status, 404);
+        assert.match(off.body, /missing/);
+    } finally {
+        spa.close();
+        plain.close();
+        fs.rmSync(dir, { recursive: true, force: true });
+    }
+
+    assert.strictEqual(parseArgs(['node', 'serve.js', '--spa']).spa, true);
+    assert.strictEqual(parseArgs(['node', 'serve.js']).spa, false);
+});
+
 test('favicon: the original site icon ships at the site root', () => {
     // Copied verbatim from the original repo (v1/html.min/favicon.ico) and
     // served from /favicon.ico, which is where browsers look by default.
@@ -745,6 +830,19 @@ test('smoke: dist builds and validates cleanly', { timeout: 120000 }, () => {
         fs.existsSync(path.join(ROOT, 'dist', 'images', 'Download_on_the_App_Store_Badge_AR_RGB_blk_102417.svg')),
         'App Store badge SVG missing from dist/images'
     );
+
+    // Every minified JS/CSS file must ship a sibling source map that the
+    // browser can load from the sourceMappingURL comment, and the map must
+    // point at the absolute path of the original source.
+    for (const rel of [path.join('shared', 'theme.js'), path.join('v3', 'css', 'base.css')]) {
+        const file = path.join(ROOT, 'dist', rel);
+        const code = fs.readFileSync(file, 'utf8');
+        assert.match(code, /sourceMappingURL=/, `${rel} must reference its source map`);
+        const map = JSON.parse(fs.readFileSync(file + '.map', 'utf8'));
+        assert.strictEqual(map.version, 3, `${rel}.map must be a v3 source map`);
+        assert.ok(map.sourcesContent && map.sourcesContent.length, `${rel}.map must embed the source`);
+        assert.strictEqual(map.sources[0], path.join(ROOT, rel), `${rel}.map must use the absolute source path`);
+    }
 
     // Validation must pass.
     let out;

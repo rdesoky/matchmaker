@@ -31,6 +31,7 @@
                 <li><div id="HeaderLogo" data-init="require('dom-utils').initMenuBtn" data-menu="#Menu" data-submenu="#Menu .ctab"></div></li>
                 <li id="MemberBox"></li>
                 <li><div id="PageActions"></div></li>
+                <li><div id="ThemeToggle" data-theme-toggle>Dark mode</div></li>
             </ul>
         </div>
 
@@ -83,7 +84,6 @@
                 <li id="Menu.ContactUs"><a href="#pg=contact" data-string="str:contact_us">Contact us</a></li>
                 <li id="Menu.Logout" data-on-click="require('kui').onBtnLogout()" data-string="str:a.logout">Logout</li>
                 <li onclick="require(['mem-ui'],function(imem){imem.refreshHeader(true)});return false;" data-string="str:refresh">Refresh</li>
-                <li data-theme-toggle>Dark mode</li>
                 <li data-lang-switch="en" data-visible-if="ar">English</li>
                 <li data-lang-switch="ar" data-visible-if="en">عربي</li>
                 <li id="Menu.OldSite"><a href="/v2/" data-string="str:downgrade">Old site</a></li>
@@ -97,7 +97,6 @@
                 <li id="GuestMenu.qa"><a href="#pg=qa" data-string="str:QandA">Q&amp;A</a></li>
                 <li id="Menu.ContactUs"><a href="#pg=contact" data-string="str:contact_us">Contact us</a></li>
                 <li onclick="require(['mem-ui'],function(imem){imem.refreshHeader(true)});return false;" data-string="str:refresh">Refresh</li>
-                <li data-theme-toggle>Dark mode</li>
                 <li data-lang-switch="en" data-visible-if="ar">English</li>
                 <li data-lang-switch="ar" data-visible-if="en">عربي</li>
                 <li id="GuestMenu.OldSite"><a href="/v2/" data-string="str:downgrade">Old site</a></li>

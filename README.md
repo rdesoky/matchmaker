@@ -44,6 +44,14 @@ npm run serve         # local server on :8080 (next free port if busy) with a
                       # /cgi-bin/ proxy
 ```
 
+The build minifies every JS and CSS file with esbuild and writes a sibling
+`<name>.map` next to it, linked by a `sourceMappingURL` comment. Each map's
+`sources` entry is the absolute path of the original file in this repo (or of
+the built file when there is no repo counterpart), and `sourcesContent` embeds
+the code, so DevTools shows readable source for a deployed build without a
+second request. Maps are generated after the `--base` and API-base rewrites, so
+they match the shipped file.
+
 Sites are served from a domain root, so URLs are root-absolute
 (`/v3/css/base.css`). To preview a build under a subpath — for example a
 GitHub Pages project site at `/<repo>/` — pass `--base`:

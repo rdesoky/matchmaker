@@ -127,11 +127,11 @@ textarea{
 .answer_text, .free_text{
 	margin:0px 0px 2px 0px;
 	padding:4px;
-	background-color:#EFEFEF;
-	border-bottom:solid 1px #DDD;
+	/* background-color:#EFEFEF; */
+	/* border-bottom:solid 1px #DDD; */
 }
 .sresult_root .free_text{
-	background-color:white;
+	/* background-color:#fff; */
 	/*border-bottom-color: white;*/
 }
 .contents_tbl{
@@ -291,6 +291,10 @@ textarea{
 
 .new .dv_cell{
 	font-weight:bold;
+}
+
+.dv_row{
+	border-bottom:solid 1px #DDD;
 }
 
 .dv_row:hover .dv_cell{

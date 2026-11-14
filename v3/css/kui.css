@@ -448,7 +448,7 @@ border-radius: 50px;
 	height: 35px;
 	overflow:hidden;
 	display: inline-block;
-	background-color: white;
+	background-color: #EEE;
 	line-height: 25px;
 	border-radius: 17px;
 	border: solid 1px #CCC;
@@ -582,9 +582,6 @@ border-radius: 50px;
 	/* height:14px; */
 }
 
-{
-	/* border-radius: 13px 0 0 13px; */
-}
 .filter_box{
 	display: inline-block;
 	vertical-align: top;
@@ -1768,14 +1765,13 @@ form[name="searchFrm"] select{
 	padding: 0 0 0 36px;
 	background-size: 30px;
 	clear: both;
+	border-top: solid 1px #DDD;
 }
 .browse_question a{
 	display:inline-block;
 	color:blue;
 }
-.browse_question:nth-child(odd){
-	background-color: #F6F6F6;
-}
+.browse_question:nth-child(odd),
 .browse_question:nth-child(even){
 	background-color: white;
 }
@@ -1792,11 +1788,13 @@ form[name="searchFrm"] select{
 	/* color:green; */
 	/* cursor:pointer; */
 }
-.qgender_0{
-	background-image:url(/images/0.v2.png)
+.browse_question.qgender_0{
+	background-image:url(/images/0.v2.png);
+	background-color:#fff;
 }
-.qgender_1{
-	background-image:url(/images/1.v2.png)
+.browse_question.qgender_1{
+	background-image:url(/images/1.v2.png);
+	background-color: white;
 }
 
 #QAViewer .popupClient{

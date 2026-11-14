@@ -11,7 +11,7 @@
  *   2. copy allowed static files (never PHP/Perl/Python/secrets)
  *   3. compile string XML -> JSON
  *   4. write environment-specific config.js
- *   5. minify JS/CSS/HTML
+ *   5. minify JS/CSS/HTML and write a source map next to every JS/CSS file
  *   6. write CNAME for the selected environment
  *
  * --base rewrites root-absolute URLs to a subpath so the build can be previewed
@@ -306,7 +306,18 @@ function writeCname(env, enabled) {
     }
 }
 
-async function minify() {
+/**
+ * Minify every JS and CSS file under `dir` (default: dist/) and write a
+ * sibling `<name>.map`.
+ *
+ * The minified file ends with a sourceMappingURL comment, so a browser loads
+ * the map on demand. `sources` holds the absolute path of the original file in
+ * this repo (falling back to the absolute path of the built file when there is
+ * no repo counterpart), and `sourcesContent` embeds the code, so DevTools
+ * shows the readable source without a second request.
+ */
+async function minify(dir) {
+    const root = dir || DIST;
     let esbuild;
     try {
         esbuild = require('esbuild');
@@ -315,35 +326,49 @@ async function minify() {
         return;
     }
 
-    const walk = (dir) => {
-        for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
-            const full = path.join(dir, entry.name);
+    const walk = (current) => {
+        for (const entry of fs.readdirSync(current, { withFileTypes: true })) {
+            const full = path.join(current, entry.name);
             if (entry.isDirectory()) {
                 walk(full);
-            } else if (entry.isFile()) {
-                const ext = path.extname(entry.name).toLowerCase();
-                if (ext === '.js') {
-                    const code = fs.readFileSync(full, 'utf8');
-                    try {
-                        const out = esbuild.transformSync(code, { loader: 'js', minify: true });
-                        fs.writeFileSync(full, out.code, 'utf8');
-                    } catch (err) {
-                        // Leave the file unminified; validate.js reports the syntax error.
-                        console.warn(`Skipped minify (parse error): ${path.relative(DIST, full)}`);
-                    }
-                } else if (ext === '.css') {
-                    const code = fs.readFileSync(full, 'utf8');
-                    try {
-                        const out = esbuild.transformSync(code, { loader: 'css', minify: true });
-                        fs.writeFileSync(full, out.code, 'utf8');
-                    } catch (err) {
-                        console.warn(`Skipped minify (parse error): ${path.relative(DIST, full)}`);
-                    }
-                }
+                continue;
+            }
+            if (!entry.isFile()) continue;
+
+            const ext = path.extname(entry.name).toLowerCase();
+            if (ext !== '.js' && ext !== '.css') continue;
+
+            // Point `sources` at the original file in this repo so a debugger
+            // opens the real source rather than a path relative to the map.
+            // Files generated straight into dist/ have no repo counterpart, so
+            // they fall back to their own absolute path. Forward slashes keep
+            // the map portable across platforms.
+            const rel = path.relative(root, full).split(path.sep).join('/');
+            const original = root === DIST ? path.join(ROOT, rel) : null;
+            const sourcefile = (original && fs.existsSync(original) ? original : full)
+                .split(path.sep).join('/');
+
+            const code = fs.readFileSync(full, 'utf8');
+            try {
+                const out = esbuild.transformSync(code, {
+                    loader: ext === '.js' ? 'js' : 'css',
+                    minify: true,
+                    sourcemap: 'external',
+                    sourcefile
+                });
+                const link = ext === '.js'
+                    ? `//# sourceMappingURL=${entry.name}.map\n`
+                    : `/*# sourceMappingURL=${entry.name}.map */\n`;
+                const body = out.code.endsWith('\n') ? out.code : out.code + '\n';
+                fs.writeFileSync(full, body + link, 'utf8');
+                fs.writeFileSync(full + '.map', out.map, 'utf8');
+            } catch (err) {
+                // Leave the file unminified; validate.js reports the syntax error.
+                console.warn(`Skipped minify (parse error): ${path.relative(root, full)}`);
             }
         }
     };
-    walk(DIST);
+    walk(root);
 }
 
 async function minifyHtml() {
@@ -458,4 +483,4 @@ if (require.main === module) {
     });
 }
 
-module.exports = { build, parseArgs, rewriteBase, rewriteApiBase, expandIncludes, ENVIRONMENTS, isBlocked };
+module.exports = { build, parseArgs, rewriteBase, rewriteApiBase, expandIncludes, minify, ENVIRONMENTS, isBlocked };
