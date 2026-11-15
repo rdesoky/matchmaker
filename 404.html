@@ -7,21 +7,23 @@
     The site has a single real entry point, so a missing URL is answered by
     sending the visitor to it rather than by a dead end.
 
-    Two redirects, whichever runs first wins:
+    The redirect is the inline script below, and only that. A meta refresh
+    would also work with scripting disabled, but it cannot carry the guard that
+    stops the page reloading itself: if /index.html is the thing that is
+    missing, an unconditional refresh of /index.html loops forever. Both shells
+    are script-driven, so a visitor without scripting cannot use the site
+    anyway, and the link below serves them better than a redirect to a page
+    that would not render.
 
-      - the meta refresh needs no scripting and no extra request, so it is the
-        one that always works;
-      - the inline script runs earlier on a normal load and uses replace() so
-        the URL that 404'd does not stay in the session history.
+    A --base build rewrites the /index.html target below to <base>/index.html
+    (rewriteNotFoundRedirect in tools/build.js).
 
-    The visible link covers the rest. The page carries its own CSS and pulls in
-    nothing: it must render even when the request that got here was for a file
-    that no longer exists.
+    The page carries its own CSS and requests nothing: it must render even when
+    the request that got here was for a file that no longer exists.
 -->
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8"/>
-<meta http-equiv="refresh" content="0; url=/index.html"/>
 <meta name="robots" content="noindex"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>404 — kobool</title>
@@ -84,14 +86,16 @@
     }
 </style>
 <script>
+    // Already at the target means /index.html 404'd: show this page instead of
+    // replacing the URL with the one it is already on.
     if (window.location.pathname !== '/index.html') window.location.replace('/index.html');
 </script>
 </head>
 <body>
 <main>
     <p class="code">404</p>
-    <p>الصفحة غير موجودة. جارٍ تحويلك إلى الصفحة الرئيسية…</p>
-    <p lang="en" dir="ltr">Page not found. Redirecting to the home page…</p>
+    <p>الصفحة غير موجودة.</p>
+    <p lang="en" dir="ltr">Page not found.</p>
     <p><a href="/index.html">الرئيسية / <span lang="en" dir="ltr">Home</span></a></p>
 </main>
 </body>

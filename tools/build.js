@@ -142,6 +142,29 @@ function rewriteBase(dir, base) {
 }
 
 /**
+ * Point the 404 page's redirect at the build's base.
+ *
+ * The page sends a visitor to `/index.html`. rewriteBase() leaves that alone
+ * because the target is a page at the site root, not a path under one of
+ * BASE_ROOTS, but a `--base=/repo` build serves the home page from
+ * `<base>/index.html`. Without this a missing URL on a project-site preview
+ * bounces the visitor out of the site. Both places the target appears are
+ * rewritten: the string in the redirect script and the manual link.
+ */
+function rewriteNotFoundRedirect(dir, base) {
+    if (!base) return 0;
+    const file = path.join(dir, '404.html');
+    if (!fs.existsSync(file)) return 0;
+
+    const before = fs.readFileSync(file, 'utf8');
+    const after = before.split('/index.html').join(`${base}/index.html`);
+    if (after === before) return 0;
+
+    fs.writeFileSync(file, after, 'utf8');
+    return 1;
+}
+
+/**
  * Point hardcoded `/cgi-bin/kpic.pl` URLs at the environment's API base.
  *
  * Page fragments carry literal `src="/cgi-bin/kpic.pl?..."` attributes, which
@@ -559,6 +582,10 @@ async function build(options) {
         console.log(`Rewrote root-absolute URLs to base "${options.base}" in ${rewritten} files`);
     }
 
+    if (rewriteNotFoundRedirect(DIST, options.base || '')) {
+        console.log(`Pointed the 404 redirect at base "${options.base}/index.html"`);
+    }
+
     await minify(DIST, compiled);
     await minifyHtml();
 
@@ -573,6 +600,6 @@ if (require.main === module) {
 }
 
 module.exports = {
-    build, parseArgs, rewriteBase, rewriteApiBase, expandIncludes, compileStyles,
-    minify, ENVIRONMENTS, isBlocked
+    build, parseArgs, rewriteBase, rewriteApiBase, rewriteNotFoundRedirect,
+    expandIncludes, compileStyles, minify, ENVIRONMENTS, isBlocked
 };
