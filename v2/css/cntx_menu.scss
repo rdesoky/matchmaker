@@ -8,18 +8,18 @@
 }
 
 .cntx_menu_btn:hover{
-	background-color:var(--kb-menu-bg);
+	background-color:var(--kb-cntx-btn-hover-bg);
 }
 
 .cntx_menu{
 	position:absolute;
 	top:19px;
-	background-color:var(--kb-menu-bg);
+	background-color:var(--kb-menu-surface);
 	padding:2px;
 }
 
 .cntx_menu_item{
-	color:var(--kb-text-inverse);
+	color:var(--kb-on-accent-text);
 	min-width:120px;
 	min-height:14px;
 	font-size:8.5pt;
@@ -30,6 +30,6 @@
 }
 .cntx_menu_item:hover{
 	color:var(--kb-text);
-	background-color:var(--kb-surface);
+	background-color:var(--kb-card-bg-raised);
 }
 

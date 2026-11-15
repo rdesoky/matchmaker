@@ -8,7 +8,7 @@
 
 #AttrBar{
 	margin:4px 0px 8px 0px;
-	background-color: var(--kb-surface-3);
+	background-color: var(--kb-card-bg);
 }
 
 #MTabs{
@@ -44,10 +44,9 @@
 	padding:2px 8px 1px 8px;
 	height:24px;
 	line-height:20px;
-	border-style: solid;
-	border-width: 1px 0px;
-	border-color: var(--kb-bevel-light) var(--kb-bevel-light) var(--kb-border-strong) var(--kb-bevel-light);
+	border-bottom: solid 1px var(--kb-border-strong);
 	font-size:10pt;
+	margin-bottom:1px;
 }
 
 #MTabs li *{
@@ -62,9 +61,9 @@
 }
 
 #MTabs .ctab.seltab{
-	border-width:1px;
 	background-color:var(--kb-surface);
-	border-color:var(--kb-border-strong) var(--kb-border-strong) transparent var(--kb-border-strong);
+	border: solid 1px var(--kb-border-strong);
+	border-bottom: none;
 	cursor:default;
 }
 
@@ -80,6 +79,7 @@
 
 
 #MTabPanels{
+	background-color:var(--kb-surface);
 	border-style:solid;
 	border-color:var(--kb-border-strong);
 	border-width:0px 0px 0px 1px;

@@ -14,9 +14,9 @@
 	display:inline-block;
 }
 .points_monitor>*:nth-child(even){
-	border:solid 1px var(--kb-border-strong);
+	border:solid 1px var(--kb-points-border);
 	border-radius:6px;
-	background-color:var(--kb-surface);
+	background-color:var(--kb-card-bg-strong);
 	margin: 4px;
 	line-height:22px;
 	padding: 0 2px;
@@ -28,7 +28,7 @@
 	margin:5px;
 	padding:2px;
 	border: dashed 1px var(--kb-warning-strong-boder-2);
-	background-color:var(--kb-highlight-bg);
+	background-color:var(--kb-warning-surface);
 	text-align:center;
 }
 .unreadable_msg *{

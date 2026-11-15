@@ -159,7 +159,7 @@ textarea{
 }
 .dv_scroll_pad{
 	position:relative;
-	background-color:var(--kb-border-strong);
+	background-color:var(--kb-card-bg-status);
 }
 *[lang=ar] .dv_scroller{
 	float:left;
@@ -170,7 +170,7 @@ textarea{
 }
 .dv_header{
 	white-space:nowrap;
-	background-color:var(--kb-border-strong);
+	background-color:var(--kb-card-bg-status);
 }
 .dv_row, .dv_header{
 	padding:0px 1px 0px 0px;
@@ -238,7 +238,8 @@ input[type=button], input[type=submit], input[type=reset]{
 body{
 	padding:0px;
 	margin:0px;
-	background:var(--kb-surface-3);
+	background:var(--kb-body-bg);
+	color:var(--kb-text);
 	overflow-y:scroll;
 
 	/* Sticky footer: #PgBody grows to fill the column so #Footer sits at the
@@ -305,7 +306,7 @@ body{
 }
 
 #Header .pic50frame img{
-	background-color:var(--kb-surface-4);
+	background-color:var(--kb-card-bg-soft);
 }
 
 #MemberMenu *{
@@ -437,14 +438,14 @@ body{
 }
 
 .big_title{
-	color:var(--kb-text-strong);
+	color:var(--kb-heading-text);
 	font-family:serif !important;
 	font-size:18pt;
 	font-weight:bold;
 	margin:10px 0px;
 }
 .subtitle{
-	color:var(--kb-text-strong);
+	color:var(--kb-heading-text);
 	font-family:serif !important;
 	font-size:11pt;
 	font-weight:bold;
@@ -482,7 +483,7 @@ body{
 }
 
 .hmouse:hover{
-	background:var(--kb-surface-3);
+	background:var(--kb-card-bg);
 }
 
 .hmouse *{
@@ -530,7 +531,7 @@ body{
 /*	font-size:9pt;*/
 }
 .ctab:hover{
-	background-color:var(--kb-surface) !important;
+	background-color:var(--kb-ctab-hover-bg) !important;
 }
 .sel{
 	color:var(--kb-text-inverse);
@@ -621,7 +622,7 @@ body{
 }
 
 .featured_mem{
-	border:solid 1px var(--kb-bevel-light);
+	border:solid 1px var(--kb-featured-mem-border);
 	width:128px;
 	height:54px;
 	overflow:hidden;
@@ -723,7 +724,7 @@ img.small_pic{
 }
 #SubMenu a.sel, #GuestMenu a.sel{
 	color:var(--kb-text);
-	background-color:var(--kb-surface-2);
+	background-color:var(--kb-selected-menu-bg);
 }
 
 #Menu .ctab.seltab, #Menu .ctab.seltab:hover{
@@ -808,7 +809,7 @@ img.small_pic{
 	font-weight:bold;
 }
 .kobool_btn:hover{
-	background-color:var(--kb-surface-3);
+	background-color:var(--kb-card-bg);
 }
 *[lang=ar] .icon{
 	background-position:right center;
@@ -868,9 +869,9 @@ img.small_pic{
 	font-size:10pt;
 	background-repeat:no-repeat;
 	background-position:center;
-	background-color:var(--kb-surface-4);
+	background-color:var(--kb-card-bg-soft);
 	border:solid 1px;
-	border-color:var(--kb-bevel-light) var(--kb-bevel-dark) var(--kb-bevel-dark) var(--kb-bevel-light);
+	border-color:var(--kb-button-bevel-light) var(--kb-bevel-dark) var(--kb-bevel-dark) var(--kb-button-bevel-light);
 	color:var(--kb-text);
 	padding: 2px 10px;
 	cursor:default;
@@ -878,17 +879,17 @@ img.small_pic{
 	margin:0px 2px;
 }
 .button:hover{
-	background-color:var(--kb-surface-3);
+	background-color:var(--kb-card-hover-bg);
 	border-color:var(--kb-bevel-dark) var(--kb-bevel-light) var(--kb-bevel-light) var(--kb-bevel-dark);
 }
 .box{
-	border:solid 1px var(--kb-border-strong);
+	border:solid 1px var(--kb-box-border);
 }
 .light_box{
-	border:solid 1px var(--kb-divider-soft);
+	border:solid 1px var(--kb-light-box-border);
 }
 .light_box:hover{
-	border-color:var(--kb-border-strong);
+	border-color:var(--kb-light-box-hover-border);
 }
 .white_bg{
 	background-color:var(--kb-surface);
@@ -953,7 +954,7 @@ img.small_pic{
 }
 
 .radio_frame:hover{
-	background-color:var(--kb-surface-3);
+	background-color:var(--kb-card-bg);
 }
 
 .radio_frame>*{
@@ -1072,7 +1073,7 @@ img.small_pic{
 }
 
 .popup .white_bg{
-	background-color:var(--kb-surface-2);
+	background-color:var(--kb-popup-white-bg);
 }
 .popupClient{
 	/*background:var(--kb-surface);*/

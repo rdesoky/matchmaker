@@ -21,8 +21,8 @@
 	/* box-shadow: 2px 2px var(--kb-border-strong); */
 /* 	border-style: solid; */
 	border-width: 1px;
-	border-color: var(--kb-border-soft);
-	box-shadow: 0px 1px 5px var(--kb-shadow-soft);
+	border-color: var(--kb-profile-border);
+	box-shadow: var(--kb-profile-shadow);
 }
 
 .profile_details{
@@ -45,7 +45,7 @@ margin-top: 4px;
 
 #AttrBar{
 	margin:4px 0px 8px 0px;
-	background-color: var(--kb-surface-3);
+	background-color: var(--kb-card-bg);
 }
 
 #MTabs{
@@ -110,14 +110,14 @@ margin-top: 4px;
 
 .tabs_root{
 /* 	border-style:solid; */
-	border-color:var(--kb-bevel-light) var(--kb-border-strong) var(--kb-border-strong) var(--kb-border-strong);
+	border-color:var(--kb-tabs-border);
 	border-width: 0px 1px 1px 1px;
 	
 padding: 15px 0;
 	background-color: var(--kb-surface);
 	min-height: 300px;
 /* margin-bottom: 20px; */
-box-shadow: 0px 0px 4px var(--kb-shadow-soft);
+box-shadow: var(--kb-tabs-shadow);
 }
 
 .ctab{
@@ -299,5 +299,5 @@ line-height: 40px;
 	font-size:12px;
 	line-height: 18px;
 	margin: 4px;
-	color: var(--kb-text-gray);
+	color: var(--kb-secondary-text);
 }

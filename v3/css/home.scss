@@ -26,13 +26,13 @@
 
 
 #Greetings{
-	color:var(--kb-text-gray);
+	color:var(--kb-secondary-text);
 	margin-bottom:10px;
 }
 
 #WhyKobool{
 	font-weight:bold;
-	color:var(--kb-text-strong);
+	color:var(--kb-heading-text);
 	margin-bottom:5px;
 
 	&:lang(ar){
@@ -61,20 +61,21 @@
 
 .big_button{
 	cursor:pointer;
-	box-shadow: 0 0 5px var(--kb-shadow);
+	box-shadow: var(--kb-big-button-shadow);
 	border-radius: 5px;
 	padding: 5px;
 	text-align: center;
-	background-color: var(--kb-surface);
+	background-color: var(--kb-card-bg-raised);
 	/* font-weight: bold; */
 	margin: 10px auto;
 	display: block;
 }
 
 .big_button:hover{
-	background-color:var(--kb-hover-soft-bg);
+	background-color:var(--kb-big-button-hover-bg);
 }
 
 .big_button:active{
+	background-color:var(--kb-big-button-active-bg);
 	box-shadow: 0 0 2px var(--kb-shadow-strong);;
 }

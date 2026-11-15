@@ -62,7 +62,8 @@
 }
 #HomeText h2{
 	font-weight:bold;
-	background-color:var(--kb-surface-3);
+	background-color:var(--kb-card-bg);
+	color:var(--kb-text);
 	padding:4px;
 }
 #HomeText div{
@@ -86,7 +87,7 @@ form[name=login] input[type=text], form[name=login] input[type=password]{
 }
 
 .light_txt{
-	color:var(--kb-text-faint);
+	color:var(--kb-light-txt);
 }
 
 #HdrTopMenu{
@@ -123,7 +124,7 @@ textarea{
 	height:120px;
 }
 .hilight{
-	background-color:var(--kb-highlight-bg) !important;
+	background-color:var(--kb-hilight-bg) !important;
 }
 .text_view{
 	padding:4px;
@@ -216,7 +217,7 @@ textarea{
 	text-align: center;
 }
 .welcome_table .white_bg{
-	background-color: var(--kb-callout-bg);
+	background-color: var(--kb-welcome-callout-bg);
 	color:var(--kb-callout-text);
 }
 
@@ -262,18 +263,18 @@ textarea{
 }
 .dv_scroll_pad{
 	position:relative;
-	background-color:var(--kb-border-strong);
+	background-color:var(--kb-card-bg-status);
 }
 .dv_scroller:lang(ar){
 	float:left;
 }
 .dv_table{
-	background-color:var(--kb-surface-4);
+	background-color:var(--kb-dv-table-bg);
 	white-space:nowrap;
 }
 .dv_header{
 	white-space:nowrap;
-	background-color:var(--kb-border-strong);
+	background-color:var(--kb-card-bg-status);
 }
 
 .dv_header_cell, .dv_cell{
@@ -298,6 +299,7 @@ textarea{
 }
 .sel .dv_cell{
 	background-color:var(--kb-selected-bg);
+	color:var(--kb-dv-sel-text);
 }
 
 .new .dv_cell{
@@ -309,12 +311,12 @@ textarea{
 }
 
 .dv_row:hover .dv_cell{
-	background-color:var(--kb-link-hover-bg);
+	background-color:var(--kb-dv-row-hover-bg);
 }
 
 .dv_row.sel:hover .dv_cell{
 	background-color:var(--kb-selected-bg);
-	color:var(--kb-text-highlight);
+	color:var(--kb-dv-sel-hover-text);
 }
 
 *{
@@ -349,7 +351,8 @@ input, select, .button{
 body{
 	padding:0px;
 	margin:0px;
-	background:var(--kb-surface-3);
+	background:var(--kb-body-bg);
+	color:var(--kb-text);
 	overflow-y:scroll;
 
 	/* Sticky footer: #PgBody grows to fill the column so #Footer sits at the
@@ -386,7 +389,7 @@ body{
 	width:164px;
 	vertical-align:top;
 	padding:15px 5px;
-	border-right:solid 1px var(--kb-border-strong);
+	border-right:solid 1px var(--kb-frame-border);
 	height:100%;
 
 	&:lang(ar){
@@ -414,7 +417,7 @@ body{
 }
 
 #Header .pic50frame img{
-	background-color:var(--kb-surface-4);
+	background-color:var(--kb-card-bg-soft);
 }
 
 #MemberMenu{
@@ -541,7 +544,7 @@ body{
 	/*font-family:serif !important;*/
 }
 .big_title{
-	color:var(--kb-text-strong);
+	color:var(--kb-heading-text);
 	/*font-family:serif !important;*/
 	font-size:18pt;
 	font-weight:bold;
@@ -549,7 +552,7 @@ body{
 	text-shadow:var(--kb-text-shadow) 1px 1px 1px;
 }
 .subtitle{
-	color:var(--kb-text-strong);
+	color:var(--kb-heading-text);
 	/*font-family:serif !important;*/
 	font-size:11pt;
 	font-weight:bold;
@@ -584,7 +587,7 @@ body{
 }
 
 .hmouse:hover{
-	background:var(--kb-surface-3);
+	background:var(--kb-card-bg);
 }
 
 .hmouse *{
@@ -632,7 +635,7 @@ body{
 	width:1px;
 }
 .ctab:hover{
-	background-color:var(--kb-surface) !important;
+	background-color:var(--kb-ctab-hover-bg) !important;
 }
 .sel{
 	color:var(--kb-text-inverse);
@@ -718,7 +721,7 @@ body{
 }
 
 .featured_mem{
-	border:solid 1px var(--kb-bevel-light);
+	border:solid 1px var(--kb-featured-mem-border);
 	width:128px;
 	height:54px;
 	overflow:hidden;
@@ -727,7 +730,7 @@ body{
 }
 .featured_mem:hover{
 	border:solid 1px var(--kb-border-strong);
-	background-color:var(--kb-surface-2);
+	background-color:var(--kb-featured-mem-hover-bg);
 }
 
 .featured_mem .login_id{
@@ -807,7 +810,7 @@ img.small_pic{
 #SubMenu a.sel, #GuestMenu a.sel{
 	color:var(--kb-danger-strong);
 	/*text-shadow:var(--kb-border) 1px 1px 1px;*/
-	background-color:var(--kb-surface-2);
+	background-color:var(--kb-selected-menu-bg);
 }
 
 #Menu .ctab.seltab, #Menu .ctab.seltab:hover{
@@ -906,7 +909,7 @@ img.small_pic{
 	font-weight:bold;
 }
 .kobool_btn:hover{
-	background-color:var(--kb-surface-3);
+	background-color:var(--kb-card-bg);
 }
 
 .middle{
@@ -920,7 +923,7 @@ img.small_pic{
 }
 .icon16:hover{
 	background-image:url(/images/icons_FFFFFF_256x240.png) !important;
-	background-color:var(--kb-gray-bg) !important;
+	background-color:var(--kb-icon16-hover-bg) !important;
 }
 .icon16-up{
 	background-position:0px -16px;
@@ -964,9 +967,9 @@ img.small_pic{
 	display:inline-block;
 	background-position:center;
 	background-repeat:no-repeat;
-	background-color:var(--kb-surface-4);
+	background-color:var(--kb-card-bg-soft);
 	border:solid 1px;
-	border-color:var(--kb-bevel-light) var(--kb-bevel-dark) var(--kb-bevel-dark) var(--kb-bevel-light);
+	border-color:var(--kb-button-bevel-light) var(--kb-bevel-dark) var(--kb-bevel-dark) var(--kb-button-bevel-light);
 	color:var(--kb-text);
 	padding: 2px 10px;
 	cursor:default;
@@ -974,20 +977,20 @@ img.small_pic{
 	margin:0px 2px;
 }
 .button:hover{
-	background-color:var(--kb-surface-3);
+	background-color:var(--kb-card-hover-bg);
 }
 .button.sel{
-	background-color:var(--kb-control-selected-bg);
+	background-color:var(--kb-button-selected-bg);
 	color:var(--kb-text-inverse);
 }
 .box{
-	border:solid 1px var(--kb-border-strong);
+	border:solid 1px var(--kb-box-border);
 }
 .light_box{
-	border:solid 1px var(--kb-divider-soft);
+	border:solid 1px var(--kb-light-box-border);
 }
 .light_box:hover{
-	border-color:var(--kb-border-strong);
+	border-color:var(--kb-light-box-hover-border);
 }
 .white_bg{
 	background-color:var(--kb-surface);
@@ -1038,10 +1041,10 @@ img.small_pic{
 }
 .note{
 	background:var(--kb-note-bg);
-	border-top:solid 1px var(--kb-border-strong);
+	border-top:solid 1px var(--kb-note-border);
 	padding:5px;
 	font-size:8pt;
-	color:var(--kb-text-muted);
+	color:var(--kb-note-text);
 	margin:10px 0px;
 }
 
@@ -1052,7 +1055,7 @@ img.small_pic{
 }
 
 .radio_frame:hover{
-	background-color:var(--kb-surface-3);
+	background-color:var(--kb-card-bg);
 }
 
 .radio_frame>*{
@@ -1178,7 +1181,7 @@ img.small_pic{
 
 
 .popup .white_bg{
-	background-color:var(--kb-surface-2);
+	background-color:var(--kb-popup-white-bg);
 }
 .popupClient{
 	padding:10px;
@@ -1223,7 +1226,7 @@ img.small_pic{
 	padding:10px;
 }
 .section{
-	border-top:solid 1px var(--kb-border-strong);
+	border-top:solid 1px var(--kb-section-border);
 }
 
 .slim_padding{
@@ -1242,9 +1245,9 @@ img.small_pic{
 }
 
 .shadow {
-	-moz-box-shadow: 5px 5px 10px var(--kb-text-shadow);
-	-webkit-box-shadow: 5px 5px 10px var(--kb-text-shadow);
-	box-shadow: 5px 5px 10px var(--kb-text-shadow);
+	-moz-box-shadow: var(--kb-shadow-box);
+	-webkit-box-shadow: var(--kb-shadow-box);
+	box-shadow: var(--kb-shadow-box);
 }
 
 #MatchingTimer{

@@ -11,7 +11,7 @@
 	border-style:solid;
 	border-width:0px 0px 1px 0px;
 	position:relative;
-	background-color: var(--kb-surface-3);
+	background-color: var(--kb-card-bg);
 	max-width: 720px;
 }
 
@@ -30,6 +30,7 @@
 }
 
 .sresult_cmd_bar{
+	color:var(--kb-cmd-bar-text);
 	position:absolute;
 	bottom:0px;
 	// border-top:solid 1px var(--kb-surface-3);

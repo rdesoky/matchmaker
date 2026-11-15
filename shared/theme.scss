@@ -26,15 +26,31 @@
 
     /* Surfaces ------------------------------------------------------------- */
     --kb-page: #f0f0f0;
+    /* Page/body surface: surface-3 in light, page in dark. */
+    --kb-body-bg: #eaeaea;
     --kb-surface: #ffffff;
     --kb-surface-2: #f6f6f6;
     --kb-surface-3: #eeeeee;
     --kb-surface-4: #dddddd;
+    /* Card/panel surface: surface-2 in both themes, one step above the page. */
+    --kb-card-bg: var(--kb-surface-2);
+    /* Elevated card: white in light, surface-2 in dark. */
+    --kb-card-bg-strong: #ffffff;
+    /* Raised control/card: white in light, surface-3 in dark. */
+    --kb-card-bg-raised: #ffffff;
+    /* Soft raised surface: surface-2 in both themes. */
+    --kb-card-bg-soft: var(--kb-surface-2);
+    /* Table header/scroll pad: surface-3 in both themes. */
+    --kb-card-bg-status: var(--kb-surface-3);
+    /* Hovered card/control: surface-3 in light, surface-hover-strong in dark. */
+    --kb-card-hover-bg: #eeeeee;
     --kb-surface-hover: #eeeeee;
     --kb-surface-hover-soft: #eeeeee;
     --kb-surface-hover-strong: #dddddd;
     --kb-header-bg-neutral: #f0f0f0;
     --kb-gray-bg: #808080;
+    /* Icon hover: grey in light, border-strong in dark. */
+    --kb-icon16-hover-bg: #808080;
     --kb-black-bg: #000000;
     --kb-status-bg: #d3d3d3;
 
@@ -42,11 +58,27 @@
     --kb-border: #cccccc;
     --kb-border-soft: #dddddd;
     --kb-border-strong: #c0c0c0;
+    /* Box frame: border-strong in light, border in dark. */
+    --kb-box-border: #c0c0c0;
+    /* Frame borders: light frame colours, border in dark. */
+    --kb-frame-border: #c0c0c0;
+    --kb-featured-mem-border: #ffffff;
+    --kb-svd-border: #efefef;
+    /* Contact-point usage chip: bevel-light in light, border in dark. */
+    --kb-puser-border: #ffffff;
     --kb-border-gray: #808080;
     --kb-border-contrast: #000000;
     --kb-divider: #e0e0e0;
     --kb-divider-soft: #efefef;
+    /* Result bottom actions: divider-soft in light, surface-2 in dark. */
+    --kb-bottom-actions-bg: #efefef;
+    /* Light box frame: divider-soft in light, surface-3 in dark. */
+    --kb-light-box-border: #efefef;
+    --kb-light-box-hover-border: #c0c0c0;
+    --kb-section-border: #c0c0c0;
     --kb-bevel-light: #ffffff;
+    /* Button bevel highlight: white in light, border-strong in dark. */
+    --kb-button-bevel-light: #ffffff;
     --kb-bevel-light-soft: #e0e0e0;
     --kb-bevel-dark: #808080;
     --kb-bevel-dark-soft: #a0a0a0;
@@ -54,16 +86,24 @@
     /* Text ----------------------------------------------------------------- */
     --kb-text: #000000;
     --kb-text-strong: #444444;
+    /* Headings: dark grey in light, body text in dark. */
+    --kb-heading-text: #444444;
     --kb-text-muted: #666666;
     --kb-text-faint: #999999;
     --kb-text-subtle: #c0c0c0;
     --kb-text-gray: #808080;
+    /* Secondary/meta text: mid grey in light, muted text in dark. */
+    --kb-secondary-text: #808080;
     --kb-text-inverse: #ffffff;
+    /* Text on a coloured/accent surface: white in light, body text in dark. */
+    --kb-on-accent-text: #ffffff;
     --kb-text-highlight: #ffffe0;
     --kb-text-shadow: #cccccc;
     --kb-text-shadow-strong: rgba(0, 0, 0, 1);
     --kb-text-shadow-warm: #a52a2a;
     --kb-link: #0645ad;
+    /* Body links: body text in light, link colour in dark. */
+    --kb-link-text: #000000;
     --kb-link-hover-bg: #f0f8ff;
     --kb-login-text: #000080;
     --kb-chat-sent-text: #000080;
@@ -71,6 +111,38 @@
     --kb-tip-text: #8b4513;
     --kb-attr-title-text: #20b2aa;
     --kb-sort-text: #2f4f4f;
+    --kb-self-desc-text: #8b4513;
+    /* Command bar label: inherited in light, muted text in dark. */
+    --kb-cmd-bar-text: inherit;
+    --kb-last-login-text: inherit;
+    --kb-review-text: inherit;
+    --kb-rejected-text: inherit;
+    /* Answer preview hover: no change in light, surface-3/text in dark. */
+    --kb-answer-hover-bg: transparent;
+    --kb-answer-hover-text: inherit;
+    /* Faint helper text: text-faint in light, muted text in dark. */
+    --kb-light-txt: #999999;
+    /* Contact-point usage chip label: inherited in light, warning text in dark. */
+    --kb-pusage-text: inherit;
+    /* Selected data-view rows: inherited text in light, inverse in dark. */
+    --kb-dv-sel-text: inherit;
+    --kb-dv-sel-hover-text: #ffffe0;
+    /* Active toolbar button label: danger-strong in light, link in dark. */
+    --kb-btn-active-text: #800000;
+    /* Checked sort chip label: danger-strong in light, link in dark. */
+    --kb-sort-checked-text: #800000;
+    /* Home call-to-action button: hover-soft in light, raised surfaces in dark. */
+    --kb-big-button-shadow: 0 0 5px var(--kb-shadow);
+    --kb-big-button-hover-bg: #e6e6fa;
+    --kb-big-button-active-bg: transparent;
+    /* Drill tiles: v2 is transparent, v3 is a raised surface; both go surface-3 in dark. */
+    --kb-drill-bg: transparent;
+    --kb-drill-bg-raised: #ffffff;
+    --kb-drill-hover-bg: #eeeeee;
+    --kb-drill-hover-bg-raised: transparent;
+    --kb-drill-hover-border: #808080;
+    /* Summary row hover: surface-2 in light, surface-3 in dark. */
+    --kb-summary-line-hover-bg: #f6f6f6;
 
     /* Header, menu and navigation ------------------------------------------ */
     --kb-header-bg: #3cb371;
@@ -82,6 +154,10 @@
     --kb-skin-accent: #c7c8a4;
     --kb-skin-border: #778899;
     --kb-menu-bg: #808080;
+    /* Menu/context surface: grey in light, surface-2 in dark. */
+    --kb-menu-surface: #808080;
+    /* Context menu button hover: menu grey in light, surface-3 in dark. */
+    --kb-cntx-btn-hover-bg: #808080;
     --kb-menu-text: #ffffff;
     --kb-menu-tab-text: #f0e68c;
     --kb-menu-tab-hover-bg: #000000;
@@ -90,6 +166,9 @@
     --kb-menu-highlight-text: #000000;
     --kb-menu-hover-bg: #a52a2a;
     --kb-menu-hover-text: #ffffff;
+    /* Dropdown lists and their row hover: transparent in light, dark surfaces in dark. */
+    --kb-popup-list-bg: transparent;
+    --kb-menu-item-hover-bg: transparent;
     --kb-submenu-bg: #d3d3d3;
     --kb-submenu-text: #000000;
 
@@ -97,13 +176,32 @@
     --kb-selected-bg: #4682b4;
     --kb-selected-text: #ffffff;
     --kb-selected-soft-bg: #b0c4de;
+    /* Selected submenu item: surface-2 in light, surface-3 in dark. */
+    --kb-selected-menu-bg: #f6f6f6;
     --kb-control-selected-bg: #808080;
+    /* Selected button: control-selected in light, selected in dark. */
+    --kb-button-selected-bg: #808080;
     --kb-tab-bg: #ffffff;
     --kb-tab-text: #800000;
     --kb-tab-active-bg: #b0c4de;
+    /* Hovered tab: surface in light, surface-2 in dark. */
+    --kb-ctab-hover-bg: #ffffff;
     --kb-form-bg: #ffffff;
     --kb-form-line: #eeeeee;
+    /* Native form controls: browser defaults in light, themed in dark. */
+    --kb-input-bg: #ffffff;
+    --kb-input-text: #000000;
+    --kb-input-border: #767676;
+    --kb-placeholder-text: #757575;
+    /* Native buttons: browser defaults in light, themed in dark. */
+    --kb-native-button-bg: #efefef;
+    --kb-native-button-text: #000000;
+    --kb-native-button-border: #767676;
+    --kb-native-button-hover-bg: #e5e5e5;
+    --kb-native-button-hover-border: #767676;
     --kb-sort-selected-bg: #f0f8ff;
+    /* Sort bar selected chip: link-hover in light, sort-selected in dark. */
+    --kb-sort-bar-selected-bg: #f0f8ff;
     --kb-marker-bg: #ffffbb;
     --kb-marker-border: #ffa500;
     --kb-accent-border: #ffc0cb;
@@ -119,18 +217,32 @@
     --kb-danger-border: #dda0dd;
     --kb-warning-bg: #fff8e1;
     --kb-warning-text: #665500;
+    /* Warning label: inherits in light, warning text in dark. */
+    --kb-warning-label: inherit;
     --kb-warning-strong-text: #a52a2a;
     --kb-warning-strong-border: #a52a2a;
     --kb-warning-border: #f0e68c;
     --kb-warning-strong-boder-2: #d2691e;
     --kb-highlight-bg: #ffffe0;
+    /* Highlighted block: highlight in light, warning in dark. */
+    --kb-hilight-bg: #ffffe0;
+    /* Warning/notice surface: pale yellow in light, dark olive in dark. */
+    --kb-warning-surface: #ffffe0;
     --kb-note-bg: #ffffd0;
+    /* Note text: muted in light, warning text in dark. */
+    --kb-note-text: #666666;
     --kb-note-border: #c0c0c0;
     --kb-hint-bg: #ffffdd;
     --kb-callout-bg: #ffffaa;
+    /* Welcome callout: callout in light, warning in dark. */
+    --kb-welcome-callout-bg: #ffffaa;
     --kb-callout-text: #6666ff;
     --kb-count-bg: #3cb371;
     --kb-count-hover-bg: #3cb371;
+    /* Drill summary hover: surface-2 in light, surface-hover in dark. */
+    --kb-sum-group-hover-bg: #f6f6f6;
+    /* Drill count hover: surface-2 in light, count-hover in dark. */
+    --kb-sum-count-hover-bg: #f6f6f6;
     --kb-count-text: #ffffff;
     --kb-accept-bg: #bbe462;
     --kb-accept-text: #16202a;
@@ -139,6 +251,9 @@
     --kb-unread-text: #000000;
     --kb-inactive-bg: #9acd32;
     --kb-total-bg: #9acd32;
+    /* Floating total chip: inherited text and no shadow in light. */
+    --kb-total-text: inherit;
+    --kb-total-shadow: none;
     --kb-hover-accent-bg: #9acd32;
 
     /* Cards, photos, chat and overlays ------------------------------------- */
@@ -154,6 +269,13 @@
     --kb-chat-border: #87ceeb;
     --kb-chat-received-border: #dda0dd;
     --kb-popup-bg: #f0fff0;
+    /* Popup white panel: surface-2 in light, surface in dark. */
+    --kb-popup-white-bg: #f6f6f6;
+    /* Popup frame: border-strong/shadow in light, border/shadow-strong in dark. */
+    --kb-popup-frame-border: #c0c0c0;
+    --kb-popup-frame-shadow: rgba(0, 0, 0, 0.5);
+    /* Popup caption: menu grey in light, surface-3 in dark. */
+    --kb-popup-caption-bg: #808080;
     --kb-popup-title-bg: #2f4f4f;
     --kb-popup-title-accent-bg: #0645ad;
     --kb-tip-bg: #f0f8ff;
@@ -162,7 +284,17 @@
     --kb-filter-bg: #add8e6;
     --kb-filter-hover-bg: #c0c0c0;
     --kb-hover-soft-bg: #e6e6fa;
+    /* Decline form: hover-soft in light, surface-2 in dark. */
+    --kb-decline-form-bg: #e6e6fa;
+    /* Decline fixed messages frame: border-strong in light, border in dark. */
+    --kb-decline-fixed-border: #c0c0c0;
+    /* Points monitor row: border-strong in light, border in dark. */
+    --kb-points-border: #c0c0c0;
     --kb-row-hover-bg: #e6e6fa;
+    /* Thumbnail hover: link-hover in light, row-hover in dark. */
+    --kb-mem-thumb-hover-bg: #f0f8ff;
+    /* Featured member hover: surface-2 in light, row-hover in dark. */
+    --kb-featured-mem-hover-bg: #f6f6f6;
     --kb-list-bookmark-border: #ffa500;
     --kb-list-wishlist-border: #ffc0cb;
     --kb-list-watch-border: #aaaaee;
@@ -176,9 +308,71 @@
     --kb-shadow-strong: rgba(0, 0, 0, 0.8);
     --kb-overlay: rgba(0, 0, 0, 0.3);
     --kb-blocker-bg: #ffffff;
+    /* Result blocker: surface in light, page in dark. */
+    --kb-res-blocker-bg: #ffffff;
     --kb-toggle-hover-bg: rgba(0, 0, 0, 0.1);
     --kb-focus-glow: rgba(124, 183, 255, 0.25);
     --kb-accent-glow: rgba(100, 0, 0, 1);
+
+    /* Light defaults for rules the dark theme overrides --------------------- */
+    --kb-href-hover-text: #0645ad;
+    --kb-header-cell-text: inherit;
+    --kb-memberbox-popup-text: inherit;
+    --kb-menu-sel-link-text: inherit;
+    --kb-seltab-bg: #ffffff;
+    --kb-visit-heart-text: #ffffff;
+    --kb-filter-href-text: #ffffff;
+    --kb-filter-href-hover-text: #ffffe0;
+    --kb-menu-seltab-border: currentColor;
+    --kb-mempic-border: currentColor;
+    --kb-mempic-shadow: none;
+    --kb-qlist-bg: transparent;
+    --kb-tn-frame-pic-border: #ffffff;
+    --kb-answer-text-border: currentColor;
+    --kb-popup-client-bg: transparent;
+    --kb-tip-border: var(--kb-border-contrast);
+    --kb-filter-box-border: currentColor;
+    --kb-flat-btn-bg: #ffffff;
+    --kb-card-shadow: 0 0 5px var(--kb-shadow-soft);
+    --kb-debug-frame-bg: transparent;
+    --kb-shadow-box: 5px 5px 10px var(--kb-text-shadow);
+    /* Data-view table and row hover: light surfaces, dark row tint. */
+    --kb-dv-table-bg: #dddddd;
+    --kb-dv-cell-hover-bg: #e6e6fa;
+    --kb-dv-row-hover-bg: #f0f8ff;
+    /* Selected tab panel: surface in light, transparent in dark. */
+    --kb-tab-panel-bg: #ffffff;
+    /* Sort bar: surface in light, transparent in dark. */
+    --kb-sort-bar-bg: #ffffff;
+    /* Result card shadow: soft in light, stronger in dark. */
+    --kb-result-item-shadow: 0 0 5px var(--kb-shadow-soft);
+    /* Question browser container: transparent in light, surface in dark. */
+    --kb-qanswers-bg: transparent;
+    /* Question row hover: card surface in light, surface-3 in dark. */
+    --kb-browse-question-hover-bg: var(--kb-card-bg-strong);
+    /* Result frame borders: soft in light, border in dark. */
+    --kb-result-border: var(--kb-border-soft);
+    --kb-tn-frame-border: var(--kb-divider-soft);
+    /* Button hover bevel: light bevel in light, border-strong in dark. */
+    --kb-button-hover-border: var(--kb-bevel-dark) var(--kb-bevel-light) var(--kb-bevel-light) var(--kb-bevel-dark);
+    /* Decline form shadow: currentColor in light, strong shadow in dark. */
+    --kb-decline-shadow: 0 0 7px;
+    /* Dropdown menu shadow: soft in light, strong in dark. */
+    --kb-menu-shadow: 0 0 10px var(--kb-shadow);
+    --kb-popup-list-shadow: none;
+    /* Privacy explainer label: strong text in light, warning text in dark. */
+    --kb-privacy-help-text: #444444;
+    /* Header logo hover: neutral header in light, transparent in dark. */
+    --kb-header-logo-hover-bg: var(--kb-header-bg-neutral);
+    --kb-main-logo-hover-bg: transparent;
+    /* Login-name help callout: transparent in light, warning in dark. */
+    --kb-login-name-help-bg: transparent;
+    --kb-login-name-help-border: currentColor;
+    /* Member profile card and tab frame: soft edges in light, border/shadow in dark. */
+    --kb-profile-border: #dddddd;
+    --kb-profile-shadow: 0px 1px 5px var(--kb-shadow-soft);
+    --kb-tabs-border: var(--kb-bevel-light) var(--kb-border-strong) var(--kb-border-strong) var(--kb-border-strong);
+    --kb-tabs-shadow: 0px 0px 4px var(--kb-shadow-soft);
 }
 
 html[data-theme="dark"] {
@@ -186,15 +380,23 @@ html[data-theme="dark"] {
 
     /* Surfaces ------------------------------------------------------------- */
     --kb-page: #11151a;
+    --kb-body-bg: #11151a;
     --kb-surface: #1b2229;
     --kb-surface-2: #232b33;
     --kb-surface-3: #2a333d;
     --kb-surface-4: #36424f;
+    --kb-card-bg: var(--kb-surface-2);
+    --kb-card-bg-strong: #232b33;
+    --kb-card-bg-raised: #2a333d;
+    --kb-card-bg-soft: var(--kb-surface-2);
+    --kb-card-bg-status: var(--kb-surface-3);
+    --kb-card-hover-bg: #35404d;
     --kb-surface-hover: #313c49;
     --kb-surface-hover-soft: #202831;
     --kb-surface-hover-strong: #35404d;
     --kb-header-bg-neutral: #151a20;
     --kb-gray-bg: #2a333d;
+    --kb-icon16-hover-bg: #4b5765;
     --kb-black-bg: #000000;
     --kb-status-bg: #2a333d;
 
@@ -202,11 +404,21 @@ html[data-theme="dark"] {
     --kb-border: #3a4551;
     --kb-border-soft: #3a4551;
     --kb-border-strong: #4b5765;
+    --kb-box-border: #3a4551;
+    --kb-frame-border: #3a4551;
+    --kb-featured-mem-border: #3a4551;
+    --kb-svd-border: #3a4551;
+    --kb-puser-border: #3a4551;
     --kb-border-gray: #4b5765;
     --kb-border-contrast: #4b5765;
     --kb-divider: #5f6c7b;
     --kb-divider-soft: #3a4551;
+    --kb-bottom-actions-bg: #232b33;
+    --kb-light-box-border: #2a333d;
+    --kb-light-box-hover-border: #3a4551;
+    --kb-section-border: #3a4551;
     --kb-bevel-light: #4b5765;
+    --kb-button-bevel-light: #4b5765;
     --kb-bevel-light-soft: #4b5765;
     --kb-bevel-dark: #10151a;
     --kb-bevel-dark-soft: #10151a;
@@ -214,16 +426,20 @@ html[data-theme="dark"] {
     /* Text ----------------------------------------------------------------- */
     --kb-text: #e6e9ee;
     --kb-text-strong: #e6e9ee;
+    --kb-heading-text: #e6e9ee;
     --kb-text-muted: #a9b3bf;
     --kb-text-faint: #8592a0;
     --kb-text-subtle: #8592a0;
     --kb-text-gray: #a9b3bf;
+    --kb-secondary-text: #a9b3bf;
     --kb-text-inverse: #ffffff;
+    --kb-on-accent-text: #e6e9ee;
     --kb-text-highlight: #f0e7b0;
     --kb-text-shadow: transparent;
     --kb-text-shadow-strong: transparent;
     --kb-text-shadow-warm: #000000;
     --kb-link: #7cb7ff;
+    --kb-link-text: #7cb7ff;
     --kb-link-hover-bg: transparent;
     --kb-login-text: #d8e8ff;
     --kb-chat-sent-text: #d8e8ff;
@@ -231,6 +447,28 @@ html[data-theme="dark"] {
     --kb-tip-text: #e8c9a0;
     --kb-attr-title-text: #7fd4c9;
     --kb-sort-text: #a9b3bf;
+    --kb-self-desc-text: #e6e9ee;
+    --kb-cmd-bar-text: #a9b3bf;
+    --kb-last-login-text: #a9b3bf;
+    --kb-review-text: #e4d9a4;
+    --kb-rejected-text: #ffd9df;
+    --kb-answer-hover-bg: #2a333d;
+    --kb-answer-hover-text: #e6e9ee;
+    --kb-light-txt: #a9b3bf;
+    --kb-pusage-text: #e4d9a4;
+    --kb-dv-sel-text: #ffffff;
+    --kb-dv-sel-hover-text: #ffffff;
+    --kb-btn-active-text: #7cb7ff;
+    --kb-sort-checked-text: #7cb7ff;
+    --kb-big-button-shadow: 0 1px 4px var(--kb-shadow-strong);
+    --kb-big-button-hover-bg: #35404d;
+    --kb-big-button-active-bg: #232b33;
+    --kb-drill-bg: #2a333d;
+    --kb-drill-bg-raised: #2a333d;
+    --kb-drill-hover-bg: #313c49;
+    --kb-drill-hover-bg-raised: #313c49;
+    --kb-drill-hover-border: #7cb7ff;
+    --kb-summary-line-hover-bg: #2a333d;
 
     /* Header, menu and navigation ------------------------------------------ */
     --kb-header-bg: #1b513a;
@@ -242,6 +480,8 @@ html[data-theme="dark"] {
     --kb-skin-accent: #1b4433;
     --kb-skin-border: #4b5765;
     --kb-menu-bg: #1a2027;
+    --kb-menu-surface: #232b33;
+    --kb-cntx-btn-hover-bg: #2a333d;
     --kb-menu-text: #ffffff;
     --kb-menu-tab-text: #f0e68c;
     --kb-menu-tab-hover-bg: #20272f;
@@ -250,6 +490,8 @@ html[data-theme="dark"] {
     --kb-menu-highlight-text: #000000;
     --kb-menu-hover-bg: #39485a;
     --kb-menu-hover-text: #ffffff;
+    --kb-popup-list-bg: #2a333d;
+    --kb-menu-item-hover-bg: #232b33;
     --kb-submenu-bg: #232b33;
     --kb-submenu-text: #e6e9ee;
 
@@ -257,13 +499,26 @@ html[data-theme="dark"] {
     --kb-selected-bg: #2f5f8f;
     --kb-selected-text: #ffffff;
     --kb-selected-soft-bg: #2f5f8f;
+    --kb-selected-menu-bg: #2a333d;
     --kb-control-selected-bg: #2f5f8f;
+    --kb-button-selected-bg: #2f5f8f;
     --kb-tab-bg: #2a333d;
     --kb-tab-text: #e6e9ee;
     --kb-tab-active-bg: #2a333d;
+    --kb-ctab-hover-bg: #232b33;
     --kb-form-bg: #36424f;
     --kb-form-line: #46545f;
+    --kb-input-bg: #1b2229;
+    --kb-input-text: #e6e9ee;
+    --kb-input-border: #4b5765;
+    --kb-placeholder-text: #8592a0;
+    --kb-native-button-bg: #2a333d;
+    --kb-native-button-text: #e6e9ee;
+    --kb-native-button-border: #4b5765 #10151a #10151a #4b5765;
+    --kb-native-button-hover-bg: #35404d;
+    --kb-native-button-hover-border: #10151a #4b5765 #4b5765 #10151a;
     --kb-sort-selected-bg: #24425f;
+    --kb-sort-bar-selected-bg: #24425f;
     --kb-marker-bg: #3a3520;
     --kb-marker-border: #7cb7ff;
     --kb-accent-border: #b0607a;
@@ -279,18 +534,25 @@ html[data-theme="dark"] {
     --kb-danger-border: #7a3b45;
     --kb-warning-bg: #3a3520;
     --kb-warning-text: #e4d9a4;
+    --kb-warning-label: #e4d9a4;
     --kb-warning-strong-text: #e4d9a4;
     --kb-warning-strong-border: #b97a2a;
     --kb-warning-border: #6b5d23;
     --kb-warning-strong-boder-2: #b97a2a;
     --kb-highlight-bg: #3a3520;
+    --kb-hilight-bg: #3a3520;
+    --kb-warning-surface: #3a3520;
     --kb-note-bg: #3a3520;
+    --kb-note-text: #e4d9a4;
     --kb-note-border: #554a29;
     --kb-hint-bg: #2a2820;
     --kb-callout-bg: #3a3520;
+    --kb-welcome-callout-bg: #3a3520;
     --kb-callout-text: #cfd8ff;
     --kb-count-bg: #1d5c3c;
     --kb-count-hover-bg: #24704a;
+    --kb-sum-group-hover-bg: #313c49;
+    --kb-sum-count-hover-bg: #24704a;
     --kb-count-text: #e6e9ee;
     --kb-accept-bg: #bbe462;
     --kb-accept-text: #16202a;
@@ -299,6 +561,8 @@ html[data-theme="dark"] {
     --kb-unread-text: #000000;
     --kb-inactive-bg: #3a3520;
     --kb-total-bg: #2f5f8f;
+    --kb-total-text: #ffffff;
+    --kb-total-shadow: 0 1px 6px var(--kb-shadow-strong);
     --kb-hover-accent-bg: #2a333d;
 
     /* Cards, photos, chat and overlays ------------------------------------- */
@@ -312,6 +576,10 @@ html[data-theme="dark"] {
     --kb-chat-border: #3a4551;
     --kb-chat-received-border: #7a3b45;
     --kb-popup-bg: #1b2229;
+    --kb-popup-white-bg: #1b2229;
+    --kb-popup-frame-border: #3a4551;
+    --kb-popup-frame-shadow: rgba(0, 0, 0, 0.8);
+    --kb-popup-caption-bg: #2a333d;
     --kb-popup-title-bg: #22303a;
     --kb-popup-title-accent-bg: #22303a;
     --kb-tip-bg: #232b33;
@@ -320,7 +588,12 @@ html[data-theme="dark"] {
     --kb-filter-bg: #2a333d;
     --kb-filter-hover-bg: #4b5765;
     --kb-hover-soft-bg: #2a333d;
+    --kb-decline-form-bg: #232b33;
+    --kb-decline-fixed-border: #3a4551;
+    --kb-points-border: #3a4551;
     --kb-row-hover-bg: #293a4a;
+    --kb-mem-thumb-hover-bg: #293a4a;
+    --kb-featured-mem-hover-bg: #293a4a;
     --kb-list-bookmark-border: #b26a13;
     --kb-list-wishlist-border: #7a3b45;
     --kb-list-watch-border: #4b5765;
@@ -334,16 +607,57 @@ html[data-theme="dark"] {
     --kb-shadow-strong: rgba(0, 0, 0, 0.8);
     --kb-overlay: rgba(0, 0, 0, 0.3);
     --kb-blocker-bg: #11151a;
+    --kb-res-blocker-bg: #11151a;
     --kb-toggle-hover-bg: rgba(255, 255, 255, 0.14);
     --kb-focus-glow: rgba(124, 183, 255, 0.25);
     --kb-accent-glow: rgba(100, 0, 0, 1);
 
-    background-color: var(--kb-page);
+    --kb-href-hover-text: #e6e9ee;
+    --kb-header-cell-text: #ffffff;
+    --kb-memberbox-popup-text: #e6e9ee;
+    --kb-menu-sel-link-text: #000000;
+    --kb-seltab-bg: #2a333d;
+    --kb-visit-heart-text: #16202a;
+    --kb-filter-href-text: #7cb7ff;
+    --kb-filter-href-hover-text: #ffffff;
+    --kb-menu-seltab-border: #4b5765;
+    --kb-mempic-border: #3a4551;
+    --kb-mempic-shadow: 0 1px 5px var(--kb-shadow);
+    --kb-qlist-bg: #1b2229;
+    --kb-tn-frame-pic-border: #1b2229;
+    --kb-answer-text-border: #3a4551;
+    --kb-popup-client-bg: #1b2229;
+    --kb-tip-border: #4b5765;
+    --kb-filter-box-border: #3a4551;
+    --kb-flat-btn-bg: transparent;
+    --kb-card-shadow: 0 0 5px var(--kb-shadow);
+    --kb-debug-frame-bg: #1b2229;
+    --kb-shadow-box: 5px 5px 10px var(--kb-shadow-strong);
+    --kb-dv-table-bg: #1b2229;
+    --kb-dv-cell-hover-bg: #293a4a;
+    --kb-dv-row-hover-bg: #293a4a;
+    --kb-tab-panel-bg: transparent;
+    --kb-sort-bar-bg: transparent;
+    --kb-result-item-shadow: inset 0 0 0 1px var(--kb-border), 0 1px 6px var(--kb-shadow);
+    --kb-qanswers-bg: #1b2229;
+    --kb-browse-question-hover-bg: #2a333d;
+    --kb-result-border: #3a4551;
+    --kb-tn-frame-border: #3a4551;
+    --kb-button-hover-border: var(--kb-bevel-dark) var(--kb-border-strong) var(--kb-border-strong) var(--kb-bevel-dark);
+    --kb-decline-shadow: 0 0 7px var(--kb-shadow-strong);
+    --kb-menu-shadow: 0 0 10px var(--kb-shadow-strong);
+    --kb-popup-list-shadow: 0 0 10px var(--kb-shadow-strong);
+    --kb-privacy-help-text: #e4d9a4;
+    --kb-header-logo-hover-bg: transparent;
+    --kb-main-logo-hover-bg: #eeeeee;
+    --kb-login-name-help-bg: var(--kb-warning-bg);
+    --kb-login-name-help-border: var(--kb-warning-border);
+    --kb-profile-border: #3a4551;
+    --kb-profile-shadow: 0 1px 5px var(--kb-shadow);
+    --kb-tabs-border: #3a4551;
+    --kb-tabs-shadow: 0 1px 5px var(--kb-shadow);
 
-    body {
-        background-color: var(--kb-page);
-        color: var(--kb-text);
-    }
+    background-color: var(--kb-page);
 
     ::selection {
         background-color: var(--kb-selected-bg);
@@ -357,22 +671,10 @@ html[data-theme="dark"] {
 
     /* Links ------------------------------------------------------------------ */
 
-    a,
-    .href {
-        color: var(--kb-link);
-    }
-
     /* Selected items keep the legacy var(--kb-selected-bg) chip, so their label has to be var(--kb-surface)
        rather than the link colour, which is too close to the chip. This covers the
        side selectors (`.href.sel`) and the v2 header stat links (`#StatsMenu a.sel`).
        `.menu .sel` is excluded: it has its own var(--kb-marker-border) chip with var(--kb-black-bg) text. */
-    .href.sel,
-    #StatsMenu a.sel,
-    .href.sel:hover,
-    #StatsMenu a.sel:hover {
-        color: var(--kb-text-inverse);
-    }
-
     .href.sel:hover {
         background-color: var(--kb-surface-3);
     }
@@ -382,86 +684,16 @@ html[data-theme="dark"] {
        lifts the muted `.attr` values on member cards. */
     .href:hover {
         background-color: transparent;
-        color: var(--kb-text);
     }
 
     /* Header and menus ------------------------------------------------------- */
-
-    #Header {
-        background-color: var(--kb-header-bg);
-    }
-
-    #HeaderGrid > *:nth-child(4),
-    #PageActions {
-        background-color: var(--kb-header-bg-strong);
-        color: var(--kb-text);
-    }
-
-    #PageActions .href,
-    #MemberBox *,
-    #MemberBox a {
-        color: var(--kb-text-inverse);
-    }
-
-    #HeaderLogo {
-        background-color: transparent;
-    }
 
     #HeaderLogo:hover {
         background-color: var(--kb-header-bg-hover);
     }
 
-    #Header .pic50frame img {
-        background-color: var(--kb-surface-3);
-    }
-
-    #Menu {
-        background-color: var(--kb-menu-bg);
-        color: var(--kb-text);
-    }
-
-    .menu > li > a,
-    .menu a {
-        color: var(--kb-text-inverse);
-    }
-
-    .menu .ctab.seltab {
-        background-color: var(--kb-surface-3) !important;
-    }
-
     .menu .ctab:hover {
         background-color: var(--kb-surface-hover-soft) !important;
-    }
-
-    .menu .sel {
-        background-color: var(--kb-menu-highlight-bg);
-        color: var(--kb-menu-highlight-text);
-    }
-
-    .menu .sel a {
-        color: var(--kb-menu-highlight-text);
-    }
-
-    .submenu {
-        background-color: var(--kb-surface-2);
-        color: var(--kb-text);
-    }
-
-    .submenu li,
-    .submenu > li {
-        color: var(--kb-text);
-    }
-
-    .submenu > li:hover,
-    .submenu > li:hover a,
-    .menu > li:hover {
-        background-color: var(--kb-menu-hover-bg);
-        color: var(--kb-text-inverse);
-    }
-
-    #MemberBox .popup_list {
-        background-color: var(--kb-surface-2);
-        color: var(--kb-text);
     }
 
     /* The legacy stylesheet paints the nav strip var(--kb-nav-strip) with !important, so the
@@ -469,12 +701,6 @@ html[data-theme="dark"] {
     .submenu_line,
     .header_line {
         background-color: var(--kb-nav-strip) !important;
-    }
-
-    /* v2 header/menu: #HeaderLayout only exists in the v2 shell, so :has keeps
-       these rules off the v3 header. */
-    #Header:has(#HeaderLayout) {
-        background-color: var(--kb-header-bg-neutral);
     }
 
     /* The header table and its cells are opaque and paint over the nav strip;
@@ -485,16 +711,6 @@ html[data-theme="dark"] {
     #HeaderLayout > tbody > tr > td,
     #HeaderLayout > tbody > tr > td#Menu {
         background-color: transparent;
-    }
-
-    /* Hover highlight belongs to the logo box, not the whole cell: the cell spans
-       the nav strip and would cut the strip while the pointer is over it. */
-    #HeaderLayout #HeaderLogo:hover {
-        background-color: transparent;
-    }
-
-    #HeaderLayout #MainLogo:hover {
-        background-color: var(--kb-surface-hover-soft);
     }
 
     /* Transparent rather than omitted: v2's light sheets hardcode a var(--kb-surface)
@@ -513,7 +729,6 @@ html[data-theme="dark"] {
     #SubMenu a.sel,
     div#GuestMenu a.sel {
         color: var(--kb-text);
-        background-color: var(--kb-surface-3);
     }
 
     /* Selected tab buttons get a raised surface. v3's tab controller also puts
@@ -521,84 +736,18 @@ html[data-theme="dark"] {
        excluded here — otherwise the whole content area is painted as a chip. */
     .seltab:not(.tab_panel) {
         color: var(--kb-text);
-        background-color: var(--kb-surface-3);
-    }
-
-    /* The legacy `.seltab` rule in base.css paints the selected tab panel var(--kb-surface).
-       Clear it so the panel sits on the tabs_root surface instead of showing as a
-       bright block inside the card. */
-    .tab_panel.seltab {
-        background-color: transparent;
     }
 
     #Menu .ctab.seltab,
     #Menu .ctab.seltab:hover {
         background-color: var(--kb-surface-3) !important;
-        border-top-color: var(--kb-border-strong);
     }
 
-    #Menu .ctab:hover,
-    .ctab:hover {
+    #Menu .ctab:hover {
         background-color: var(--kb-surface-2) !important;
     }
 
-    #LoginBtn,
-    #LogoutBtn {
-        color: var(--kb-login-text) !important;
-    }
-
     /* Forms and buttons ------------------------------------------------------ */
-
-    input,
-    select,
-    textarea {
-        background-color: var(--kb-surface);
-        color: var(--kb-text);
-        border-color: var(--kb-border-strong);
-    }
-
-    input::placeholder,
-    textarea::placeholder {
-        color: var(--kb-text-faint);
-    }
-
-    /* The inline memo/answer editor wraps its textarea in a var(--kb-surface-2) frame. */
-    .i-text-frame {
-        background-color: var(--kb-surface-2);
-    }
-
-    input[type="checkbox"],
-    input[type="radio"] {
-        accent-color: var(--kb-accent-check);
-    }
-
-    .button,
-    button,
-    input[type="button"],
-    input[type="submit"],
-    input[type="reset"] {
-        background-color: var(--kb-surface-3);
-        color: var(--kb-text);
-        border-color: var(--kb-border-strong) var(--kb-bevel-dark) var(--kb-bevel-dark) var(--kb-border-strong);
-    }
-
-    .button:hover,
-    button:hover,
-    input[type="button"]:hover,
-    input[type="submit"]:hover,
-    input[type="reset"]:hover {
-        background-color: var(--kb-surface-hover-strong);
-        border-color: var(--kb-bevel-dark) var(--kb-border-strong) var(--kb-border-strong) var(--kb-bevel-dark);
-    }
-
-    .button.sel {
-        background-color: var(--kb-selected-bg);
-        color: var(--kb-text-inverse);
-    }
-
-    .kobool_btn:hover {
-        background-color: var(--kb-surface-2);
-    }
 
     /* Panels, cards and surfaces --------------------------------------------- */
 
@@ -608,12 +757,7 @@ html[data-theme="dark"] {
     }
 
     .sort_bar {
-        background-color: transparent;
         border-bottom: 1px solid var(--kb-divider);
-    }
-
-    #RightSideContents {
-        background-color: var(--kb-surface);
     }
 
     #RightSide,
@@ -621,134 +765,23 @@ html[data-theme="dark"] {
         border-color: var(--kb-border-strong) var(--kb-surface-2);
     }
 
-    .box {
-        border-color: var(--kb-border);
-    }
-
-    .light_box {
-        border-color: var(--kb-surface-3);
-    }
-
-    .light_box:hover,
-    .section {
-        border-color: var(--kb-border);
-    }
-
-    .white_bg,
-    .popup .white_bg {
-        background-color: var(--kb-surface);
-    }
-
-    .welcome_table {
-        background-color: var(--kb-surface);
-    }
-
-    .welcome_table .white_bg {
-        background-color: var(--kb-warning-bg);
-        color: var(--kb-callout-text);
-    }
-
-    #HomeText h2 {
-        background-color: var(--kb-surface-2);
-        color: var(--kb-text);
-    }
-
-    .bm_box,
-    .dv_footer,
-    .dv_header_cell {
-        background-color: var(--kb-surface-2);
-    }
-
-    /* Legacy separators and frames are var(--kb-border-strong) or var(--kb-surface), which read as bright lines
-       on the dark surfaces. */
-    .left_side,
-    .snapshot_frame,
-    .bm_box,
-    .featured_mem,
-    .svd_srch_item {
-        border-color: var(--kb-border);
-    }
-
-    .dv_table,
-    .dv_cell {
-        background-color: var(--kb-surface);
-    }
-
-    .dv_header,
-    .dv_scroll_pad {
-        background-color: var(--kb-surface-3);
-    }
-
-    .dv_row .dv_cell:hover,
-    .dv_row:hover .dv_cell {
-        background-color: var(--kb-row-hover-bg);
-    }
-
-    .sel .dv_cell,
-    .dv_row.sel:hover .dv_cell {
-        background-color: var(--kb-selected-bg);
-        color: var(--kb-text-inverse);
-    }
-
     /* Contact-point usage chips (#pg=cp_report). The legacy sheet gives every
        `.puser` a var(--kb-surface) dotted border and paints the used side var(--kb-highlight-bg) (v2) or
        var(--kb-success-bg) (v3), which reads as a bright block on the dark table. */
-    .puser {
-        border-color: var(--kb-border);
-    }
-
     .pusage_self .puser.self,
     .pusage_mate .puser.mate {
-        border-color: var(--kb-warning-strong-boder-2);
         background-color: var(--kb-warning-bg);
-        color: var(--kb-warning-text);
-    }
-
-    .profile_header,
-    .tabs_root,
-    #MemPicColumn {
-        background-color: var(--kb-surface);
-        border-color: var(--kb-border);
-        box-shadow: 0 1px 5px var(--kb-shadow);
-    }
-
-    /* Search results sit on the page surface, so lift each item onto an
-       elevated card and rely on the border for the edge. */
-    .result_item {
-        background-color: var(--kb-surface-2);
-        box-shadow: inset 0 0 0 1px var(--kb-border), 0 1px 6px var(--kb-shadow);
     }
 
     /* v3 qa pages paint the whole answer list var(--kb-surface) (#QAnswers in v3/css/kui.css).
        The list is a plain container, so it drops back to the page surface and its
        card shadow goes with it. */
     #QAnswers {
-        background-color: transparent;
         box-shadow: none;
     }
 
-    /* The question browser (#QList in the v3 qa popup) fills its rows from a
-       var(--kb-surface-2) / var(--kb-surface) zebra in v3/css/kui.css. Dark mode keeps the container on
-       the surface and only tints every other row, so the list reads as dark. */
-    #QList {
-        background-color: var(--kb-surface);
-    }
-
-    .browse_question:nth-child(odd),
-    .browse_question:nth-child(even) {
-        background-color: var(--kb-surface-2);
-    }
-
-    .browse_question:hover {
-        background-color: var(--kb-surface-3);
-    }
-
-    .answer_result,
     #MemViewPanel .self_desc,
     #MemViewPanel .mate_desc,
-    #MAnswers_root > div.mem_answer,
-    .my_answer,
-    .tn_frame,
     .sresult_cmd_bar {
         border-color: var(--kb-border);
     }
@@ -756,77 +789,13 @@ html[data-theme="dark"] {
     /* Drill / summary panel (v2 #pg=drill): the group rows are painted var(--kb-surface-3)
        with a var(--kb-surface-2) hover, and the count cells use a light 3D border. */
     .sum_group_name {
-        background-color: var(--kb-surface-2);
         /* Light plus glyph; the original is a dark raster sprite. */
         background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='15' height='15' viewBox='0 0 10 10'><path d='M5 1.5v7M1.5 5h7' stroke='%23a9b3bf' stroke-width='1.6' stroke-linecap='round'/></svg>");
-        color: var(--kb-text);
-    }
-
-    /* v3 paints the summary card container var(--kb-surface); it shows through between the
-       group chips and the count cells. */
-    .summary_list {
-        background-color: var(--kb-surface-2);
-    }
-
-    .sum_group_name:hover {
-        background-color: var(--kb-surface-hover);
-    }
-
-    /* Keep the var(--kb-success) accent while hovering; the shared hover above would otherwise
-       flip the count cell to the neutral chip colour. */
-    .sum_mem_count:hover {
-        background-color: var(--kb-count-hover-bg);
     }
 
     /* v3 fills the drill count cells with var(--kb-count-bg) (v3/css/kui.css), which
        is bright against the dark surfaces. Keep the var(--kb-success) accent but drop it to a
        deeper shade. */
-    .sum_mem_count {
-        background-color: var(--kb-count-bg);
-        border-color: var(--kb-border) var(--kb-border-strong) var(--kb-border-strong) var(--kb-border);
-        color: var(--kb-text);
-    }
-
-    /* Visit box under the photo in list rows: the two halves are var(--kb-surface-4)
-       (visitor) and var(--kb-surface-3) (my visits) in the legacy sheet. v3 paints the whole
-       box var(--kb-surface-3) and its heart badge var(--kb-surface-3). */
-    .visitor {
-        background-color: var(--kb-visitor-bg);
-    }
-
-    .myvisits {
-        background-color: var(--kb-surface-2);
-    }
-
-    .visit_box {
-        background-color: var(--kb-surface-2);
-    }
-
-    .visit_heart {
-        background-color: var(--kb-surface-3);
-    }
-
-    /* State badges keep their semantic colours (var(--kb-marker-border) / var(--kb-success)), so their var(--kb-surface)
-       label needs to go dark to stay readable on them. */
-    .visit_heart.hidden_acceptance,
-    .visit_heart.visible_acceptance {
-        color: var(--kb-accept-text);
-        text-shadow: none;
-    }
-
-    .detailedSResult > table td.bottom_actions,
-    #AttrBar,
-    .mem10view,
-    .mem_thumb {
-        background-color: var(--kb-surface-2);
-    }
-
-    .mem_thumb:hover,
-    .featured_mem:hover {
-        background-color: var(--kb-row-hover-bg);
-        border-color: var(--kb-border-strong);
-    }
-
     #MTabs .ctab,
     .sort_btn.sel,
     .show_menu.xscroll #MTabs .ctab.seltab {
@@ -836,156 +805,28 @@ html[data-theme="dark"] {
     }
 
     #MTabs .ctab.seltab {
-        background-color: var(--kb-surface);
-        color: var(--kb-text);
-        border-color: var(--kb-border);
-    }
-
-    /* The tab strip ends with an empty filler <li> that has no `.ctab` class, so it
-       keeps the legacy `var(--kb-surface) var(--kb-surface) var(--kb-border-strong) var(--kb-surface)` border and its var(--kb-border-strong) bottom edge
-       draws a bright rule across the whole strip. */
-    #MTabs li:not(.ctab) {
-        border-color: transparent;
-    }
-
-    .tn_frame_pic {
-        border-color: var(--kb-surface);
-    }
-
-    .tn_frame_pic.sel {
-        border-color: var(--kb-border-strong);
-    }
-
-    .tn_frame_pic:hover {
-        border-color: var(--kb-link);
-    }
-
-    .sresult_root {
-        background-color: var(--kb-surface-2);
-        border-color: var(--kb-border);
-    }
-
-    .answer_text,
-    .free_text,
-    .sresult_root .free_text {
-        /* background-color: var(--kb-surface-2); */
-        border-bottom-color: var(--kb-border);
-    }
-
-    .decline_item {
-        background-color: var(--kb-surface-2);
-    }
-
-    #DeclineForm {
-        background-color: var(--kb-surface-2);
-        box-shadow: 0 0 7px var(--kb-shadow-strong);
-    }
-
-    .decline_pg #decline_fixed_msgs {
-        background-color: var(--kb-surface);
-        border-color: var(--kb-border);
-    }
-
-    .decline_pg #decline_status,
-    .decline_pg #decline_note {
-        background-color: var(--kb-warning-bg);
-        color: var(--kb-warning-text);
-    }
-
-    .point_info > *:nth-child(odd) {
-        background-color: var(--kb-surface-2);
+        // background-color: var(--kb-surface);
+        /* border-color:var(--kb-border); */
     }
 
     /* Chat ------------------------------------------------------------------- */
 
-    #Contents.chat_pg {
-        background-color: var(--kb-surface);
-    }
-
-    .points_monitor > *:nth-child(even) {
-        background-color: var(--kb-surface-2);
-        border-color: var(--kb-border);
-    }
-
     .chat_bubble {
         background-color: var(--kb-chat-bubble-bg);
-        box-shadow: 0 0 5px var(--kb-shadow);
-    }
-
-    .sent .chat_bubble {
-        background-color: var(--kb-chat-sent-bg);
-    }
-
-    .chat_editor {
-        background-color: var(--kb-chat-editor-bg);
     }
 
     #StatusView {
         background-color: var(--kb-surface-3);
     }
 
-    .unreadable_msg {
-        background-color: var(--kb-warning-bg);
-        border-color: var(--kb-warning-strong-boder-2);
-    }
-
     /* Popups, tips and overlays ---------------------------------------------- */
-
-    .popup_frame {
-        background-color: var(--kb-surface);
-        border-color: var(--kb-border);
-        box-shadow: 0 0 10px var(--kb-shadow-strong);
-    }
 
     .popup_title {
         background-color: var(--kb-popup-title-bg);
     }
 
-    .popupClient {
-        background-color: var(--kb-surface);
-    }
-
-    .popup_caption {
-        background-color: var(--kb-surface-3);
-        color: var(--kb-text);
-    }
-
-    .popup_menu {
-        background-color: var(--kb-surface);
-    }
-
-    .tipContents {
-        background-color: var(--kb-surface-2);
-        border-color: var(--kb-border-strong);
-        color: var(--kb-tip-text);
-    }
-
-    .cntx_menu {
-        background-color: var(--kb-surface-2);
-    }
-
-    .cntx_menu_item {
-        color: var(--kb-text);
-    }
-
-    .cntx_menu_item:hover {
-        color: var(--kb-text);
-        background-color: var(--kb-surface-3);
-    }
-
-    .cntx_menu_btn:hover {
-        background-color: var(--kb-surface-3);
-    }
-
     .res_blocker {
-        background-color: var(--kb-page);
         opacity: 0.6;
-    }
-
-    .xoverflow .left_scroll_btn,
-    .xoverflow .right_scroll_btn {
-        background-color: var(--kb-surface);
-        border-color: var(--kb-scroll-btn-border);
     }
 
     /* Forms and call-to-actions ---------------------------------------------- */
@@ -996,22 +837,9 @@ html[data-theme="dark"] {
         box-shadow: 0 2px 8px var(--kb-shadow-strong);
     }
 
-    .form_frame table {
-        background-color: var(--kb-surface-3);
-    }
-
-    .form_frame td {
-        background-color: var(--kb-surface);
-    }
-
     .form_title {
         background-color: var(--kb-surface-2);
         color: var(--kb-text);
-    }
-
-    .form_panel {
-        background-color: var(--kb-surface-2);
-        border-color: var(--kb-border);
     }
 
     /*
@@ -1043,60 +871,14 @@ html[data-theme="dark"] {
     }
 
     .big_button {
-        background-color: var(--kb-surface-3);
         border: 1px solid var(--kb-border-strong);
-        box-shadow: 0 1px 4px var(--kb-shadow-strong);
     }
 
     .big_button:hover {
-        background-color: var(--kb-surface-hover-strong);
-        border-color: var(--kb-link);
-    }
-
-    .big_button:active {
-        background-color: var(--kb-surface-2);
-        box-shadow: 0 0 2px var(--kb-shadow-strong);
-    }
-
-    .note {
-        background: var(--kb-warning-bg);
-        color: var(--kb-warning-text);
-        border-top-color: var(--kb-note-border);
-    }
-
-    .hilight {
-        background-color: var(--kb-warning-bg) !important;
-    }
-
-    #LoginNameHelp {
-        background: var(--kb-warning-bg) !important;
-        border-bottom-color: var(--kb-warning-border) !important;
-    }
-
-    .hmouse:hover,
-    .icon:hover,
-    .radio_frame:hover {
-        background-color: var(--kb-surface-2);
-    }
-
-    .icon16 {
-        background-color: var(--kb-surface-3);
-    }
-
-    .icon16:hover {
-        background-color: var(--kb-border-strong) !important;
-    }
-
-    .sort_bar .btn.sel {
-        background-color: var(--kb-sort-selected-bg) !important;
         border-color: var(--kb-link);
     }
 
     /* Search results list ----------------------------------------------------- */
-
-    .results_pic_col {
-        background-color: transparent;
-    }
 }
 
 /* Profile photos sit on var(--kb-surface) in light mode; the shells paint the frames
@@ -1119,30 +901,14 @@ html[data-theme="dark"] {
         border-color: var(--kb-border);
     }
 
-    /* Profile picture uses the same surface as the search result item template. */
-    .hdr_profile_pic {
-        background-color: var(--kb-surface-2);
-        border-color: var(--kb-border);
-    }
-
-    .sort_chk,
-    .sort_btn {
-        color: var(--kb-text-muted);
-    }
-
     .sort_btn:hover {
         color: var(--kb-text);
-    }
-
-    .sort_chk.checked {
-        color: var(--kb-link);
     }
 
     .sort_btn.sel {
         background-color: var(--kb-sort-selected-bg);
         color: var(--kb-text-inverse) !important;
         border-color: var(--kb-link);
-        box-shadow: 0 0 4px var(--kb-shadow);
     }
 
     /* The v2 shell renders every sort control as a bordered chip, so give the
@@ -1159,10 +925,6 @@ html[data-theme="dark"] {
         color: var(--kb-text);
     }
 
-    .sresult_cmd_bar {
-        color: var(--kb-text-muted);
-    }
-
     .btn,
     .pg_nav_btn,
     .filters_btn {
@@ -1177,34 +939,10 @@ html[data-theme="dark"] {
     .pg_nav_btn:hover,
     .filters_btn:hover {
         background-color: var(--kb-surface-hover-strong);
-        border-color: var(--kb-border-strong);
         box-shadow: inset 0 0 0 1px var(--kb-border-strong), 0 0 6px var(--kb-focus-glow);
     }
 
-    /* The legacy active-page marker is an var(--kb-marker-border) border on a pale var(--kb-text-highlight) fill; keep
-       the marker but tint it with the link colour so it reads on the dark surface. */
-    .btn_active {
-        border-color: var(--kb-link);
-        color: var(--kb-link);
-    }
-
     /* Drill filter tiles (v2 #pg=drill) hover to var(--kb-surface-3) in the legacy sheet. */
-    .drill_btn {
-        border-color: var(--kb-border-strong);
-    }
-
-    .drill_btn:hover {
-        /* Lighter than the surface-3 base so hovering is visible. */
-        background-color: var(--kb-surface-hover);
-        border-color: var(--kb-link);
-    }
-
-    .total {
-        background-color: var(--kb-selected-bg);
-        color: var(--kb-text-inverse);
-        box-shadow: 0 1px 6px var(--kb-shadow-strong);
-    }
-
     /* Legacy toolbar glyphs are dark raster images painted as the element's
        background. filter:invert() would flip the whole button (var(--kb-warning-border) body, dark
        text on the "Add Filter" chip), so each glyph gets a light SVG instead:
@@ -1245,6 +983,43 @@ html[data-theme="dark"] {
            icon-only, so no label is affected. */
         filter: invert(1) brightness(1.2);
     }
+}
+
+/* Native form controls --------------------------------------------------- */
+
+/*
+ * The shells leave these to the browser defaults, so the light values are the
+ * browser defaults and the dark values come from the tokens. Keeping the rule
+ * here means the dark block only needs the token definitions.
+ */
+input,
+select,
+textarea {
+    background-color: var(--kb-input-bg);
+    color: var(--kb-input-text);
+    border-color: var(--kb-input-border);
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: var(--kb-placeholder-text);
+}
+
+button,
+input[type="button"],
+input[type="submit"],
+input[type="reset"] {
+    background-color: var(--kb-native-button-bg);
+    color: var(--kb-native-button-text);
+    border-color: var(--kb-native-button-border);
+}
+
+button:hover,
+input[type="button"]:hover,
+input[type="submit"]:hover,
+input[type="reset"]:hover {
+    background-color: var(--kb-native-button-hover-bg);
+    border-color: var(--kb-native-button-hover-border);
 }
 
 /* Theme toggle ----------------------------------------------------------- */
@@ -1318,102 +1093,19 @@ html[data-theme="dark"] {
 }
 
 html[data-theme="dark"] {
-    #HdrTopMenu [data-theme-toggle]:hover,
-    #Header [data-theme-toggle]:hover {
-        background-color: var(--kb-toggle-hover-bg);
-        text-decoration: none;
-    }
-
     /* Small inline glyph buttons are painted var(--kb-surface) in the legacy stylesheet so
        they blend into the var(--kb-surface) page. On dark surfaces that reads as a broken
        var(--kb-surface) box: keep them transparent and let the glyph sit on the card. */
-    .flat_btn {
-        background-color: transparent;
-    }
-
     .flat_btn:hover {
         background-color: var(--kb-surface-3);
         box-shadow: inset 0 0 0 1px var(--kb-border-strong);
         border-radius: 3px;
     }
 
-}
-
-html[data-theme="dark"] {
-    .hmenu,
-    .profile_menu,
-    .popup_list {
-        background-color: var(--kb-surface-3);
-        box-shadow: 0 0 10px var(--kb-shadow-strong);
-    }
-
-    .hmenu > li:hover,
-    .profile_menu > li:hover,
-    .popup_list > li:hover {
-        background-color: var(--kb-surface-2);
-    }
-
-    .login_id {
-        color: var(--kb-name);
-    }
-
-    .self_desc {
-        color: var(--kb-text);
-    }
-
-    .last_login,
-    .item_date,
-    .item_date * {
-        color: var(--kb-text-muted);
-    }
-
-    .und_review,
-    .under_review {
-        background-color: var(--kb-warning-bg) !important;
-        border-color: var(--kb-warning-border) !important;
-        color: var(--kb-warning-text);
-    }
-
-    /* The photo-privacy explainer is a var(--kb-highlight-bg) callout in the legacy sheet. */
-    #PrivacyHelp {
-        background-color: var(--kb-warning-bg);
-        color: var(--kb-warning-text);
-        box-shadow: 0 0 8px var(--kb-shadow);
-    }
-
-    .rejected_text,
-    .rejected {
-        background-color: var(--kb-danger-bg) !important;
-        border-color: var(--kb-danger-border) !important;
-        color: var(--kb-danger-text);
-    }
-
-    /* Saved searches, answer previews and generic cards share one legacy rule
-       that paints them var(--kb-surface). */
-    .card,
-    .svd_srch_item,
-    .answer_simple_result {
-        background-color: var(--kb-surface-2);
-        box-shadow: 0 0 5px var(--kb-shadow);
-    }
-
-    .svd_srch_item {
-        color: var(--kb-link);
-    }
-
-    .svd_srch_item:hover,
-    .answer_simple_result:hover {
-        background-color: var(--kb-surface-3);
-        color: var(--kb-text);
-    }
-
-    #DLog,
-    #MDebug {
-        background-color: var(--kb-hint-bg);
-    }
-
-    #DebugFrame {
-        background-color: var(--kb-surface) !important;
+    /* State badges keep their semantic colours, so drop the embossed text shadow. */
+    .visit_heart.hidden_acceptance,
+    .visit_heart.visible_acceptance {
+        text-shadow: none;
     }
 
     /* Text accents ----------------------------------------------------------- */
@@ -1422,7 +1114,6 @@ html[data-theme="dark"] {
     .big_title,
     .subtitle,
     #WhyKobool {
-        color: var(--kb-text);
         text-shadow: none;
     }
 
@@ -1436,77 +1127,137 @@ html[data-theme="dark"] {
         text-shadow: none;
     }
 
-    #Greetings,
-    .sidenote,
-    .light_txt,
-    .contact_note,
-    .attr_label,
-    .field_label,
-    .mem_thumb .attr,
     .attr,
-    .attr_bar,
-    .list_ordinal > span {
+    .attr_bar {
         color: var(--kb-text-muted);
-    }
-
-    .item_date.new,
-    .item_date .new {
-        color: var(--kb-success);
-    }
-
-    .item_date.recent,
-    .item_date .recent {
-        color: var(--kb-warning-text);
-    }
-
-    .item_date.old,
-    .item_date .old,
-    .item_date.past,
-    .item_date .past,
-    .missing_field,
-    .no_text,
-    .pg_intro,
-    #WhyKoboolDesc,
-    .login_msg * {
-        color: var(--kb-danger);
-    }
-
-    .footnote,
-    .online {
-        color: var(--kb-text-highlight);
-    }
-
-    .shadow {
-        box-shadow: 5px 5px 10px var(--kb-shadow-strong);
     }
 
     /* Filter box chips (search result filter tags): the legacy sheet paints them
        var(--kb-filter-bg) with a var(--kb-border-strong) hover and var(--kb-surface) delete icon, which vanish on dark
        surfaces. Override with dark-theme colours that keep the chips readable. */
-    .filter_box {
-        background-color: var(--kb-surface-3);
-        border-color: var(--kb-border);
-    }
-
     .filter_box:hover {
-        background-color: var(--kb-border-strong);
         cursor: pointer;
-    }
-
-    .filter_box span.href {
-        color: var(--kb-link);
-    }
-
-    .filter_box span.href:hover {
-        color: var(--kb-text-inverse);
-    }
-
-    .filter_box .del_icon {
-        background-color: var(--kb-surface-2);
     }
 
     .del_icon:hover {
         background-color: var(--kb-border-strong) !important;
-        cursor: pointer;
     }
+}
+
+/* Light defaults for dark-only overrides --------------------------------- */
+
+/*
+ * These selectors have no colour rule of their own in the light stylesheets, so
+ * their light value is whatever the browser or a less specific rule already
+ * applies (inherit, transparent, currentColor or the inherited base colour).
+ * Keeping the rule here means the dark block only has to define tokens.
+ */
+.href:hover {
+    color: var(--kb-href-hover-text);
+}
+
+#HeaderGrid > *:nth-child(4),
+#MemberBox a {
+    color: var(--kb-header-cell-text);
+}
+
+#MemberBox .popup_list {
+    color: var(--kb-memberbox-popup-text);
+}
+
+.menu .sel a {
+    color: var(--kb-menu-sel-link-text);
+}
+
+.seltab:not(.tab_panel) {
+    background-color: var(--kb-seltab-bg);
+}
+
+.visit_heart.hidden_acceptance,
+.visit_heart.visible_acceptance {
+    color: var(--kb-visit-heart-text);
+}
+
+.filter_box span.href {
+    color: var(--kb-filter-href-text);
+}
+
+.filter_box span.href:hover {
+    color: var(--kb-filter-href-hover-text);
+}
+
+#Menu .ctab.seltab,
+#Menu .ctab.seltab:hover {
+    border-top-color: var(--kb-menu-seltab-border);
+}
+
+#MemPicColumn {
+    border-color: var(--kb-mempic-border);
+    box-shadow: var(--kb-mempic-shadow);
+}
+
+#QList {
+    background-color: var(--kb-qlist-bg);
+}
+
+.browse_question:hover {
+    background-color: var(--kb-browse-question-hover-bg);
+}
+
+/* The legacy `.seltab` rule in base.css paints the selected tab panel var(--kb-surface).
+   Clear it so the panel sits on the tabs_root surface instead of showing as a
+   bright block inside the card. */
+.tab_panel.seltab {
+    background-color: var(--kb-tab-panel-bg);
+}
+
+.answer_result,
+#MAnswers_root > div.mem_answer,
+.my_answer {
+    border-color: var(--kb-result-border);
+}
+
+.tn_frame {
+    border-color: var(--kb-tn-frame-border);
+}
+
+.tn_frame_pic {
+    border-color: var(--kb-tn-frame-pic-border);
+}
+
+.answer_text,
+.free_text,
+.sresult_root .free_text {
+    border-bottom-color: var(--kb-answer-text-border);
+}
+
+.popupClient {
+    background-color: var(--kb-popup-client-bg);
+}
+
+.tipContents {
+    border-color: var(--kb-tip-border);
+}
+
+.filter_box {
+    border-color: var(--kb-filter-box-border);
+}
+
+#DebugFrame {
+    background-color: var(--kb-debug-frame-bg) !important;
+}
+
+/* Hover highlight belongs to the logo box, not the whole cell: the cell spans
+   the nav strip and would cut the strip while the pointer is over it. */
+#HeaderLayout #HeaderLogo:hover {
+    background-color: var(--kb-header-logo-hover-bg);
+}
+
+#HeaderLayout #MainLogo:hover {
+    background-color: var(--kb-main-logo-hover-bg);
+}
+
+#LoginNameHelp {
+    background: var(--kb-login-name-help-bg) !important;
+    border-bottom-color: var(--kb-login-name-help-border) !important;
 }

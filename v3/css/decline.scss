@@ -1,8 +1,8 @@
 #DeclineForm{
 	/* width:560px; */
 	padding: 10px;
-	background-color: var(--kb-hover-soft-bg);
-	box-shadow: 0 0 7px;
+	background-color: var(--kb-decline-form-bg);
+	box-shadow: var(--kb-decline-shadow);
 	max-width: 600px;
 	margin: 5px auto;
 }
@@ -23,7 +23,7 @@
 	font-weight:normal;
 }
 .decline_pg #decline_fixed_msgs{
-	border:solid 1px var(--kb-border-strong);
+	border:solid 1px var(--kb-decline-fixed-border);
 	background-color:var(--kb-surface);
 	height: 160px;
 	overflow: auto;
@@ -47,7 +47,8 @@
 	display:block;
 }
 .decline_pg #decline_status, .decline_pg #decline_note{
-	background-color:var(--kb-highlight-bg);
+	background-color:var(--kb-warning-surface);
+	color:var(--kb-warning-label);
 	padding: 4px;
 	margin: 5px 0;
 }

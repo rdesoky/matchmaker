@@ -6,7 +6,7 @@
 }
 
 .svd_srch_item{
-	border-bottom:solid 1px var(--kb-divider-soft);
+	border-bottom:solid 1px var(--kb-svd-border);
 }
 .svd_srch_list tr .btn{
 	visibility:hidden;
@@ -36,7 +36,7 @@
 .snapshot_frame{
 	margin:5px 0px;
 	padding:0px 5px 5px 5px;
-	border-top:solid 1px var(--kb-border-strong);
+	border-top:solid 1px var(--kb-frame-border);
 }
 .snapshot_title{
 	border-bottom:solid 1px var(--kb-divider-soft);
@@ -48,7 +48,7 @@
 	margin:3px;
 	min-width:290px;
 	min-height:160px;
-	background-color: var(--kb-surface-3);
+	background-color: var(--kb-card-bg);
 }
 .mem_thumb{
 	width:117px;
@@ -57,7 +57,7 @@
 	margin:1px 2px 2px 1px;
 	cursor:pointer;
 	white-space:nowrap;
-	background-color:var(--kb-surface-3);
+	background-color:var(--kb-card-bg);
 }
 
 #ListRoot .mem_thumb{
@@ -76,7 +76,7 @@
 	margin:0px;
 }
 .mem_thumb:hover{
-	background-color:var(--kb-link-hover-bg);
+	background-color:var(--kb-mem-thumb-hover-bg);
 }
 .mem_thumb:lang(ar){
 	margin:1px 0px 1px 2px;
@@ -147,7 +147,7 @@
 }
 
 .sort_bar .btn.sel{
-	background-color:var(--kb-link-hover-bg) !important;
+	background-color:var(--kb-sort-bar-selected-bg) !important;
 	border-color:var(--kb-link);
 }
 
@@ -194,7 +194,7 @@
 	}
 }
 .sort_chk.checked{
-	color:var(--kb-danger-strong);
+	color:var(--kb-sort-checked-text);
 	background-image:url(/images/checkbox_1_en.gif);
 }
 
@@ -310,7 +310,7 @@
 }
 .self_desc{
 	/*color:var(--kb-name);*/
-	color:var(--kb-name);
+	color:var(--kb-self-desc-text);
 }
 
 .filter_box span{
@@ -359,11 +359,7 @@
 	vertical-align:top;
 	background-repeat:no-repeat;
 	background-position:50% 20%;
-}
-
-/* Dark mode: use surface-3 background instead of var(--kb-surface) */
-html[data-theme="dark"] .drill_btn{
-	background-color:var(--kb-surface-3);
+	background-color:var(--kb-drill-bg);
 }
 
 .drill_btn *{
@@ -379,8 +375,8 @@ html[data-theme="dark"] .drill_btn{
 	margin:5px;
 }
 .drill_btn:hover{
-	border-color:var(--kb-border-gray);
-	background-color:var(--kb-surface-3);
+	border-color:var(--kb-drill-hover-border);
+	background-color:var(--kb-drill-hover-bg);
 	cursor:pointer;
 }
 
@@ -392,7 +388,8 @@ html[data-theme="dark"] .drill_btn{
 }
 .sum_group_name{
 	background:url(/images/plus.gif) no-repeat center left;
-	background-color:var(--kb-surface-3);
+	background-color:var(--kb-card-bg);
+	color:var(--kb-text);
 	padding:2px 4px 2px 20px;
 	min-width:100px;
 	line-height:23px;
@@ -403,8 +400,12 @@ html[data-theme="dark"] .drill_btn{
 	}
 }
 
-.sum_group_name:hover, .sum_mem_count:hover{
-	background-color:var(--kb-surface-2);
+.sum_group_name:hover{
+	background-color:var(--kb-sum-group-hover-bg);
+	cursor:pointer;
+}
+.sum_mem_count:hover{
+	background-color:var(--kb-sum-count-hover-bg);
 	cursor:pointer;
 }
 .sum_mem_count{
@@ -454,7 +455,7 @@ html[data-theme="dark"] .drill_btn{
 	height:20px;
 	background-repeat:no-repeat;
 	background-position:center;
-	background-color:var(--kb-surface);
+	background-color:var(--kb-flat-btn-bg);
 	vertical-align:middle;
 }
 
@@ -633,7 +634,7 @@ html[data-theme="dark"] .drill_btn{
 }
 
 .btn_active{
-	color:var(--kb-danger-strong);
+	color:var(--kb-btn-active-text);
 	border-color:var(--kb-marker-border);
 	background-color:var(--kb-marker-bg);
 }
@@ -652,11 +653,13 @@ html[data-theme="dark"] .drill_btn{
 .und_review, .under_review{
 	background-color:var(--kb-warning-bg) !important;
 	border-color:var(--kb-warning-border) !important;
+	color:var(--kb-review-text);
 }
 
 .rejected_text, .rejected{
 	background-color:var(--kb-danger-bg)  !important;
 	border-color:var(--kb-danger-border)  !important;
+	color:var(--kb-rejected-text);
 }
 
 .sresult_text, .self_desc, .mate_desc, .a_title, .answer_text, .answer_text *, .free_text, .free_text *{
@@ -719,7 +722,7 @@ html[data-theme="dark"] .drill_btn{
 	background-color:var(--kb-visitor-bg);
 }
 .myvisits{
-	background-color:var(--kb-surface-3);
+	background-color:var(--kb-card-bg);
 }
 .visit_counter{
 	text-align:center;
@@ -801,7 +804,7 @@ html[data-theme="dark"] .drill_btn{
 .puser{
 	font-size:8pt;
 	padding:1px 10px;
-	border:dotted 1px var(--kb-bevel-light);
+	border:dotted 1px var(--kb-puser-border);
 }
 
 .pusage{
@@ -810,6 +813,7 @@ html[data-theme="dark"] .drill_btn{
 .pusage_self .puser.self, .pusage_mate .puser.mate {
 	border-color:var(--kb-warning-strong-boder-2);
 	background-color:var(--kb-highlight-bg);
+	color:var(--kb-pusage-text);
 }
 
 #RQViewer .popupClient{
@@ -827,7 +831,7 @@ form[name="searchFrm"] select{
 	font-size:9pt !important;
 }
 .bm_box{
-	border:solid 1px var(--kb-border-strong);
+	border:solid 1px var(--kb-frame-border);
 	padding:4px;
 	margin-bottom: 5px;
 	background-color: var(--kb-surface-2);

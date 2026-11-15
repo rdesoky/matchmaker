@@ -26,13 +26,13 @@
 
 
 #Greetings{
-	color:var(--kb-text-gray);
+	color:var(--kb-secondary-text);
 	margin-bottom:10px;
 }
 
 #WhyKobool{
 	font-weight:bold;
-	color:var(--kb-text-strong);
+	color:var(--kb-heading-text);
 	margin-bottom:5px;
 
 	&:lang(ar){
