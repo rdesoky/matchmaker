@@ -1,0 +1,102 @@
+<!doctype html>
+<!--
+    404 page, served with status 404 for any path the site does not have.
+
+    tools/build.js copies this file to dist/404.html, and tools/serve.js serves
+    it for unknown paths, so production and the local preview behave the same.
+    The site has a single real entry point, so a missing URL is answered by
+    sending the visitor to it rather than by a dead end.
+
+    The redirect is the inline script below, and only that. A meta refresh
+    would also work with scripting disabled, but it cannot carry the guard that
+    stops the page reloading itself: if /index.html is the thing that is
+    missing, an unconditional refresh of /index.html loops forever. Both shells
+    are script-driven, so a visitor without scripting cannot use the site
+    anyway, and the link below serves them better than a redirect to a page
+    that would not render.
+
+    A --base build rewrites the /index.html target below to <base>/index.html
+    (rewriteNotFoundRedirect in tools/build.js).
+
+    The page carries its own CSS and requests nothing: it must render even when
+    the request that got here was for a file that no longer exists.
+-->
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8"/>
+<meta name="robots" content="noindex"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>404 — kobool</title>
+<style>
+    :root {
+        color-scheme: light dark;
+        --kb-page: #f0f0f0;
+        --kb-text: #444;
+        --kb-muted: #666;
+        --kb-link: #1558b0;
+    }
+
+    /* Matches shared/theme.scss: the dark palette is applied when the OS asks
+       for it, so a redirect never flashes a bright page at a dark-mode visitor. */
+    @media (prefers-color-scheme: dark) {
+        :root {
+            --kb-page: #11151a;
+            --kb-text: #e6e9ee;
+            --kb-muted: #a9b3bf;
+            --kb-link: #7cb7ff;
+        }
+    }
+
+    html, body {
+        margin: 0;
+        height: 100%;
+    }
+
+    body {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 16px;
+        box-sizing: border-box;
+        background-color: var(--kb-page);
+        color: var(--kb-text);
+        font-family: "Droid Arabic Naskh", system-ui, -apple-system, "Segoe UI", sans-serif;
+        text-align: center;
+    }
+
+    main {
+        max-width: 30em;
+    }
+
+    .code {
+        margin: 0;
+        font-size: 3rem;
+        font-weight: bold;
+        line-height: 1.1;
+        color: var(--kb-muted);
+    }
+
+    p {
+        margin: 0.75em 0;
+        line-height: 1.6;
+    }
+
+    a {
+        color: var(--kb-link);
+    }
+</style>
+<script>
+    // Already at the target means /index.html 404'd: show this page instead of
+    // replacing the URL with the one it is already on.
+    if (window.location.pathname !== '/index.html') window.location.replace('/index.html');
+</script>
+</head>
+<body>
+<main>
+    <p class="code">404</p>
+    <p>الصفحة غير موجودة.</p>
+    <p lang="en" dir="ltr">Page not found.</p>
+    <p><a href="/index.html">الرئيسية / <span lang="en" dir="ltr">Home</span></a></p>
+</main>
+</body>
+</html>

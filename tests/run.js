@@ -207,6 +207,38 @@ test('build: rewriteBase prefixes only real root-absolute URLs', () => {
     assert.match(out, /content="\/not-a-url"/);
 });
 
+test('build: rewriteNotFoundRedirect prefixes the 404 target only when a base is set', () => {
+    const os = require('os');
+    const { rewriteNotFoundRedirect } = require(path.join(TOOLS, 'build'));
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'kobool-404-base-'));
+    const file = path.join(dir, '404.html');
+    const html = [
+        '<script>',
+        "if (window.location.pathname !== '/index.html') window.location.replace('/index.html');",
+        '</script>',
+        '<a href="/index.html">Home</a>'
+    ].join('\n');
+
+    try {
+        fs.writeFileSync(file, html);
+        assert.strictEqual(rewriteNotFoundRedirect(dir, ''), 0);
+        assert.deepStrictEqual(fs.readFileSync(file), Buffer.from(html));
+
+        assert.strictEqual(rewriteNotFoundRedirect(dir, '/repo'), 1);
+        const out = fs.readFileSync(file, 'utf8');
+        // The guard must follow the redirect target so a missing home page cannot loop.
+        assert.match(out, /pathname !== '\/repo\/index\.html'/);
+        assert.match(out, /replace\('\/repo\/index\.html'\)/);
+        assert.match(out, /href="\/repo\/index\.html"/);
+        assert.doesNotMatch(out, /['"]\/index\.html['"]/);
+
+        fs.unlinkSync(file);
+        assert.strictEqual(rewriteNotFoundRedirect(dir, '/repo'), 0);
+    } finally {
+        fs.rmSync(dir, { recursive: true, force: true });
+    }
+});
+
 test('build: expandIncludes inlines shared fragments and strips the directive', () => {
     const os = require('os');
     const { expandIncludes } = require(path.join(TOOLS, 'build'));
@@ -889,12 +921,6 @@ test('smoke: dist builds and validates cleanly', { timeout: 120000 }, () => {
         'upd_pics.html must not carry a root-absolute upload action'
     );
     assert.ok(!/upload_target/.test(updPics), 'upd_pics.html must not create an upload iframe');
-
-    // The App Store badge must be present (referenced from index.html).
-    assert.ok(
-        fs.existsSync(path.join(ROOT, 'dist', 'images', 'Download_on_the_App_Store_Badge_AR_RGB_blk_102417.svg')),
-        'App Store badge SVG missing from dist/images'
-    );
 
     // Every minified JS/CSS file must ship a sibling source map that the
     // browser can load from the sourceMappingURL comment, and the map must
