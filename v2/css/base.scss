@@ -129,12 +129,12 @@ textarea{
 .answer_text, .free_text{
 	margin:0px 0px 2px 0px;
 	padding:4px;
-	/* background-color:#EFEFEF; */
-	/* border-bottom:solid 1px #DDD; */
 }
-.sresult_root .free_text{
-	/* background-color:#fff; */
-	/*border-bottom-color: white;*/
+.sresult_root {
+	.free_text{
+		background-color: var(--kb-surface);
+		/*border-bottom-color: white;*/
+	}
 }
 .contents_tbl{
 	border-spacing:0px;

@@ -14,6 +14,24 @@
 
 :root {
     color-scheme: light;
+
+    --kb-page: #f6f6f6;
+    --kb-surface: #ffffff;
+    --kb-surface-2: #f6f6f6;
+    --kb-surface-3: #f0f0f0;
+    --kb-border: #d0d0d0;
+    --kb-border-strong: #c0c0c0;
+    --kb-divider: #e0e0e0;
+    --kb-text: #000000;
+    --kb-text-muted: #666666;
+    --kb-link: #0077cc;
+    --kb-selected: #4682b4;
+    --kb-danger: #ff0000;
+    --kb-form-bg: #ffffff;
+    --kb-form-line: #d0d0d0;
+    --kb-photo-bg: #f0f0f0;
+    --kb-warning-bg: #fff8e1;
+    --kb-warning-text: #665500;
 }
 
 html[data-theme="dark"] {
