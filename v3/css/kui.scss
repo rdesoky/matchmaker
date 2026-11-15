@@ -906,7 +906,7 @@ html[data-theme="dark"] .summary_line:hover{
 /* Gender glyphs are painted as background images on a forced white rectangle,
    so the coloured GIF artwork stays legible on both themes. */
 .gender_0_icon{
-	background-color: #fff;
+	background-color:#fff;
 	background-image: url(/images/gender_0.gif);
 	background-position: 50% 50%;
 	background-size: 16px 16px;

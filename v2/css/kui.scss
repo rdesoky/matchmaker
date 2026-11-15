@@ -483,7 +483,7 @@ html[data-theme="dark"] .drill_btn{
 /* Gender glyphs are painted as background images on a forced white rectangle,
    so the coloured GIF artwork stays legible on both themes. */
 .gender_0_icon{
-	background-color: #fff;
+	background-color: #fff !important;
 	background-image: url(/images/gender_0.gif);
 	background-position: 50% 50%;
 	background-size: 16px 16px;
@@ -491,7 +491,7 @@ html[data-theme="dark"] .drill_btn{
 }
 
 .gender_1_icon{
-	background-color: #fff;
+	background-color: #fff !important;
 	background-image: url(/images/gender_1.gif);
 	background-position: 50% 50%;
 	background-size: 16px 16px;

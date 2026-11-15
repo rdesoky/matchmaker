@@ -1038,31 +1038,6 @@ html[data-theme="dark"] {
         border-radius: 3px;
     }
 
-    /* Gender glyphs are background images on a forced white rectangle (see the
-       shell stylesheets), so the flat-button transparent override above must
-       not win, and the .attr:hover / .flat_btn:hover backgrounds below must not
-       wash the rectangle on hover. The compound selectors outrank the
-       .attr:hover / .flat_btn:hover rules that follow later in this file. */
-    .attr.gender_0_icon,
-    .attr.gender_1_icon,
-    .flat_btn.gender_0_icon,
-    .flat_btn.gender_1_icon,
-    .attr.gender_0_icon:hover,
-    .attr.gender_1_icon:hover,
-    .flat_btn.gender_0_icon:hover,
-    .flat_btn.gender_1_icon:hover {
-        background-color: #fff;
-    }
-}
-
-/* Light mode: .attr_bar .attr:hover washes the chip #e3e4d2, which would tint
-   the glyph's white rectangle beige. Keep the rectangle white on hover. The
-   html prefix outranks the legacy rule, which is injected after this file. */
-html .attr.gender_0_icon:hover,
-html .attr.gender_1_icon:hover,
-html .flat_btn.gender_0_icon:hover,
-html .flat_btn.gender_1_icon:hover {
-    background-color: #fff;
 }
 
 html[data-theme="dark"] {
@@ -1173,15 +1148,6 @@ html[data-theme="dark"] {
     .attr_bar,
     .list_ordinal > span {
         color: var(--kb-text-muted);
-    }
-
-    /* The legacy sheets wash hovered attribute chips with #F0F0F0, which flashes
-       light on dark. The list sheets also darken the label to #11151a on hover,
-       which is unreadable on the dark chip, so lift it back to the full text
-       colour. */
-    .attr:hover {
-        background-color: var(--kb-surface-3);
-        color: var(--kb-text);
     }
 
     .item_date.new,
