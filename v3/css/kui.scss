@@ -903,18 +903,22 @@ html[data-theme="dark"] .summary_line:hover{
 	box-shadow: 0 0 2px rgba(100,0,0,1);
 }
 
-/* Gender glyphs are SVG masks tinted with currentColor, so one asset follows
-   the text colour: dark on light, bright on dark. */
+/* Gender glyphs are painted as background images on a forced white rectangle,
+   so the coloured GIF artwork stays legible on both themes. */
 .gender_0_icon{
-	background-color: currentColor;
-	-webkit-mask: url(/images/gender_0.svg) 50% 50% / 16px 16px no-repeat;
-	mask: url(/images/gender_0.svg) 50% 50% / 16px 16px no-repeat;
+	background-color: #fff;
+	background-image: url(/images/gender_0.gif);
+	background-position: 50% 50%;
+	background-size: 16px 16px;
+	background-repeat: no-repeat;
 }
 
 .gender_1_icon{
-	background-color: currentColor;
-	-webkit-mask: url(/images/gender_1.svg) 50% 50% / 16px 16px no-repeat;
-	mask: url(/images/gender_1.svg) 50% 50% / 16px 16px no-repeat;
+	background-color: #fff;
+	background-image: url(/images/gender_1.gif);
+	background-position: 50% 50%;
+	background-size: 16px 16px;
+	background-repeat: no-repeat;
 }
 
 .flat_icon{

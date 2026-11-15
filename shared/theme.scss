@@ -531,9 +531,9 @@ html[data-theme="dark"] {
     #MTabs .ctab,
     .sort_btn.sel,
     .show_menu.xscroll #MTabs .ctab.seltab {
-        background-color: var(--kb-surface-2);
-        color: var(--kb-text);
-        border-color: var(--kb-border);
+        /* background-color:var(--kb-surface-2); */
+        /* color:var(--kb-text); */
+        /* border-color:var(--kb-border); */
     }
 
     #MTabs .ctab.seltab {
@@ -1042,10 +1042,10 @@ html[data-theme="dark"] {
         border-radius: 3px;
     }
 
-    /* Gender glyphs are SVG masks tinted with currentColor (see the shell
-       stylesheets), so the flat-button transparent override above must not win,
-       and the .attr:hover / .flat_btn:hover backgrounds below must not turn the
-       mask-painted glyph dark on hover. The compound selectors outrank the
+    /* Gender glyphs are background images on a forced white rectangle (see the
+       shell stylesheets), so the flat-button transparent override above must
+       not win, and the .attr:hover / .flat_btn:hover backgrounds below must not
+       wash the rectangle on hover. The compound selectors outrank the
        .attr:hover / .flat_btn:hover rules that follow later in this file. */
     .attr.gender_0_icon,
     .attr.gender_1_icon,
@@ -1055,20 +1055,18 @@ html[data-theme="dark"] {
     .attr.gender_1_icon:hover,
     .flat_btn.gender_0_icon:hover,
     .flat_btn.gender_1_icon:hover {
-        background-color: currentColor;
+        background-color: #fff;
     }
 }
 
-/* Light mode: .attr_bar .attr:hover washes the chip #e3e4d2, which is also the
-   glyph's ink (background-color), so the glyph disappears beige-on-beige.
-   Keep the ink on currentColor — that same rule darkens the label to #11151a,
-   so the glyph turns dark on hover. The html prefix outranks the legacy rule,
-   which is injected after this file. */
+/* Light mode: .attr_bar .attr:hover washes the chip #e3e4d2, which would tint
+   the glyph's white rectangle beige. Keep the rectangle white on hover. The
+   html prefix outranks the legacy rule, which is injected after this file. */
 html .attr.gender_0_icon:hover,
 html .attr.gender_1_icon:hover,
 html .flat_btn.gender_0_icon:hover,
 html .flat_btn.gender_1_icon:hover {
-    background-color: currentColor;
+    background-color: #fff;
 }
 
 html[data-theme="dark"] {
