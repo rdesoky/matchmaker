@@ -1,7 +1,4 @@
-#ChatTypingBox .button{
-	font-size:8pt;
-}
-.points_monitor *{
+#ChatTypingBox .button, .points_monitor *{
 	font-size:8pt;
 }
 
@@ -75,10 +72,10 @@
 	margin:10px 0px;
 	clear:both;
 	text-align:right;
-}
 
-#ChatBody .nav_root:lang(ar){
-	text-align:left;
+	&:lang(ar){
+		text-align:left;
+	}
 }
 
 .chat_editor{
@@ -147,7 +144,6 @@ form[name=ChatEditor] select{
 }
 .chat_msg_time{
 	color:gray;
-	padding:0px;
 	padding:1px;
 	font-size:7pt !important;
 }

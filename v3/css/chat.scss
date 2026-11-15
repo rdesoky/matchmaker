@@ -6,10 +6,7 @@
 #Contents.chat_pg.show_typing{
 	padding-bottom: 100px;
 }
-#ChatTypingBox .button{
-	font-size:8pt;
-}
-.points_monitor *{
+#ChatTypingBox .button, .points_monitor *{
 	font-size:8pt;
 }
 
@@ -125,10 +122,10 @@
 	margin:10px 0px;
 	/* clear:both; */
 	text-align:right;
-}
 
-#ChatBody .nav_root:lang(ar){
-	text-align:left;
+	&:lang(ar){
+		text-align:left;
+	}
 }
 
 .chat_editor{        
@@ -167,7 +164,6 @@ form[name=ChatEditor] textarea{
 	/* height: 100%; */
 	/* vertical-align: top; */
 	/* margin: 4px 1%; */
-	vertical-align: top;
 	/* text-align: center; */
 	vertical-align: bottom;
 }
@@ -237,10 +233,11 @@ form[name=ChatEditor] select{
 	/*float:left;*/
 	position: fixed;
 	right:0px;
-}
-.chat_side:lang(ar){
-	right:inherit;
-	left:0px;
+
+	&:lang(ar){
+		right:inherit;
+		left:0px;
+	}
 }
 
 @media(max-width: 1050px){
@@ -392,9 +389,10 @@ form[name=ChatEditor] select{
 	text-align: right;
 	white-space: nowrap;
 	display:table-cell;
-}
-.points_monitor:lang(ar){
-	text-align: left;
+
+	&:lang(ar){
+		text-align: left;
+	}
 }
 
 #ChatPointsStatus{

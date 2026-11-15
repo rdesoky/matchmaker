@@ -12,11 +12,10 @@
 	background-image:url(/images/tooltip_up_arrow.png);
 	background-repeat:no-repeat;
 	background-position: 10px bottom;
-}
 
-
-*[lang=ar] .tipArrow{
-	background-position: 140px top;
+	*[lang=ar] &{
+		background-position: 140px top;
+	}
 }
 
 .tipContents{

@@ -100,7 +100,6 @@ margin-top: 4px;
 	/* list-style-type: none; */
 	/* list-style:none; */
 	display:block;
-	padding:0px;
 	/* background-color:#EEE; */
 /* 	border-style:solid; */
 	/* border-color:silver; */
@@ -193,9 +192,10 @@ line-height: 40px;
 	border-style:solid;
 	border-color:silver;
 	border-width:0px 0px 0px 1px;
-}
-#MTabPanels:lang(ar){
-	border-width:0px 1px 0px 0px;
+
+	&:lang(ar){
+		border-width:0px 1px 0px 0px;
+	}
 }
 
 .tab_panel{
@@ -266,10 +266,10 @@ line-height: 40px;
 	background-color:white;
 	padding:0px 5px 5px 0px;
 	min-height:100px;
-}
 
-#MemPicColumn:lang(ar){
-	padding:0px 0px 5px 5px;
+	&:lang(ar){
+		padding:0px 0px 5px 5px;
+	}
 }
 
 #MAnswers_root>div.mem_answer{

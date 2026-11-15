@@ -48,10 +48,11 @@
 }
 .answer_result .list_ordinal span{
 	right:30px;
-}
-.answer_result .list_ordinal span:lang(ar){
-	right:auto;
-	left: 30px;
+
+	&:lang(ar){
+		right:auto;
+		left: 30px;
+	}
 }
 .detailedSResult>table{
 	width:100%;

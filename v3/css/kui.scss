@@ -300,10 +300,12 @@
 	border-width:0;
 	/*border-width:0 0 1px 0;*/
 	/*background-color:white;*/
-}
-.sort_chk:lang(ar){ 
-	background-position:right center;
-	padding:2px 14px 2px 2px;
+
+	&:lang(ar){
+ 
+		background-position:right center;
+		padding:2px 14px 2px 2px;
+	}
 }
 .sort_chk.checked{
 	color:maroon;
@@ -505,9 +507,10 @@ border-radius: 50px;
 	/* margin: 5px; */
 	padding: 5px 30px 5px 5px;
 	min-height: 37px;
-}
-.profile_title:lang(ar){
-	padding: 5px 0 5px 30px;
+
+	&:lang(ar){
+		padding: 5px 0 5px 30px;
+	}
 }
 .profile_title>*{
 	display: inline-block!important;
@@ -613,9 +616,10 @@ border-radius: 50px;
 	height: 24px;
 	/* vertical-align: inherit; */
 	margin: 3px 0 3px 3px;
-}
-.filter_box .del_icon:lang(ar){
-	margin: 3px 3px 3px 0;
+
+	&:lang(ar){
+		margin: 3px 3px 3px 0;
+	}
 }
 .del_icon:hover{
 	background-color: pink !important;
@@ -755,12 +759,12 @@ html[data-theme="dark"] .summary_line:hover{
 	/* min-width:100px; */
 	/* min-width: 180px; */
 	float: left;
-}
 
-.sum_group_name:lang(ar){
-	background-position: right 10px center;
-	padding: 0 32px 0 4px;
-	float: right;
+	&:lang(ar){
+		background-position: right 10px center;
+		padding: 0 32px 0 4px;
+		float: right;
+	}
 }
 
 .sum_group_name:hover, .sum_mem_count:hover{
@@ -790,18 +794,20 @@ html[data-theme="dark"] .summary_line:hover{
 	color: white;
 	font-weight: bold;
 	text-shadow: 0 0 3px rgba(0,0,0,.8);
-}
-.sum_mem_count:lang(ar){
-	float:left;
+
+	&:lang(ar){
+		float:left;
+	}
 }
 .sum_mem_percent{
 	cursor:pointer;
 	color: silver;
 	/* line-height: 25px; */
 	float: left;
-}
-.sum_mem_percent:lang(ar){
-	float:right;
+
+	&:lang(ar){
+		float:right;
+	}
 }
 .sum_group_name, .sum_mem_count{
 	/*font-size:10pt;*/
@@ -827,9 +833,10 @@ html[data-theme="dark"] .summary_line:hover{
 	max-width: 780px;
 	margin: auto;
 	text-align: right;
-}
-.nav_root:lang(ar){
-	text-align:left;
+
+	&:lang(ar){
+		text-align:left;
+	}
 }
 .nav_root .href{
 	vertical-align: middle;
@@ -856,8 +863,8 @@ html[data-theme="dark"] .summary_line:hover{
 	width: 20px;
 	height: 30px;
 	/* background-color:white; */
-	background-position: center;
 	background-repeat:no-repeat;
+	background-position:center;
 	vertical-align: top !important;
 	/* background-size: contain; */
 	padding: 0;
@@ -880,10 +887,11 @@ html[data-theme="dark"] .summary_line:hover{
 	background-position:center left;
 	padding: 0 3px 0 18px;
 	white-space: nowrap;
-}
-.filters_btn:lang(ar){
-	background-position:center right;
-	padding:0 18px 0 3px;
+
+	&:lang(ar){
+		background-position:center right;
+		padding:0 18px 0 3px;
+	}
 }
 .btn:hover, .pg_nav_btn:hover, .filters_btn:hover{
 	cursor:pointer;
@@ -920,18 +928,14 @@ html[data-theme="dark"] .summary_line:hover{
 .view_icon{
 	background: gainsboro url(/images/search.gif) 2% center no-repeat;
 	padding: 0 2px 0 22px;
+
+	&:lang(ar){
+		padding: 0 25px 0 5px;
+		background-position: right 3px center;
+	}
 }
 
-.view_icon:lang(ar){
-	padding: 0 25px 0 5px;
-	background-position: right 3px center;
-}
-
-.drill_icon{
-	background-image:url(/images/search_plus.gif);
-}
-
-.plus_icon{
+.drill_icon, .plus_icon{
 	background-image:url(/images/search_plus.gif);
 }
 
@@ -1027,8 +1031,7 @@ html[data-theme="dark"] .summary_line:hover{
 	background-image:url(/images/kobool.gif);
 }
 .yes_vis_heart_icon{
-	background-image:url(/images/kobool.gif);
-	background-color:green;
+	background:url(/images/kobool.gif) green;
 }
 .unk_heart_icon{
 	background-image:url(/images/unk_kobool.png);
@@ -1133,8 +1136,8 @@ html[data-theme="dark"] .summary_line:hover{
 
 	border: solid 1px;
 	border-color: white silver silver white;
-	background-repeat:no-repeat;
 	background-position:center;
+	background-repeat:no-repeat;
 	min-width: 20px;
 	font-size: 15px;
 	height: 30px;
@@ -1157,8 +1160,8 @@ html[data-theme="dark"] .summary_line:hover{
 }
 
 .visit_box{
-	background-color: #E5E5E5;
 	background-repeat:no-repeat;
+	background-color:#E5E5E5;
 	position:relative;
 	padding: 5px 0 15px;
 }
@@ -1206,14 +1209,14 @@ html[data-theme="dark"] .summary_line:hover{
 .visit_heart{
 	text-align:center;
 	background-repeat:no-repeat;
-	background-position: center;
+	background-position:center;
+	background-color:#F0F0F0;
 	color:white;
 	font-weight:bold;
 	width: 26px;
 	height: 26px;
 	position: absolute;
 	line-height: 26px !important;
-	background-color: #F0F0F0;
 	text-shadow: brown 0 0 3px;
 	top: -26px;
 	border-radius: 13px;
@@ -1225,10 +1228,11 @@ html[data-theme="dark"] .summary_line:hover{
 	/* float: left; */
 	bottom: -18px;
 	top: auto;
-}
-.my_visit_box .visit_heart:lang(ar){
-	right:auto;
-	left:0;
+
+	&:lang(ar){
+		right:auto;
+		left:0;
+	}
 }
 .visit_heart:lang(ar){
     /* float: left; */
@@ -1296,11 +1300,11 @@ html[data-theme="dark"] .summary_line:hover{
 
 .feedback_frame .i-text{
 	/* margin-right:25px; */
-}
 
-.feedback_frame .i-text:lang(ar){
-	margin-right:0;
-	/* margin-left:25px; */
+	&:lang(ar){
+		margin-right:0;
+		/* margin-left:25px; */
+	}
 }
 
 .i-text textarea:focus{
@@ -1345,16 +1349,18 @@ html[data-theme="dark"] .summary_line:hover{
 .i-text-frame>div.user_image{
 	position:absolute;
 	right:0;
-}
-.i-text-frame>div.user_image:lang(ar){
-	right:auto;
-	left:0;
+
+	&:lang(ar){
+		right:auto;
+		left:0;
+	}
 }
 .i-text-frame>div.feedback{
 	margin: 0 25px 0 0;
-}
-.i-text-frame>div.feedback:lang(ar){
-	margin: 0 0 0 25px;
+
+	&:lang(ar){
+		margin: 0 0 0 25px;
+	}
 }
 
 
@@ -1362,9 +1368,10 @@ html[data-theme="dark"] .summary_line:hover{
 	display:inline-block;
 	vertical-align: top;
 	margin: 0 5px 0 0;
-}
-.info_col:lang(ar){
-	margin: 0 0 0 5px;
+
+	&:lang(ar){
+		margin: 0 0 0 5px;
+	}
 }
 
 .attr_editor{
@@ -1515,9 +1522,10 @@ form[name="searchFrm"] select{
 	text-align:right;
 	padding: 0 5px;
 	/* line-height: 18px; */
-}
-.item_date:lang(ar){
-	text-align:left;
+
+	&:lang(ar){
+		text-align:left;
+	}
 }
 
 .last_login{
@@ -1537,11 +1545,11 @@ form[name="searchFrm"] select{
 .mem_answer .item_date, .answer_result .item_date{
 	text-align:right;
 	padding: 0 5px;
-}
 
-.mem_answer .item_date:lang(ar), .answer_result .item_date:lang(ar){
-	text-align:left;
-	padding: 4px;
+	&:lang(ar){
+		text-align:left;
+		padding: 4px;
+	}
 }
 
 
@@ -1577,11 +1585,11 @@ form[name="searchFrm"] select{
 	position:absolute;
 	top:3px;
 	right:3px;
-}
 
-.sresult_top_btns:lang(ar){
-	left:3px;
-	right:auto;
+	&:lang(ar){
+		left:3px;
+		right:auto;
+	}
 }
 
 .summary_list{
@@ -1602,10 +1610,10 @@ form[name="searchFrm"] select{
     background-position: right center;
     margin: 0 0 10px 0;
     box-sizing: border-box;
-}
-.drill_hdr_btn:lang(ar){
-    background-position: left center;
 
+	&:lang(ar){
+	    background-position: left center;
+	}
 }
 .drill_hdr_btn:lang(ar){
     margin: 0 0 6px 0;
@@ -1659,9 +1667,10 @@ form[name="searchFrm"] select{
 }
 .brgr_handle{
 	background: url(/images/brgr_menu.png) no-repeat left center;
-}
-.brgr_handle:lang(ar){
-	background-position:right center;	
+
+	&:lang(ar){
+		background-position:right center;	
+	}
 }
 .menu_handle{
 	padding: 0 0 6px 0;
@@ -1751,19 +1760,20 @@ form[name="searchFrm"] select{
 	cursor: pointer;
 	font-weight: bold;
 	/* color: white; */
-}
-.total:lang(ar){
-	right:auto;
-	left:5px;
-	background-position: 5px center;
-	padding: 0 5px 0 30px;
+
+	&:lang(ar){
+		right:auto;
+		left:5px;
+		background-position: 5px center;
+		padding: 0 5px 0 30px;
+	}
 }
 
 .browse_question{
 	background-repeat:no-repeat;
 	background-position:left center;
+	background-size:30px;
 	padding: 0 0 0 36px;
-	background-size: 30px;
 	clear: both;
 	border-top: solid 1px #DDD;
 }
@@ -1794,7 +1804,7 @@ form[name="searchFrm"] select{
 }
 .browse_question.qgender_1{
 	background-image:url(/images/1.v2.png);
-	background-color: white;
+	background-color:white;
 }
 
 #QAViewer .popupClient{
@@ -1850,11 +1860,11 @@ form[name="searchFrm"] select{
 
 .hmenu{
 	right: 30px;
-}
 
-.hmenu:lang(ar){
-	right: auto;
-	left: 30px;
+	&:lang(ar){
+		right: auto;
+		left: 30px;
+	}
 }
 
 #ConfirmKobool input[type=checkbox]{

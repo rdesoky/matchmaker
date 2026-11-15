@@ -6,10 +6,11 @@
 	position:absolute;
 	right:8px;
 	top:1px;
-}
-*[lang=ar] #HdrTopMenu{
-	right:auto;
-	left:8px;
+
+	*[lang=ar] &{
+		right:auto;
+		left:8px;
+	}
 }
 
 #HdrTopMenu *{
@@ -97,9 +98,10 @@ textarea{
 
 .indent{
 	margin-left:25px;
-}
-*[lang=ar] .indent{
-	margin-right:25px;
+
+	*[lang=ar] &{
+		margin-right:25px;
+	}
 }
 
 #TipAnchor{
@@ -172,9 +174,10 @@ textarea{
 }
 .dv_row, .dv_header{
 	padding:0px 1px 0px 0px;
-}
-*[lang=ar] .dv_row, *[lang=ar] .dv_header{
-	padding:0px 0px 0px 1px;
+
+	*[lang=ar] &{
+		padding:0px 0px 0px 1px;
+	}
 }
 .dv_header_cell, .dv_cell{
 	display:inline-block;
@@ -201,10 +204,11 @@ textarea{
 *{
 	font-family:Verdana;
 	font-size:8.5pt;
-}
-[lang=ar] *{
-	font-size:9pt;
-	direction:rtl;
+
+	[lang=ar] &{
+		font-size:9pt;
+		direction:rtl;
+	}
 }
 
 [lang=ar] *, input[type=text], input[type=edit], .popup_title_text, .tahoma, .note, .feedback, .feedback *, .dv_cell, .dv_cell>span{
@@ -263,10 +267,11 @@ body{
 	border-right:solid 1px silver;
 	height:100%;
 	/*background:whiteSmoke;*/
-}
-*[lang=ar] .left_side{
-	border-right:0px;
-	border-left:solid 1px silver;
+
+	*[lang=ar] &{
+		border-right:0px;
+		border-left:solid 1px silver;
+	}
 }
 *[lang=ar] #UserBox{
 	left:0px;
@@ -320,12 +325,13 @@ body{
 	top:18px;
 	right:0px;
 	padding:1px 8px 1px 8px;
-}
-*[lang=ar] #StatsMenu{
-	border-width:0px 1px 1px 0px;
-	border-radius: 0px 0px 5px 0px;
-	right:auto;
-	left:0px;
+
+	*[lang=ar] &{
+		border-width:0px 1px 1px 0px;
+		border-radius: 0px 0px 5px 0px;
+		right:auto;
+		left:0px;
+	}
 }
 #StatsMenu *{
 	font-weight:bold;
@@ -336,10 +342,11 @@ body{
 	position:absolute;
 	bottom:0px;
 	left:130px;
-}
-*[lang=ar] #GuestMenu{
-	right:auto;
-	right:130px;
+
+	*[lang=ar] &{
+		right:auto;
+		right:130px;
+	}
 }
 #GuestMenu a{
 	color:maroon;
@@ -352,10 +359,11 @@ body{
 	position:absolute;
 	top:3px;
 	right:5px;
-}
-*[lang=ar] #Slogan{
-	right:auto;
-	left:5px;
+
+	*[lang=ar] &{
+		right:auto;
+		left:5px;
+	}
 }
 
 #Slogan>a{
@@ -372,9 +380,10 @@ body{
 #HeaderLogo{
 	background:url(/images/hdr_logo_en.png) no-repeat center;
 	cursor:pointer;
-}
-*[lang=ar] #HeaderLogo{
-	background:url(/images/hdr_logo_ar.png) no-repeat center;
+
+	*[lang=ar] &{
+		background:url(/images/hdr_logo_ar.png) no-repeat center;
+	}
 }
 
 #HeaderLogo:hover{
@@ -432,10 +441,10 @@ body{
 .big_font{
 	/*font-family:Simplified Arabic;*/
 	font-size:14pt ;
-}
 
-*[lang=ar] .big_font{
-	font-size:18pt;
+	*[lang=ar] &{
+		font-size:18pt;
+	}
 }
 
 .pg_intro{
@@ -800,9 +809,7 @@ img.small_pic{
 	display:inline-block;
 	width:16px;
 	height:16px;
-	background-image:url(/images/icons_454545_256x240.png);
-	background-repeat:no-repeat;
-	background-color:#F0F0F0;
+	background:url(/images/icons_454545_256x240.png) no-repeat #F0F0F0;
 }
 .icon16:hover{
 	background-image:url(/images/icons_FFFFFF_256x240.png) !important;
@@ -846,6 +853,8 @@ img.small_pic{
 .button{
 	display:inline-block;
 	font-size:10pt;
+	background-repeat:no-repeat;
+	background-position:center;
 	background-color:#DDDDDD;
 	border:solid 1px;
 	border-color:white gray gray white;
@@ -853,8 +862,6 @@ img.small_pic{
 	padding: 2px 10px;
 	cursor:default;
 	white-space:nowrap;
-	background-repeat:no-repeat;
-	background-position:center;
 	margin:0px 2px;
 }
 .button:hover{
@@ -1017,20 +1024,13 @@ img.small_pic{
 	width:50px;
 	height:50px;
 	overflow:hidden;
-}
-.pic50frame{
 	cursor:pointer;
 	width:50px;
 	height:50px;
 	overflow:hidden;
 }
 
-.pic50frame img{
-	width:50px;
-	height:auto;
-}
-
-.pic40frame img{
+.pic50frame img, .pic40frame img{
 	width:50px;
 	height:auto;
 }

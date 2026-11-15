@@ -82,9 +82,10 @@
 	border-style:solid;
 	border-color:silver;
 	border-width:0px 0px 0px 1px;
-}
-#MTabPanels:lang(ar){
-	border-width:0px 1px 0px 0px;
+
+	&:lang(ar){
+		border-width:0px 1px 0px 0px;
+	}
 }
 
 .attr_panel{
@@ -136,9 +137,9 @@
 	background-color:white;
 	padding:0px 5px 5px 0px;
 	min-height:100px;
-}
 
-#MemPicColumn:lang(ar){
-	padding:0px 0px 5px 5px;
+	&:lang(ar){
+		padding:0px 0px 5px 5px;
+	}
 }
 

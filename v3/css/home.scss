@@ -34,10 +34,10 @@
 	font-weight:bold;
 	color:#444444;
 	margin-bottom:5px;
-}
 
-#WhyKobool:lang(ar){
-	font-family:Simplified Arabic;
+	&:lang(ar){
+		font-family:Simplified Arabic;
+	}
 }
 
 #WhyKoboolDesc{
@@ -55,11 +55,7 @@
 #KoboolOffer{
 }
 
-#HomeOptions{
-	vertical-align:top;
-}
-
-#HomeFormPanel{
+#HomeOptions, #HomeFormPanel{
 	vertical-align:top;
 }
 

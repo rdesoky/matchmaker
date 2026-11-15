@@ -171,11 +171,10 @@
 	min-width:40px;
 	line-height:23px;
 	text-align:center;
+	background-repeat:no-repeat;
 	background-color:#F0F0F0;
 	margin:2px 2px -1px 2px;
 	cursor:pointer;
-	padding:1px 5px;
-	background-repeat:no-repeat;
 	border:solid 1px;
 	border-color:silver;
 	padding:2px 4px;
@@ -187,10 +186,12 @@
 	padding:2px 2px 2px 14px;
 	border-width:0px 0px 1px 0px;
 	background-color:white;
-}
-.sort_chk:lang(ar){ 
-	background-position:right center;
-	padding:2px 14px 2px 2px;
+
+	&:lang(ar){
+ 
+		background-position:right center;
+		padding:2px 14px 2px 2px;
+	}
 }
 .sort_chk.checked{
 	color:maroon;
@@ -205,7 +206,6 @@
 	cursor:default;
 	border-color:silver silver white silver;
 	background:white;
-	color:black;
 }
 
 .tn_pic{
@@ -396,11 +396,11 @@ html[data-theme="dark"] .drill_btn{
 	padding:2px 4px 2px 20px;
 	min-width:100px;
 	line-height:23px;
-}
 
-.sum_group_name:lang(ar){
-	background-position:center right;
-	padding:2px 20px 2px 4px;
+	&:lang(ar){
+		background-position:center right;
+		padding:2px 20px 2px 4px;
+	}
 }
 
 .sum_group_name:hover, .sum_mem_count:hover{
@@ -452,9 +452,9 @@ html[data-theme="dark"] .drill_btn{
 	display:inline-block;
 	width:20px;
 	height:20px;
-	background-color:white;
-	background-position:center;
 	background-repeat:no-repeat;
+	background-position:center;
+	background-color:white;
 	vertical-align:middle;
 }
 
@@ -468,10 +468,11 @@ html[data-theme="dark"] .drill_btn{
 .filters_btn{
 	background-position:center left;
 	padding:0px 3px 0px 18px;
-}
-.filters_btn:lang(ar){
-	background-position:center right;
-	padding:0px 18px 0px 3px;
+
+	&:lang(ar){
+		background-position:center right;
+		padding:0px 18px 0px 3px;
+	}
 }
 .btn:hover, .pg_nav_btn:hover, .filters_btn:hover{
 	cursor:pointer;
@@ -497,18 +498,14 @@ html[data-theme="dark"] .drill_btn{
 	background:white url(/images/search.gif) no-repeat;
 	padding:0px 2px 0px 18px;
 	background-position:2% center;
+
+	&:lang(ar){
+		padding:0px 18px 0px 2px;
+		background-position:97% center;
+	}
 }
 
-.view_icon:lang(ar){
-	padding:0px 18px 0px 2px;
-	background-position:97% center;
-}
-
-.drill_icon{
-	background-image:url(/images/search_plus.gif);
-}
-
-.plus_icon{
+.drill_icon, .plus_icon{
 	background-image:url(/images/search_plus.gif);
 }
 
@@ -600,8 +597,7 @@ html[data-theme="dark"] .drill_btn{
 	background-image:url(/images/kobool.gif);
 }
 .yes_vis_heart_icon{
-	background-image:url(/images/kobool.gif);
-	background-color:green;
+	background:url(/images/kobool.gif) green;
 }
 .unk_heart_icon{
 	background-image:url(/images/unk_kobool.png);
@@ -700,8 +696,7 @@ html[data-theme="dark"] .drill_btn{
 }
 .visit_counter{
 	padding-top:10px;
-	background-position:center 4px;
-	background-repeat:no-repeat;
+	background:no-repeat center 4px;
 }
 .visitor.visit_counter{
 	background-image:url(/images/visit.gif);
