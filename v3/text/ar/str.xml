@@ -637,8 +637,9 @@
 	<welcome>مرحبا</welcome>
 	<thanks>شكرا لك</thanks>
 	<copyright><![CDATA[
-		جميع الحقوق محفوظة &copy; قبول كم 2004-2012
+		جميع الحقوق محفوظة &copy; قبول كم 2004-2026
 	]]></copyright>
+	<newer_app>التطبيق الأحدث</newer_app>
 	<who_are_we>من نحن؟</who_are_we>
 	<contact_us>اتصل بالموقع</contact_us>
 	<privacy>سياسة السرية</privacy>

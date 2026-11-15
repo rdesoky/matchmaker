@@ -1,25 +1,25 @@
 #RightSide, .right_side
 {
-	border-color:LightSlateGray #C7C8A4;
+	border-color:var(--kb-skin-border) var(--kb-skin-accent);
 }
 
 .submenu_line, .header_line{
-	background-color:#C7C8A4;
+	background-color:var(--kb-skin-accent);
 }
 
 #Menu .ctab.seltab, #Menu .ctab.seltab:hover{
-	background-color:#C7C8A4 !important;
+	background-color:var(--kb-skin-accent) !important;
 }
 
 #Menu .ctab:hover{
-	background-color:#E3E4D2 !important;
+	background-color:var(--kb-attr-hover-bg) !important;
 }
 
 .href.sel:hover{
-	color:#0645AD;
-	background-color:#C7C8A4 ;
+	color:var(--kb-link);
+	background-color:var(--kb-skin-accent) ;
 }
 
 .href:hover{
-	background-color:#E3E4D2;
+	background-color:var(--kb-attr-hover-bg);
 }

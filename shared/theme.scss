@@ -12,50 +12,331 @@
  * stylesheet already uses it.
  */
 
+/*
+ * Semantic colour tokens.
+ *
+ * Every stylesheet uses these names instead of literal colours, so a rule
+ * automatically follows the active theme. Light values live on :root, dark
+ * values override the same names under html[data-theme="dark"]. The names
+ * describe the role of the colour (surface, border, status, header, ...),
+ * never the hue, so a token can be re-tuned in one place.
+ */
 :root {
     color-scheme: light;
 
-    --kb-page: #f6f6f6;
+    /* Surfaces ------------------------------------------------------------- */
+    --kb-page: #f0f0f0;
     --kb-surface: #ffffff;
     --kb-surface-2: #f6f6f6;
-    --kb-surface-3: #f0f0f0;
-    --kb-border: #d0d0d0;
+    --kb-surface-3: #eeeeee;
+    --kb-surface-4: #dddddd;
+    --kb-surface-hover: #eeeeee;
+    --kb-surface-hover-soft: #eeeeee;
+    --kb-surface-hover-strong: #dddddd;
+    --kb-header-bg-neutral: #f0f0f0;
+    --kb-gray-bg: #808080;
+    --kb-black-bg: #000000;
+    --kb-status-bg: #d3d3d3;
+
+    /* Borders -------------------------------------------------------------- */
+    --kb-border: #cccccc;
+    --kb-border-soft: #dddddd;
     --kb-border-strong: #c0c0c0;
+    --kb-border-gray: #808080;
+    --kb-border-contrast: #000000;
     --kb-divider: #e0e0e0;
+    --kb-divider-soft: #efefef;
+    --kb-bevel-light: #ffffff;
+    --kb-bevel-light-soft: #e0e0e0;
+    --kb-bevel-dark: #808080;
+    --kb-bevel-dark-soft: #a0a0a0;
+
+    /* Text ----------------------------------------------------------------- */
     --kb-text: #000000;
+    --kb-text-strong: #444444;
     --kb-text-muted: #666666;
-    --kb-link: #0077cc;
-    --kb-selected: #4682b4;
-    --kb-danger: #ff0000;
+    --kb-text-faint: #999999;
+    --kb-text-subtle: #c0c0c0;
+    --kb-text-gray: #808080;
+    --kb-text-inverse: #ffffff;
+    --kb-text-highlight: #ffffe0;
+    --kb-text-shadow: #cccccc;
+    --kb-text-shadow-strong: rgba(0, 0, 0, 1);
+    --kb-text-shadow-warm: #a52a2a;
+    --kb-link: #0645ad;
+    --kb-link-hover-bg: #f0f8ff;
+    --kb-login-text: #000080;
+    --kb-chat-sent-text: #000080;
+    --kb-name: #8b4513;
+    --kb-tip-text: #8b4513;
+    --kb-attr-title-text: #20b2aa;
+    --kb-sort-text: #2f4f4f;
+
+    /* Header, menu and navigation ------------------------------------------ */
+    --kb-header-bg: #3cb371;
+    --kb-header-bg-strong: #2e8b57;
+    --kb-header-bg-hover: #2e8b57;
+    --kb-header-text: #ffffff;
+    --kb-nav-strip: #789070;
+    --kb-nav-strip-soft: #b0c4de;
+    --kb-skin-accent: #c7c8a4;
+    --kb-skin-border: #778899;
+    --kb-menu-bg: #808080;
+    --kb-menu-text: #ffffff;
+    --kb-menu-tab-text: #f0e68c;
+    --kb-menu-tab-hover-bg: #000000;
+    --kb-menu-selected-bg: #444444;
+    --kb-menu-highlight-bg: #ffa500;
+    --kb-menu-highlight-text: #000000;
+    --kb-menu-hover-bg: #a52a2a;
+    --kb-menu-hover-text: #ffffff;
+    --kb-submenu-bg: #d3d3d3;
+    --kb-submenu-text: #000000;
+
+    /* Selection and controls ----------------------------------------------- */
+    --kb-selected-bg: #4682b4;
+    --kb-selected-text: #ffffff;
+    --kb-selected-soft-bg: #b0c4de;
+    --kb-control-selected-bg: #808080;
+    --kb-tab-bg: #ffffff;
+    --kb-tab-text: #800000;
+    --kb-tab-active-bg: #b0c4de;
     --kb-form-bg: #ffffff;
-    --kb-form-line: #d0d0d0;
-    --kb-photo-bg: #f0f0f0;
+    --kb-form-line: #eeeeee;
+    --kb-sort-selected-bg: #f0f8ff;
+    --kb-marker-bg: #ffffbb;
+    --kb-marker-border: #ffa500;
+    --kb-accent-border: #ffc0cb;
+    --kb-accent-check: #4c8bf5;
+
+    /* Status --------------------------------------------------------------- */
+    --kb-success: #008000;
+    --kb-success-bg: #90ee90;
+    --kb-danger: #ff0000;
+    --kb-danger-strong: #800000;
+    --kb-danger-text: #800000;
+    --kb-danger-bg: #ffc0cb;
+    --kb-danger-border: #dda0dd;
     --kb-warning-bg: #fff8e1;
     --kb-warning-text: #665500;
+    --kb-warning-strong-text: #a52a2a;
+    --kb-warning-strong-border: #a52a2a;
+    --kb-warning-border: #f0e68c;
+    --kb-warning-strong-boder-2: #d2691e;
+    --kb-highlight-bg: #ffffe0;
+    --kb-note-bg: #ffffd0;
+    --kb-note-border: #c0c0c0;
+    --kb-hint-bg: #ffffdd;
+    --kb-callout-bg: #ffffaa;
+    --kb-callout-text: #6666ff;
+    --kb-count-bg: #3cb371;
+    --kb-count-hover-bg: #3cb371;
+    --kb-count-text: #ffffff;
+    --kb-accept-bg: #bbe462;
+    --kb-accept-text: #16202a;
+    --kb-pending-bg: #ffa500;
+    --kb-unread-bg: #9acd32;
+    --kb-unread-text: #000000;
+    --kb-inactive-bg: #9acd32;
+    --kb-total-bg: #9acd32;
+    --kb-hover-accent-bg: #9acd32;
+
+    /* Cards, photos, chat and overlays ------------------------------------- */
+    /* Backdrop for profile photos. Most are transparent silhouettes, so the
+       backdrop plus a soft light rim keeps them separated from the card. */
+    --kb-photo-frame-bg: #ffffff;
+    --kb-photo-frame-bg-hover: #f0f0f0;
+    --kb-visitor-bg: #dddddd;
+    --kb-chat-bubble-bg: #e6e6fa;
+    --kb-chat-sent-bg: #f0f8ff;
+    --kb-chat-editor-bg: #f0f8ff;
+    --kb-chat-body-bg: #f8f8ff;
+    --kb-chat-border: #87ceeb;
+    --kb-chat-received-border: #dda0dd;
+    --kb-popup-bg: #f0fff0;
+    --kb-popup-title-bg: #2f4f4f;
+    --kb-popup-title-accent-bg: #0645ad;
+    --kb-tip-bg: #f0f8ff;
+    --kb-attr-hover-bg: #e3e4d2;
+    --kb-attr-hover-text: #11151a;
+    --kb-filter-bg: #add8e6;
+    --kb-filter-hover-bg: #c0c0c0;
+    --kb-hover-soft-bg: #e6e6fa;
+    --kb-row-hover-bg: #e6e6fa;
+    --kb-list-bookmark-border: #ffa500;
+    --kb-list-wishlist-border: #ffc0cb;
+    --kb-list-watch-border: #aaaaee;
+    --kb-list-blocked-border: #808080;
+    --kb-scroll-btn-border: #ff0000;
+
+    /* Effects -------------------------------------------------------------- */
+    --kb-shadow-faint: rgba(0, 0, 0, 0.1);
+    --kb-shadow-soft: rgba(0, 0, 0, 0.2);
+    --kb-shadow: rgba(0, 0, 0, 0.5);
+    --kb-shadow-strong: rgba(0, 0, 0, 0.8);
+    --kb-overlay: rgba(0, 0, 0, 0.3);
+    --kb-blocker-bg: #ffffff;
+    --kb-toggle-hover-bg: rgba(0, 0, 0, 0.1);
+    --kb-focus-glow: rgba(124, 183, 255, 0.25);
+    --kb-accent-glow: rgba(100, 0, 0, 1);
 }
 
 html[data-theme="dark"] {
     color-scheme: dark;
 
+    /* Surfaces ------------------------------------------------------------- */
     --kb-page: #11151a;
     --kb-surface: #1b2229;
     --kb-surface-2: #232b33;
     --kb-surface-3: #2a333d;
+    --kb-surface-4: #36424f;
+    --kb-surface-hover: #313c49;
+    --kb-surface-hover-soft: #202831;
+    --kb-surface-hover-strong: #35404d;
+    --kb-header-bg-neutral: #151a20;
+    --kb-gray-bg: #2a333d;
+    --kb-black-bg: #000000;
+    --kb-status-bg: #2a333d;
+
+    /* Borders -------------------------------------------------------------- */
     --kb-border: #3a4551;
+    --kb-border-soft: #3a4551;
     --kb-border-strong: #4b5765;
+    --kb-border-gray: #4b5765;
+    --kb-border-contrast: #4b5765;
     --kb-divider: #5f6c7b;
+    --kb-divider-soft: #3a4551;
+    --kb-bevel-light: #4b5765;
+    --kb-bevel-light-soft: #4b5765;
+    --kb-bevel-dark: #10151a;
+    --kb-bevel-dark-soft: #10151a;
+
+    /* Text ----------------------------------------------------------------- */
     --kb-text: #e6e9ee;
+    --kb-text-strong: #e6e9ee;
     --kb-text-muted: #a9b3bf;
+    --kb-text-faint: #8592a0;
+    --kb-text-subtle: #8592a0;
+    --kb-text-gray: #a9b3bf;
+    --kb-text-inverse: #ffffff;
+    --kb-text-highlight: #f0e7b0;
+    --kb-text-shadow: transparent;
+    --kb-text-shadow-strong: transparent;
+    --kb-text-shadow-warm: #000000;
     --kb-link: #7cb7ff;
-    --kb-selected: #2f5f8f;
-    --kb-danger: #ff9a9a;
+    --kb-link-hover-bg: transparent;
+    --kb-login-text: #d8e8ff;
+    --kb-chat-sent-text: #d8e8ff;
+    --kb-name: #e6b783;
+    --kb-tip-text: #e8c9a0;
+    --kb-attr-title-text: #7fd4c9;
+    --kb-sort-text: #a9b3bf;
+
+    /* Header, menu and navigation ------------------------------------------ */
+    --kb-header-bg: #1b513a;
+    --kb-header-bg-strong: #164632;
+    --kb-header-bg-hover: #236349;
+    --kb-header-text: #ffffff;
+    --kb-nav-strip: #1b4433;
+    --kb-nav-strip-soft: #1b4433;
+    --kb-skin-accent: #1b4433;
+    --kb-skin-border: #4b5765;
+    --kb-menu-bg: #1a2027;
+    --kb-menu-text: #ffffff;
+    --kb-menu-tab-text: #f0e68c;
+    --kb-menu-tab-hover-bg: #20272f;
+    --kb-menu-selected-bg: #2a333d;
+    --kb-menu-highlight-bg: #b26a13;
+    --kb-menu-highlight-text: #000000;
+    --kb-menu-hover-bg: #39485a;
+    --kb-menu-hover-text: #ffffff;
+    --kb-submenu-bg: #232b33;
+    --kb-submenu-text: #e6e9ee;
+
+    /* Selection and controls ----------------------------------------------- */
+    --kb-selected-bg: #2f5f8f;
+    --kb-selected-text: #ffffff;
+    --kb-selected-soft-bg: #2f5f8f;
+    --kb-control-selected-bg: #2f5f8f;
+    --kb-tab-bg: #2a333d;
+    --kb-tab-text: #e6e9ee;
+    --kb-tab-active-bg: #2a333d;
     --kb-form-bg: #36424f;
     --kb-form-line: #46545f;
-    /* Backdrop for profile photos. Most are transparent silhouettes, so the
-       backdrop plus a soft light rim keeps them separated from the card. */
-    --kb-photo-bg: #262c33;
+    --kb-sort-selected-bg: #24425f;
+    --kb-marker-bg: #3a3520;
+    --kb-marker-border: #7cb7ff;
+    --kb-accent-border: #b0607a;
+    --kb-accent-check: #4c8bf5;
+
+    /* Status --------------------------------------------------------------- */
+    --kb-success: #7ee2a8;
+    --kb-success-bg: #1d5c3c;
+    --kb-danger: #ff9a9a;
+    --kb-danger-strong: #ff9a9a;
+    --kb-danger-text: #ffd9df;
+    --kb-danger-bg: #4a2028;
+    --kb-danger-border: #7a3b45;
     --kb-warning-bg: #3a3520;
     --kb-warning-text: #e4d9a4;
+    --kb-warning-strong-text: #e4d9a4;
+    --kb-warning-strong-border: #b97a2a;
+    --kb-warning-border: #6b5d23;
+    --kb-warning-strong-boder-2: #b97a2a;
+    --kb-highlight-bg: #3a3520;
+    --kb-note-bg: #3a3520;
+    --kb-note-border: #554a29;
+    --kb-hint-bg: #2a2820;
+    --kb-callout-bg: #3a3520;
+    --kb-callout-text: #cfd8ff;
+    --kb-count-bg: #1d5c3c;
+    --kb-count-hover-bg: #24704a;
+    --kb-count-text: #e6e9ee;
+    --kb-accept-bg: #bbe462;
+    --kb-accept-text: #16202a;
+    --kb-pending-bg: #ffa500;
+    --kb-unread-bg: #9acd32;
+    --kb-unread-text: #000000;
+    --kb-inactive-bg: #3a3520;
+    --kb-total-bg: #2f5f8f;
+    --kb-hover-accent-bg: #2a333d;
+
+    /* Cards, photos, chat and overlays ------------------------------------- */
+    --kb-photo-frame-bg: #eeeeee;
+    --kb-photo-frame-bg-hover: #dddddd;
+    --kb-visitor-bg: #2f3a46;
+    --kb-chat-bubble-bg: #2d3340;
+    --kb-chat-sent-bg: #23384d;
+    --kb-chat-editor-bg: #1b2735;
+    --kb-chat-body-bg: #1b2229;
+    --kb-chat-border: #3a4551;
+    --kb-chat-received-border: #7a3b45;
+    --kb-popup-bg: #1b2229;
+    --kb-popup-title-bg: #22303a;
+    --kb-popup-title-accent-bg: #22303a;
+    --kb-tip-bg: #232b33;
+    --kb-attr-hover-bg: #293a4a;
+    --kb-attr-hover-text: #e6e9ee;
+    --kb-filter-bg: #2a333d;
+    --kb-filter-hover-bg: #4b5765;
+    --kb-hover-soft-bg: #2a333d;
+    --kb-row-hover-bg: #293a4a;
+    --kb-list-bookmark-border: #b26a13;
+    --kb-list-wishlist-border: #7a3b45;
+    --kb-list-watch-border: #4b5765;
+    --kb-list-blocked-border: #4b5765;
+    --kb-scroll-btn-border: #8a4a4a;
+
+    /* Effects -------------------------------------------------------------- */
+    --kb-shadow-faint: rgba(0, 0, 0, 0.35);
+    --kb-shadow-soft: rgba(0, 0, 0, 0.2);
+    --kb-shadow: rgba(0, 0, 0, 0.5);
+    --kb-shadow-strong: rgba(0, 0, 0, 0.8);
+    --kb-overlay: rgba(0, 0, 0, 0.3);
+    --kb-blocker-bg: #11151a;
+    --kb-toggle-hover-bg: rgba(255, 255, 255, 0.14);
+    --kb-focus-glow: rgba(124, 183, 255, 0.25);
+    --kb-accent-glow: rgba(100, 0, 0, 1);
 
     background-color: var(--kb-page);
 
@@ -65,8 +346,8 @@ html[data-theme="dark"] {
     }
 
     ::selection {
-        background-color: #2f5f8f;
-        color: #ffffff;
+        background-color: var(--kb-selected-bg);
+        color: var(--kb-text-inverse);
     }
 
     :focus-visible {
@@ -81,22 +362,22 @@ html[data-theme="dark"] {
         color: var(--kb-link);
     }
 
-    /* Selected items keep the legacy SteelBlue chip, so their label has to be white
+    /* Selected items keep the legacy var(--kb-selected-bg) chip, so their label has to be var(--kb-surface)
        rather than the link colour, which is too close to the chip. This covers the
        side selectors (`.href.sel`) and the v2 header stat links (`#StatsMenu a.sel`).
-       `.menu .sel` is excluded: it has its own orange chip with black text. */
+       `.menu .sel` is excluded: it has its own var(--kb-marker-border) chip with var(--kb-black-bg) text. */
     .href.sel,
     #StatsMenu a.sel,
     .href.sel:hover,
     #StatsMenu a.sel:hover {
-        color: #ffffff;
+        color: var(--kb-text-inverse);
     }
 
     .href.sel:hover {
         background-color: var(--kb-surface-3);
     }
 
-    /* The legacy hover wash is AliceBlue, which reads as a light flash on dark, so
+    /* The legacy hover wash is var(--kb-link-hover-bg), which reads as a light flash on dark, so
        hovering only changes the text: links go to the full text colour, which also
        lifts the muted `.attr` values on member cards. */
     .href:hover {
@@ -107,19 +388,19 @@ html[data-theme="dark"] {
     /* Header and menus ------------------------------------------------------- */
 
     #Header {
-        background-color: #1b513a;
+        background-color: var(--kb-header-bg);
     }
 
     #HeaderGrid > *:nth-child(4),
     #PageActions {
-        background-color: #164632;
+        background-color: var(--kb-header-bg-strong);
         color: var(--kb-text);
     }
 
     #PageActions .href,
     #MemberBox *,
     #MemberBox a {
-        color: #ffffff;
+        color: var(--kb-text-inverse);
     }
 
     #HeaderLogo {
@@ -127,7 +408,7 @@ html[data-theme="dark"] {
     }
 
     #HeaderLogo:hover {
-        background-color: #236349;
+        background-color: var(--kb-header-bg-hover);
     }
 
     #Header .pic50frame img {
@@ -135,13 +416,13 @@ html[data-theme="dark"] {
     }
 
     #Menu {
-        background-color: #1a2027;
+        background-color: var(--kb-menu-bg);
         color: var(--kb-text);
     }
 
     .menu > li > a,
     .menu a {
-        color: #ffffff;
+        color: var(--kb-text-inverse);
     }
 
     .menu .ctab.seltab {
@@ -149,16 +430,16 @@ html[data-theme="dark"] {
     }
 
     .menu .ctab:hover {
-        background-color: #20272f !important;
+        background-color: var(--kb-surface-hover-soft) !important;
     }
 
     .menu .sel {
-        background-color: #b26a13;
-        color: #000000;
+        background-color: var(--kb-menu-highlight-bg);
+        color: var(--kb-menu-highlight-text);
     }
 
     .menu .sel a {
-        color: #000000;
+        color: var(--kb-menu-highlight-text);
     }
 
     .submenu {
@@ -174,8 +455,8 @@ html[data-theme="dark"] {
     .submenu > li:hover,
     .submenu > li:hover a,
     .menu > li:hover {
-        background-color: #39485a;
-        color: #ffffff;
+        background-color: var(--kb-menu-hover-bg);
+        color: var(--kb-text-inverse);
     }
 
     #MemberBox .popup_list {
@@ -183,17 +464,17 @@ html[data-theme="dark"] {
         color: var(--kb-text);
     }
 
-    /* The legacy stylesheet paints the nav strip #789070 with !important, so the
+    /* The legacy stylesheet paints the nav strip var(--kb-nav-strip) with !important, so the
        dark override needs !important too. */
     .submenu_line,
     .header_line {
-        background-color: #1b4433 !important;
+        background-color: var(--kb-nav-strip) !important;
     }
 
     /* v2 header/menu: #HeaderLayout only exists in the v2 shell, so :has keeps
        these rules off the v3 header. */
     #Header:has(#HeaderLayout) {
-        background-color: #151a20;
+        background-color: var(--kb-header-bg-neutral);
     }
 
     /* The header table and its cells are opaque and paint over the nav strip;
@@ -213,17 +494,17 @@ html[data-theme="dark"] {
     }
 
     #HeaderLayout #MainLogo:hover {
-        background-color: #202831;
+        background-color: var(--kb-surface-hover-soft);
     }
 
-    /* Transparent rather than omitted: v2's light sheets hardcode a white
+    /* Transparent rather than omitted: v2's light sheets hardcode a var(--kb-surface)
        #Contents background, so the override must still outrank them. */
     #Contents {
         background-color: transparent;
         border-bottom-color: var(--kb-border);
     }
 
-    /* v2 only: in v3 #GuestMenu is the main menu <ul> and its links are white. */
+    /* v2 only: in v3 #GuestMenu is the main menu <ul> and its links are var(--kb-surface). */
     #SubMenu a,
     div#GuestMenu a {
         color: var(--kb-link);
@@ -243,7 +524,7 @@ html[data-theme="dark"] {
         background-color: var(--kb-surface-3);
     }
 
-    /* The legacy `.seltab` rule in base.css paints the selected tab panel white.
+    /* The legacy `.seltab` rule in base.css paints the selected tab panel var(--kb-surface).
        Clear it so the panel sits on the tabs_root surface instead of showing as a
        bright block inside the card. */
     .tab_panel.seltab {
@@ -263,7 +544,7 @@ html[data-theme="dark"] {
 
     #LoginBtn,
     #LogoutBtn {
-        color: #d8e8ff !important;
+        color: var(--kb-login-text) !important;
     }
 
     /* Forms and buttons ------------------------------------------------------ */
@@ -278,17 +559,17 @@ html[data-theme="dark"] {
 
     input::placeholder,
     textarea::placeholder {
-        color: #8592a0;
+        color: var(--kb-text-faint);
     }
 
-    /* The inline memo/answer editor wraps its textarea in a #F6F6F6 frame. */
+    /* The inline memo/answer editor wraps its textarea in a var(--kb-surface-2) frame. */
     .i-text-frame {
         background-color: var(--kb-surface-2);
     }
 
     input[type="checkbox"],
     input[type="radio"] {
-        accent-color: #4c8bf5;
+        accent-color: var(--kb-accent-check);
     }
 
     .button,
@@ -298,7 +579,7 @@ html[data-theme="dark"] {
     input[type="reset"] {
         background-color: var(--kb-surface-3);
         color: var(--kb-text);
-        border-color: var(--kb-border-strong) #10151a #10151a var(--kb-border-strong);
+        border-color: var(--kb-border-strong) var(--kb-bevel-dark) var(--kb-bevel-dark) var(--kb-border-strong);
     }
 
     .button:hover,
@@ -306,13 +587,13 @@ html[data-theme="dark"] {
     input[type="button"]:hover,
     input[type="submit"]:hover,
     input[type="reset"]:hover {
-        background-color: #35404d;
-        border-color: #10151a var(--kb-border-strong) var(--kb-border-strong) #10151a;
+        background-color: var(--kb-surface-hover-strong);
+        border-color: var(--kb-bevel-dark) var(--kb-border-strong) var(--kb-border-strong) var(--kb-bevel-dark);
     }
 
     .button.sel {
-        background-color: var(--kb-selected);
-        color: #ffffff;
+        background-color: var(--kb-selected-bg);
+        color: var(--kb-text-inverse);
     }
 
     .kobool_btn:hover {
@@ -364,7 +645,7 @@ html[data-theme="dark"] {
 
     .welcome_table .white_bg {
         background-color: var(--kb-warning-bg);
-        color: #cfd8ff;
+        color: var(--kb-callout-text);
     }
 
     #HomeText h2 {
@@ -378,7 +659,7 @@ html[data-theme="dark"] {
         background-color: var(--kb-surface-2);
     }
 
-    /* Legacy separators and frames are silver or white, which read as bright lines
+    /* Legacy separators and frames are var(--kb-border-strong) or var(--kb-surface), which read as bright lines
        on the dark surfaces. */
     .left_side,
     .snapshot_frame,
@@ -400,25 +681,25 @@ html[data-theme="dark"] {
 
     .dv_row .dv_cell:hover,
     .dv_row:hover .dv_cell {
-        background-color: #293a4a;
+        background-color: var(--kb-row-hover-bg);
     }
 
     .sel .dv_cell,
     .dv_row.sel:hover .dv_cell {
-        background-color: var(--kb-selected);
-        color: #ffffff;
+        background-color: var(--kb-selected-bg);
+        color: var(--kb-text-inverse);
     }
 
     /* Contact-point usage chips (#pg=cp_report). The legacy sheet gives every
-       `.puser` a white dotted border and paints the used side LightYellow (v2) or
-       lightgreen (v3), which reads as a bright block on the dark table. */
+       `.puser` a var(--kb-surface) dotted border and paints the used side var(--kb-highlight-bg) (v2) or
+       var(--kb-success-bg) (v3), which reads as a bright block on the dark table. */
     .puser {
         border-color: var(--kb-border);
     }
 
     .pusage_self .puser.self,
     .pusage_mate .puser.mate {
-        border-color: #d2691e;
+        border-color: var(--kb-warning-strong-boder-2);
         background-color: var(--kb-warning-bg);
         color: var(--kb-warning-text);
     }
@@ -428,17 +709,17 @@ html[data-theme="dark"] {
     #MemPicColumn {
         background-color: var(--kb-surface);
         border-color: var(--kb-border);
-        box-shadow: 0 1px 5px rgba(0, 0, 0, 0.5);
+        box-shadow: 0 1px 5px var(--kb-shadow);
     }
 
     /* Search results sit on the page surface, so lift each item onto an
        elevated card and rely on the border for the edge. */
     .result_item {
         background-color: var(--kb-surface-2);
-        box-shadow: inset 0 0 0 1px var(--kb-border), 0 1px 6px rgba(0, 0, 0, 0.55);
+        box-shadow: inset 0 0 0 1px var(--kb-border), 0 1px 6px var(--kb-shadow);
     }
 
-    /* v3 qa pages paint the whole answer list white (#QAnswers in v3/css/kui.css).
+    /* v3 qa pages paint the whole answer list var(--kb-surface) (#QAnswers in v3/css/kui.css).
        The list is a plain container, so it drops back to the page surface and its
        card shadow goes with it. */
     #QAnswers {
@@ -447,7 +728,7 @@ html[data-theme="dark"] {
     }
 
     /* The question browser (#QList in the v3 qa popup) fills its rows from a
-       #F6F6F6 / white zebra in v3/css/kui.css. Dark mode keeps the container on
+       var(--kb-surface-2) / var(--kb-surface) zebra in v3/css/kui.css. Dark mode keeps the container on
        the surface and only tints every other row, so the list reads as dark. */
     #QList {
         background-color: var(--kb-surface);
@@ -472,8 +753,8 @@ html[data-theme="dark"] {
         border-color: var(--kb-border);
     }
 
-    /* Drill / summary panel (v2 #pg=drill): the group rows are painted #F0F0F0
-       with a #F5F5F5 hover, and the count cells use a light 3D border. */
+    /* Drill / summary panel (v2 #pg=drill): the group rows are painted var(--kb-surface-3)
+       with a var(--kb-surface-2) hover, and the count cells use a light 3D border. */
     .sum_group_name {
         background-color: var(--kb-surface-2);
         /* Light plus glyph; the original is a dark raster sprite. */
@@ -481,36 +762,36 @@ html[data-theme="dark"] {
         color: var(--kb-text);
     }
 
-    /* v3 paints the summary card container white; it shows through between the
+    /* v3 paints the summary card container var(--kb-surface); it shows through between the
        group chips and the count cells. */
     .summary_list {
         background-color: var(--kb-surface-2);
     }
 
     .sum_group_name:hover {
-        background-color: #313c49;
+        background-color: var(--kb-surface-hover);
     }
 
-    /* Keep the green accent while hovering; the shared hover above would otherwise
+    /* Keep the var(--kb-success) accent while hovering; the shared hover above would otherwise
        flip the count cell to the neutral chip colour. */
     .sum_mem_count:hover {
-        background-color: #24704a;
+        background-color: var(--kb-count-hover-bg);
     }
 
-    /* v3 fills the drill count cells with mediumseagreen (v3/css/kui.css), which
-       is bright against the dark surfaces. Keep the green accent but drop it to a
+    /* v3 fills the drill count cells with var(--kb-count-bg) (v3/css/kui.css), which
+       is bright against the dark surfaces. Keep the var(--kb-success) accent but drop it to a
        deeper shade. */
     .sum_mem_count {
-        background-color: #1d5c3c;
+        background-color: var(--kb-count-bg);
         border-color: var(--kb-border) var(--kb-border-strong) var(--kb-border-strong) var(--kb-border);
         color: var(--kb-text);
     }
 
-    /* Visit box under the photo in list rows: the two halves are #DDDDDD
-       (visitor) and #F0F0F0 (my visits) in the legacy sheet. v3 paints the whole
-       box #E5E5E5 and its heart badge #F0F0F0. */
+    /* Visit box under the photo in list rows: the two halves are var(--kb-surface-4)
+       (visitor) and var(--kb-surface-3) (my visits) in the legacy sheet. v3 paints the whole
+       box var(--kb-surface-3) and its heart badge var(--kb-surface-3). */
     .visitor {
-        background-color: #2f3a46;
+        background-color: var(--kb-visitor-bg);
     }
 
     .myvisits {
@@ -525,11 +806,11 @@ html[data-theme="dark"] {
         background-color: var(--kb-surface-3);
     }
 
-    /* State badges keep their semantic colours (orange / green), so their white
+    /* State badges keep their semantic colours (var(--kb-marker-border) / var(--kb-success)), so their var(--kb-surface)
        label needs to go dark to stay readable on them. */
     .visit_heart.hidden_acceptance,
     .visit_heart.visible_acceptance {
-        color: #16202a;
+        color: var(--kb-accept-text);
         text-shadow: none;
     }
 
@@ -542,7 +823,7 @@ html[data-theme="dark"] {
 
     .mem_thumb:hover,
     .featured_mem:hover {
-        background-color: #293a4a;
+        background-color: var(--kb-row-hover-bg);
         border-color: var(--kb-border-strong);
     }
 
@@ -561,7 +842,7 @@ html[data-theme="dark"] {
     }
 
     /* The tab strip ends with an empty filler <li> that has no `.ctab` class, so it
-       keeps the legacy `white white silver white` border and its silver bottom edge
+       keeps the legacy `var(--kb-surface) var(--kb-surface) var(--kb-border-strong) var(--kb-surface)` border and its var(--kb-border-strong) bottom edge
        draws a bright rule across the whole strip. */
     #MTabs li:not(.ctab) {
         border-color: transparent;
@@ -597,7 +878,7 @@ html[data-theme="dark"] {
 
     #DeclineForm {
         background-color: var(--kb-surface-2);
-        box-shadow: 0 0 7px rgba(0, 0, 0, 0.8);
+        box-shadow: 0 0 7px var(--kb-shadow-strong);
     }
 
     .decline_pg #decline_fixed_msgs {
@@ -627,16 +908,16 @@ html[data-theme="dark"] {
     }
 
     .chat_bubble {
-        background-color: #2d3340;
-        box-shadow: 0 0 5px rgba(0, 0, 0, 0.6);
+        background-color: var(--kb-chat-bubble-bg);
+        box-shadow: 0 0 5px var(--kb-shadow);
     }
 
     .sent .chat_bubble {
-        background-color: #23384d;
+        background-color: var(--kb-chat-sent-bg);
     }
 
     .chat_editor {
-        background-color: #1b2735;
+        background-color: var(--kb-chat-editor-bg);
     }
 
     #StatusView {
@@ -645,7 +926,7 @@ html[data-theme="dark"] {
 
     .unreadable_msg {
         background-color: var(--kb-warning-bg);
-        border-color: #b97a2a;
+        border-color: var(--kb-warning-strong-boder-2);
     }
 
     /* Popups, tips and overlays ---------------------------------------------- */
@@ -653,11 +934,11 @@ html[data-theme="dark"] {
     .popup_frame {
         background-color: var(--kb-surface);
         border-color: var(--kb-border);
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+        box-shadow: 0 0 10px var(--kb-shadow-strong);
     }
 
     .popup_title {
-        background-color: #22303a;
+        background-color: var(--kb-popup-title-bg);
     }
 
     .popupClient {
@@ -676,7 +957,7 @@ html[data-theme="dark"] {
     .tipContents {
         background-color: var(--kb-surface-2);
         border-color: var(--kb-border-strong);
-        color: #e8c9a0;
+        color: var(--kb-tip-text);
     }
 
     .cntx_menu {
@@ -704,7 +985,7 @@ html[data-theme="dark"] {
     .xoverflow .left_scroll_btn,
     .xoverflow .right_scroll_btn {
         background-color: var(--kb-surface);
-        border-color: #8a4a4a;
+        border-color: var(--kb-scroll-btn-border);
     }
 
     /* Forms and call-to-actions ---------------------------------------------- */
@@ -712,7 +993,7 @@ html[data-theme="dark"] {
     .form_frame {
         background-color: var(--kb-surface-3);
         border: 1px solid var(--kb-border);
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.7);
+        box-shadow: 0 2px 8px var(--kb-shadow-strong);
     }
 
     .form_frame table {
@@ -764,23 +1045,23 @@ html[data-theme="dark"] {
     .big_button {
         background-color: var(--kb-surface-3);
         border: 1px solid var(--kb-border-strong);
-        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.7);
+        box-shadow: 0 1px 4px var(--kb-shadow-strong);
     }
 
     .big_button:hover {
-        background-color: #35404d;
+        background-color: var(--kb-surface-hover-strong);
         border-color: var(--kb-link);
     }
 
     .big_button:active {
         background-color: var(--kb-surface-2);
-        box-shadow: 0 0 2px rgba(0, 0, 0, 0.8);
+        box-shadow: 0 0 2px var(--kb-shadow-strong);
     }
 
     .note {
         background: var(--kb-warning-bg);
         color: var(--kb-warning-text);
-        border-top-color: #554a29;
+        border-top-color: var(--kb-note-border);
     }
 
     .hilight {
@@ -789,7 +1070,7 @@ html[data-theme="dark"] {
 
     #LoginNameHelp {
         background: var(--kb-warning-bg) !important;
-        border-bottom-color: #6b5d23 !important;
+        border-bottom-color: var(--kb-warning-border) !important;
     }
 
     .hmouse:hover,
@@ -807,7 +1088,7 @@ html[data-theme="dark"] {
     }
 
     .sort_bar .btn.sel {
-        background-color: #24425f !important;
+        background-color: var(--kb-sort-selected-bg) !important;
         border-color: var(--kb-link);
     }
 
@@ -818,23 +1099,23 @@ html[data-theme="dark"] {
     }
 }
 
-/* Profile photos sit on white in light mode; the shells paint the frames
-   #EEEEEE / #F0F0F0 there, which reads as a coloured edge around the
+/* Profile photos sit on var(--kb-surface) in light mode; the shells paint the frames
+   var(--kb-surface-3) / var(--kb-surface-3) there, which reads as a coloured edge around the
    thumbnail. */
 .gallery_pic,
 .pic100frame {
-    background-color: #ffffff;
+    background-color: var(--kb-photo-frame-bg);
 }
 
 html[data-theme="dark"] {
-    /* Dark mode uses a mid grey instead of pure white so the photo does not glare
+    /* Dark mode uses a mid var(--kb-text-gray) instead of pure var(--kb-surface) so the photo does not glare
        against the dark surfaces. */
     .pic100frame,
     .pic50frame,
     .pic16frame,
     .gallery_pic,
     img.no_select {
-        background-color: #eee;
+        background-color: var(--kb-photo-frame-bg);
         border-color: var(--kb-border);
     }
 
@@ -858,10 +1139,10 @@ html[data-theme="dark"] {
     }
 
     .sort_btn.sel {
-        background-color: #24425f;
-        color: #ffffff !important;
+        background-color: var(--kb-sort-selected-bg);
+        color: var(--kb-text-inverse) !important;
         border-color: var(--kb-link);
-        box-shadow: 0 0 4px rgba(0, 0, 0, 0.6);
+        box-shadow: 0 0 4px var(--kb-shadow);
     }
 
     /* The v2 shell renders every sort control as a bordered chip, so give the
@@ -873,7 +1154,7 @@ html[data-theme="dark"] {
     }
 
     body:has(#HeaderLayout) .sort_btn:hover {
-        background-color: #35404d;
+        background-color: var(--kb-surface-hover-strong);
         border-color: var(--kb-border-strong);
         color: var(--kb-text);
     }
@@ -895,40 +1176,40 @@ html[data-theme="dark"] {
     .btn:hover,
     .pg_nav_btn:hover,
     .filters_btn:hover {
-        background-color: #35404d;
+        background-color: var(--kb-surface-hover-strong);
         border-color: var(--kb-border-strong);
-        box-shadow: inset 0 0 0 1px var(--kb-border-strong), 0 0 6px rgba(124, 183, 255, 0.25);
+        box-shadow: inset 0 0 0 1px var(--kb-border-strong), 0 0 6px var(--kb-focus-glow);
     }
 
-    /* The legacy active-page marker is an orange border on a pale yellow fill; keep
+    /* The legacy active-page marker is an var(--kb-marker-border) border on a pale var(--kb-text-highlight) fill; keep
        the marker but tint it with the link colour so it reads on the dark surface. */
     .btn_active {
         border-color: var(--kb-link);
         color: var(--kb-link);
     }
 
-    /* Drill filter tiles (v2 #pg=drill) hover to #F0F0F0 in the legacy sheet. */
+    /* Drill filter tiles (v2 #pg=drill) hover to var(--kb-surface-3) in the legacy sheet. */
     .drill_btn {
         border-color: var(--kb-border-strong);
     }
 
     .drill_btn:hover {
         /* Lighter than the surface-3 base so hovering is visible. */
-        background-color: #313c49;
+        background-color: var(--kb-surface-hover);
         border-color: var(--kb-link);
     }
 
     .total {
-        background-color: var(--kb-selected);
-        color: #ffffff;
-        box-shadow: 0 1px 6px rgba(0, 0, 0, 0.7);
+        background-color: var(--kb-selected-bg);
+        color: var(--kb-text-inverse);
+        box-shadow: 0 1px 6px var(--kb-shadow-strong);
     }
 
     /* Legacy toolbar glyphs are dark raster images painted as the element's
-       background. filter:invert() would flip the whole button (beige body, dark
+       background. filter:invert() would flip the whole button (var(--kb-warning-border) body, dark
        text on the "Add Filter" chip), so each glyph gets a light SVG instead:
-       .drill_icon and .plus_icon share /images/search_plus.gif, a plain grey
-       cross; .minus_icon is /images/search_minus.gif, a grey dash. Coloured
+       .drill_icon and .plus_icon share /images/search_plus.gif, a plain var(--kb-text-gray)
+       cross; .minus_icon is /images/search_minus.gif, a var(--kb-text-gray) dash. Coloured
        icons are left untouched. */
     .drill_icon,
     .plus_icon {
@@ -998,8 +1279,8 @@ html[data-theme="dark"] {
     }
 }
 
-/* The v3 header strip is dark green in both themes, so the glyph needs a
-   light stroke there (the shared rules above use a dark blue moon on light
+/* The v3 header strip is dark var(--kb-success) in both themes, so the glyph needs a
+   light stroke there (the shared rules above use a dark var(--kb-link) moon on light
    pages). Scoped with :has(#HeaderGrid) so it only hits the v3 header, not
    the v2 one (which also uses id="Header"). The glyph follows the active
    mode: a crescent in light mode, a sun in dark mode. The button sits in the
@@ -1032,20 +1313,20 @@ html[data-theme="dark"] {
 
 #HdrTopMenu [data-theme-toggle]:hover,
 #Header [data-theme-toggle]:hover {
-    background-color: rgba(0, 0, 0, 0.10);
+    background-color: var(--kb-toggle-hover-bg);
     text-decoration: none;
 }
 
 html[data-theme="dark"] {
     #HdrTopMenu [data-theme-toggle]:hover,
     #Header [data-theme-toggle]:hover {
-        background-color: rgba(255, 255, 255, 0.14);
+        background-color: var(--kb-toggle-hover-bg);
         text-decoration: none;
     }
 
-    /* Small inline glyph buttons are painted white in the legacy stylesheet so
-       they blend into the white page. On dark surfaces that reads as a broken
-       white box: keep them transparent and let the glyph sit on the card. */
+    /* Small inline glyph buttons are painted var(--kb-surface) in the legacy stylesheet so
+       they blend into the var(--kb-surface) page. On dark surfaces that reads as a broken
+       var(--kb-surface) box: keep them transparent and let the glyph sit on the card. */
     .flat_btn {
         background-color: transparent;
     }
@@ -1063,7 +1344,7 @@ html[data-theme="dark"] {
     .profile_menu,
     .popup_list {
         background-color: var(--kb-surface-3);
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+        box-shadow: 0 0 10px var(--kb-shadow-strong);
     }
 
     .hmenu > li:hover,
@@ -1073,7 +1354,7 @@ html[data-theme="dark"] {
     }
 
     .login_id {
-        color: #e6b783;
+        color: var(--kb-name);
     }
 
     .self_desc {
@@ -1089,31 +1370,31 @@ html[data-theme="dark"] {
     .und_review,
     .under_review {
         background-color: var(--kb-warning-bg) !important;
-        border-color: #6b5d23 !important;
+        border-color: var(--kb-warning-border) !important;
         color: var(--kb-warning-text);
     }
 
-    /* The photo-privacy explainer is a lightyellow callout in the legacy sheet. */
+    /* The photo-privacy explainer is a var(--kb-highlight-bg) callout in the legacy sheet. */
     #PrivacyHelp {
         background-color: var(--kb-warning-bg);
         color: var(--kb-warning-text);
-        box-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
+        box-shadow: 0 0 8px var(--kb-shadow);
     }
 
     .rejected_text,
     .rejected {
-        background-color: #4a2028 !important;
-        border-color: #7a3b45 !important;
-        color: #ffd9df;
+        background-color: var(--kb-danger-bg) !important;
+        border-color: var(--kb-danger-border) !important;
+        color: var(--kb-danger-text);
     }
 
     /* Saved searches, answer previews and generic cards share one legacy rule
-       that paints them white. */
+       that paints them var(--kb-surface). */
     .card,
     .svd_srch_item,
     .answer_simple_result {
         background-color: var(--kb-surface-2);
-        box-shadow: 0 0 5px rgba(0, 0, 0, 0.45);
+        box-shadow: 0 0 5px var(--kb-shadow);
     }
 
     .svd_srch_item {
@@ -1128,7 +1409,7 @@ html[data-theme="dark"] {
 
     #DLog,
     #MDebug {
-        background-color: #2a2820;
+        background-color: var(--kb-hint-bg);
     }
 
     #DebugFrame {
@@ -1145,7 +1426,7 @@ html[data-theme="dark"] {
         text-shadow: none;
     }
 
-    /* The legacy sheets emboss headings and titles with a #CCC drop shadow
+    /* The legacy sheets emboss headings and titles with a var(--kb-border) drop shadow
        (v2/css/kui.css, v3/css/kui.css), which reads as a light fringe on dark.
        Only the shadow is dropped here so link colours survive. */
     .login_id,
@@ -1170,12 +1451,12 @@ html[data-theme="dark"] {
 
     .item_date.new,
     .item_date .new {
-        color: #7ee2a8;
+        color: var(--kb-success);
     }
 
     .item_date.recent,
     .item_date .recent {
-        color: #d6d67a;
+        color: var(--kb-warning-text);
     }
 
     .item_date.old,
@@ -1192,15 +1473,15 @@ html[data-theme="dark"] {
 
     .footnote,
     .online {
-        color: #f0e7b0;
+        color: var(--kb-text-highlight);
     }
 
     .shadow {
-        box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.7);
+        box-shadow: 5px 5px 10px var(--kb-shadow-strong);
     }
 
     /* Filter box chips (search result filter tags): the legacy sheet paints them
-       lightblue with a silver hover and white delete icon, which vanish on dark
+       var(--kb-filter-bg) with a var(--kb-border-strong) hover and var(--kb-surface) delete icon, which vanish on dark
        surfaces. Override with dark-theme colours that keep the chips readable. */
     .filter_box {
         background-color: var(--kb-surface-3);
@@ -1217,7 +1498,7 @@ html[data-theme="dark"] {
     }
 
     .filter_box span.href:hover {
-        color: #ffffff;
+        color: var(--kb-text-inverse);
     }
 
     .filter_box .del_icon {

@@ -964,12 +964,18 @@ test('smoke: dist builds and validates cleanly', { timeout: 120000 }, () => {
     // that attribute, or the toggle silently stops working.
     const themeCss = fs.readFileSync(path.join(ROOT, 'dist', 'shared', 'theme.css'), 'utf8');
     assert.match(themeCss, /html\[data-theme=dark\]/, 'theme.css must scope dark overrides to the attribute');
+    // Token *declarations* may only live in the :root (light) block or the
+    // html[data-theme=dark] block. A top-level rule may still *use* a token
+    // (that is how light-mode rules are written), so only flag declaration
+    // bodies that escaped both theme blocks.
     const unscoped = [];
     const ruleRe = /([^{}]+)\{([^{}]*)\}/g;
     let rule;
     while ((rule = ruleRe.exec(themeCss)) !== null) {
         const selector = rule[1].trim();
-        if (/--kb-/.test(rule[2]) && !/^html\[data-theme=dark\]/.test(selector)) {
+        const declaresToken = /--kb-[a-z0-9-]+\s*:/.test(rule[2]);
+        const inTheme = selector === ':root' || /^html\[data-theme=dark\]/.test(selector) || / html\[data-theme=dark\]/.test(selector);
+        if (declaresToken && !inTheme) {
             unscoped.push(selector);
         }
     }

@@ -8,18 +8,18 @@
 }
 
 .cntx_menu_btn:hover{
-	background-color:gray;
+	background-color:var(--kb-menu-bg);
 }
 
 .cntx_menu{
 	position:absolute;
 	top:19px;
-	background-color:gray;
+	background-color:var(--kb-menu-bg);
 	padding:2px;
 }
 
 .cntx_menu_item{
-	color:white;
+	color:var(--kb-text-inverse);
 	min-width:120px;
 	min-height:14px;
 	font-size:8.5pt;
@@ -29,7 +29,7 @@
 	font-weight:bold;
 }
 .cntx_menu_item:hover{
-	color:black;
-	background-color:white;
+	color:var(--kb-text);
+	background-color:var(--kb-surface);
 }
 

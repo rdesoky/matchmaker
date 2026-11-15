@@ -1,7 +1,7 @@
 #DeclineForm{
 	/* width:560px; */
 	padding: 10px;
-	background-color: lavender;
+	background-color: var(--kb-hover-soft-bg);
 	box-shadow: 0 0 7px;
 	max-width: 600px;
 	margin: 5px auto;
@@ -23,8 +23,8 @@
 	font-weight:normal;
 }
 .decline_pg #decline_fixed_msgs{
-	border:solid 1px silver;
-	background-color:white;
+	border:solid 1px var(--kb-border-strong);
+	background-color:var(--kb-surface);
 	height: 160px;
 	overflow: auto;
 }
@@ -47,7 +47,7 @@
 	display:block;
 }
 .decline_pg #decline_status, .decline_pg #decline_note{
-	background-color:lightyellow;
+	background-color:var(--kb-highlight-bg);
 	padding: 4px;
 	margin: 5px 0;
 }

@@ -1,5 +1,5 @@
 .vf_submit_success_response{
-	border:solid 4px silver;
+	border:solid 4px var(--kb-border-strong);
 	padding:10px;
 	font-size:15pt;
 }
@@ -17,14 +17,14 @@
 	background:url(/images/vodafone_card.jpg) no-repeat center;
 	position:relative;
 	direction:ltr;
-	border:solid 1px gray;
+	border:solid 1px var(--kb-border-gray);
 }
 
 .vodafone_card_value{
 	position:absolute;
 	top:150px;
 	left:15px;
-	color:white;
+	color:var(--kb-text-inverse);
 	font-weight:bold;
 	font-size:9pt;
 }
@@ -53,7 +53,7 @@
 }
 
 .point_info>*:nth-child(odd){
-	background-color: #F6F6F6;
+	background-color: var(--kb-surface-2);
 }
 .unused_point{
 	height:120px;

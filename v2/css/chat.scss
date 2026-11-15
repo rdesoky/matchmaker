@@ -3,17 +3,17 @@
 }
 
 .points_monitor .subtitle{
-	color:maroon;
+	color:var(--kb-danger-strong);
 }
 .unreadable_msg{
 	margin:5px;
 	padding:2px;
-	border:dotted 1px Chocolate;
-	background-color:LightYellow;
+	border:dotted 1px var(--kb-warning-strong-boder-2);
+	background-color:var(--kb-highlight-bg);
 	text-align:center;
 }
 .unreadable_msg *{
-	color:SaddleBrown;
+	color:var(--kb-name);
 	font-size:7.5pt;
 }
 
@@ -26,13 +26,13 @@
 	border:solid 1px;
 	margin-bottom:6px;
 	width:420px;
-	border-color: SkyBlue;
+	border-color: var(--kb-chat-border);
 	border-radius: 0px 0px 5px 5px;
-	background-color:white;
+	background-color:var(--kb-surface);
 }
 
 .chat_bubble.recieved{
-	border-color: Plum;
+	border-color: var(--kb-chat-received-border);
 }
 .chat_bubble.recieved, .chat_bubble.sent:lang(ar){
 	float:right;
@@ -47,7 +47,7 @@
 	padding:4px;
 }
 #StatusView{
-	background:#EEEEEE;
+	background:var(--kb-surface-3);
 	padding:5px 0px;
 	text-align:center;
 }
@@ -60,12 +60,12 @@
 	margin:5px 2px 0px 2px;
 }
 #StatusView .online{
-	color:green;
+	color:var(--kb-success);
 	font-weight:bold;
 }
 
 #StatusView .offline{
-	color:maroon;
+	color:var(--kb-danger-strong);
 }
 
 #ChatBody .nav_root{
@@ -95,9 +95,9 @@ form[name=ChatEditor] textarea{
 
 .pdm_frame{
 	margin:0px;
-	border:solid 1px silver;
+	border:solid 1px var(--kb-border-strong);
 	vertical-align:top;
-	border-color: SkyBlue;
+	border-color: var(--kb-chat-border);
 }
 
 form[name=ChatEditor] select{
@@ -122,14 +122,14 @@ form[name=ChatEditor] select{
 
 .chat_intro_text{
 	font-size:8pt;
-	color:#666666;
+	color:var(--kb-text-muted);
 	padding:10px;
 }
 .chat_contents{
 	width:500px;
 	min-height:260px;
 	float:left;
-	background-color:GhostWhite;
+	background-color:var(--kb-chat-body-bg);
 	padding:4px 4px;
 }
 .chat_footer{
@@ -140,30 +140,30 @@ form[name=ChatEditor] select{
 }
 
 .chat_time_line{
-	/*border-top:solid 1px #EEEEEE;*/
+	/*border-top:solid 1px var(--kb-surface-3);*/
 }
 .chat_msg_time{
-	color:gray;
+	color:var(--kb-text-gray);
 	padding:1px;
 	font-size:7pt !important;
 }
 
 .chat_msg_time.read_msg{
-	color:green;
+	color:var(--kb-success);
 }
 
 .chat_msg_box{
-	border-top:solid 1px #EEEEEE;
+	border-top:solid 1px var(--kb-divider-soft);
 }
 .chat_msg_box *{
 	/*font-size:9pt;*/
 }
 .chat_msg_box.recieved{
-	color:maroon;
+	color:var(--kb-danger-strong);
 }
 
 .chat_msg_box.sent{
-	color:navy;
+	color:var(--kb-chat-sent-text);
 }
 
 .chat_msg_author{
@@ -183,18 +183,18 @@ form[name=ChatEditor] select{
 	/*position:fixed;
 	bottom:20px;
 	*/
-	border-top:solid 1px silver;
-	background-color:white;
+	border-top:solid 1px var(--kb-border-strong);
+	background-color:var(--kb-surface);
 	clear:both;
 }
 
 .pdm_frame .href{
 	padding:2px;
-	border:solid 1px white;
+	border:solid 1px var(--kb-bevel-light);
 }
 .pdm_frame .sel{
-	border:solid 1px Chocolate;
-	background-color:LightYellow;
-	color:maroon;
+	border:solid 1px var(--kb-warning-strong-boder-2);
+	background-color:var(--kb-highlight-bg);
+	color:var(--kb-danger-strong);
 	border-radius: 2px;
 }
