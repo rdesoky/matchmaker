@@ -275,6 +275,71 @@ test('build: minify writes a source map next to every JS and CSS file', async ()
     assert.ok(path.isAbsolute(cssMap.sources[0]), 'sources must be absolute paths');
 });
 
+test('build: compileStyles emits CSS and a map pointing at the Sass source', () => {
+    // compileStyles() writes into the real dist/, so this asserts against the
+    // build the smoke test produces rather than a temp tree.
+    const { compileStyles } = require(path.join(TOOLS, 'build'));
+    assert.strictEqual(typeof compileStyles, 'function', 'compileStyles must be exported');
+
+    const written = compileStyles();
+    assert.ok(written.length > 0, 'compileStyles must report the CSS it wrote');
+    assert.ok(
+        written.every((rel) => rel.endsWith('.css')),
+        'compileStyles must report .css paths, not .scss'
+    );
+    assert.ok(
+        written.includes('v3/css/base.css') && written.includes('shared/theme.css'),
+        'compileStyles must cover the v3 and shared sheets'
+    );
+
+    for (const rel of written) {
+        const css = fs.readFileSync(path.join(ROOT, 'dist', rel), 'utf8');
+        assert.match(css, /\/\*# sourceMappingURL=[^ ]+\.map \*\/\n$/, `${rel} must link its map`);
+        assert.ok(!/\n\s{2,}/.test(css), `${rel} must be compressed`);
+
+        const map = JSON.parse(fs.readFileSync(path.join(ROOT, 'dist', rel + '.map'), 'utf8'));
+        assert.strictEqual(map.version, 3, `${rel}.map must be a v3 map`);
+        assert.strictEqual(map.sourceRoot, undefined, `${rel}.map must not carry a sourceRoot`);
+        assert.strictEqual(
+            map.sourcesContent.length,
+            map.sources.length,
+            `${rel}.map must embed every source`
+        );
+        // v2/css/who.scss is empty, so Sass emits a map with no sources.
+        if (map.sources.length === 0) continue;
+        assert.ok(
+            map.sources.every((s) => path.isAbsolute(s) && s.endsWith('.scss')),
+            `${rel}.map must point at absolute .scss paths, got ${map.sources.join(', ')}`
+        );
+    }
+});
+
+test('build: minify leaves Sass-compiled CSS alone', async () => {
+    // compileStyles() already emits compressed CSS with its own source map, so
+    // minify() must skip those files: re-minifying would replace the map that
+    // points back at the .scss source with one pointing at the compiled .css.
+    const os = require('os');
+    const { minify } = require(path.join(TOOLS, 'build'));
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'kobool-skip-'));
+    fs.mkdirSync(path.join(dir, 'css'), { recursive: true });
+    fs.writeFileSync(path.join(dir, 'css', 'base.css'), '.a{color:red}\n/*# sourceMappingURL=base.css.map */\n');
+    fs.writeFileSync(path.join(dir, 'css', 'base.css.map'), '{"version":3,"sources":["/src/base.scss"]}');
+    fs.writeFileSync(path.join(dir, 'css', 'vendor.css'), '.b { color: blue; }\n');
+
+    await minify(dir, ['css/base.css']);
+
+    const compiled = fs.readFileSync(path.join(dir, 'css', 'base.css'), 'utf8');
+    const compiledMap = JSON.parse(fs.readFileSync(path.join(dir, 'css', 'base.css.map'), 'utf8'));
+    const vendor = fs.readFileSync(path.join(dir, 'css', 'vendor.css'), 'utf8');
+    const vendorHasMap = fs.existsSync(path.join(dir, 'css', 'vendor.css.map'));
+    fs.rmSync(dir, { recursive: true, force: true });
+
+    assert.strictEqual(compiledMap.sources[0], '/src/base.scss', 'the Sass source map must survive');
+    assert.match(compiled, /sourceMappingURL=base\.css\.map/, 'the Sass map reference must survive');
+    assert.ok(!/color: blue/.test(vendor), 'vendor CSS must still be minified');
+    assert.ok(vendorHasMap, 'vendor CSS must still get a map');
+});
+
 test('strings: addQueryParam appends to bare and already-queried URLs', () => {
     const vm = require('vm');
     const code = fs.readFileSync(path.join(ROOT, 'shared', 'strings.js'), 'utf8');
@@ -833,7 +898,8 @@ test('smoke: dist builds and validates cleanly', { timeout: 120000 }, () => {
 
     // Every minified JS/CSS file must ship a sibling source map that the
     // browser can load from the sourceMappingURL comment, and the map must
-    // point at the absolute path of the original source.
+    // point at the absolute path of the original source. Stylesheets are
+    // authored in .scss, so their map names the .scss file that is edited.
     for (const rel of [path.join('shared', 'theme.js'), path.join('v3', 'css', 'base.css')]) {
         const file = path.join(ROOT, 'dist', rel);
         const code = fs.readFileSync(file, 'utf8');
@@ -841,8 +907,47 @@ test('smoke: dist builds and validates cleanly', { timeout: 120000 }, () => {
         const map = JSON.parse(fs.readFileSync(file + '.map', 'utf8'));
         assert.strictEqual(map.version, 3, `${rel}.map must be a v3 source map`);
         assert.ok(map.sourcesContent && map.sourcesContent.length, `${rel}.map must embed the source`);
-        assert.strictEqual(map.sources[0], path.join(ROOT, rel), `${rel}.map must use the absolute source path`);
+        const expected = rel.endsWith('.css') ? rel.replace(/\.css$/, '.scss') : rel;
+        assert.strictEqual(map.sources[0], path.join(ROOT, expected), `${rel}.map must use the absolute source path`);
     }
+
+    // Stylesheets are authored in .scss and compiled to .css. The map must
+    // point at the .scss source, not at the compiled .css, so DevTools opens
+    // the file that is actually edited.
+    for (const rel of [path.join('v3', 'css', 'base.scss'), path.join('shared', 'theme.scss')]) {
+        const map = JSON.parse(fs.readFileSync(path.join(ROOT, 'dist', rel.replace(/\.scss$/, '.css.map')), 'utf8'));
+        assert.strictEqual(map.sources[0], path.join(ROOT, rel), `${rel} must be the mapped source`);
+        assert.ok(map.sourcesContent[0].length > 0, `${rel} must be embedded in its map`);
+    }
+
+    // No Sass source may reach dist/: the pages link .css, so a .scss there is
+    // dead weight that also leaks the partials.
+    const sassLeaks = [];
+    const findSass = (dir) => {
+        for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+            const full = path.join(dir, entry.name);
+            if (entry.isDirectory()) findSass(full);
+            else if (/\.s[ac]ss$/.test(entry.name)) sassLeaks.push(path.relative(ROOT, full));
+        }
+    };
+    findSass(path.join(ROOT, 'dist'));
+    assert.deepStrictEqual(sassLeaks, [], 'dist/ must not contain Sass sources');
+
+    // The dark theme is authored as nested `html[data-theme="dark"]` blocks in
+    // shared/theme.scss; the compiled sheet must still scope every override to
+    // that attribute, or the toggle silently stops working.
+    const themeCss = fs.readFileSync(path.join(ROOT, 'dist', 'shared', 'theme.css'), 'utf8');
+    assert.match(themeCss, /html\[data-theme=dark\]/, 'theme.css must scope dark overrides to the attribute');
+    const unscoped = [];
+    const ruleRe = /([^{}]+)\{([^{}]*)\}/g;
+    let rule;
+    while ((rule = ruleRe.exec(themeCss)) !== null) {
+        const selector = rule[1].trim();
+        if (/--kb-/.test(rule[2]) && !/^html\[data-theme=dark\]/.test(selector)) {
+            unscoped.push(selector);
+        }
+    }
+    assert.deepStrictEqual(unscoped, [], 'dark theme tokens must stay scoped to html[data-theme=dark]');
 
     // Validation must pass.
     let out;

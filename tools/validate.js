@@ -14,6 +14,8 @@
  *   - unresolved local href/src references
  *   - missing data-string keys
  *   - JS syntax errors
+ *   - Sass sources or partials leaking into dist/ (they are build inputs; the
+ *     pages link the .css that compileStyles() emits)
  *
  * The API base is scheme-relative (//dev.kobool.com/cgi-bin/), so it inherits
  * the page's own scheme. An explicit http:// base is warned about: the site is
@@ -27,7 +29,7 @@ const vm = require('vm');
 const ROOT = path.join(__dirname, '..');
 const DIST = path.join(ROOT, 'dist');
 
-const FORBIDDEN_EXTENSIONS = new Set(['.php', '.pl', '.pm', '.cgi', '.py', '.bat', '.ps1', '.sh', '.exe', '.sql', '.pem', '.key']);
+const FORBIDDEN_EXTENSIONS = new Set(['.php', '.pl', '.pm', '.cgi', '.py', '.bat', '.ps1', '.sh', '.exe', '.sql', '.pem', '.key', '.scss', '.sass']);
 const FORBIDDEN_NAMES = new Set(['lib.php', 'Thumbs.db', 'desktop.ini', '.DS_Store']);
 
 const DEPRECATED_MARKERS = [
@@ -92,10 +94,38 @@ function validate(options) {
         const name = path.basename(file);
         const ext = path.extname(name).toLowerCase();
         if (FORBIDDEN_EXTENSIONS.has(ext)) {
-            errors.push(`Forbidden file type in dist/: ${rel(file)}`);
+            if (ext === '.scss' || ext === '.sass') {
+                errors.push(
+                    `Sass source in dist/: ${rel(file)}. Stylesheets are authored in .scss and ` +
+                    'compiled to .css by compileStyles(); a source here means the build copied ' +
+                    'it instead of compiling it.'
+                );
+            } else {
+                errors.push(`Forbidden file type in dist/: ${rel(file)}`);
+            }
         }
         if (FORBIDDEN_NAMES.has(name)) {
             errors.push(`Forbidden file in dist/: ${rel(file)}`);
+        }
+    }
+
+    // 1b. Every authored stylesheet compiled. A .scss that silently stops
+    // compiling leaves the page linking a .css that is not in dist/, which the
+    // link check below only catches if a page happens to reference it.
+    const sourceRoot = path.join(ROOT);
+    for (const dir of ['v2/css', 'v3/css', 'shared']) {
+        const abs = path.join(sourceRoot, dir);
+        if (!fs.existsSync(abs)) continue;
+        for (const entry of fs.readdirSync(abs, { withFileTypes: true })) {
+            if (!entry.isFile() || !entry.name.endsWith('.scss')) continue;
+            if (entry.name.startsWith('_')) continue; // partial, compiled via @use
+            const compiled = path.join(distDir, dir, entry.name.replace(/\.scss$/, '.css'));
+            if (!fs.existsSync(compiled)) {
+                errors.push(
+                    `Missing compiled stylesheet for ${dir}/${entry.name}: expected ` +
+                    `${path.relative(distDir, compiled).split(path.sep).join('/')} in dist/.`
+                );
+            }
         }
     }
 
