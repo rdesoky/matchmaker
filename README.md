@@ -10,6 +10,7 @@ API base is set per environment in `tools/build.js`.
 
 ```text
 index.html              v3 shell, served at /
+404.html                served for unknown paths; redirects to /index.html
 v2/
   index.html            v2 shell
   pages/*.html          page fragments

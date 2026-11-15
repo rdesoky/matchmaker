@@ -890,7 +890,7 @@ test('smoke: dist builds and validates cleanly', { timeout: 120000 }, () => {
     );
     assert.ok(!/upload_target/.test(updPics), 'upd_pics.html must not create an upload iframe');
 
-    // The App Store badge must be present (referenced from index.html).
+    // The App Store badge must be present (kept for the app install link).
     assert.ok(
         fs.existsSync(path.join(ROOT, 'dist', 'images', 'Download_on_the_App_Store_Badge_AR_RGB_blk_102417.svg')),
         'App Store badge SVG missing from dist/images'
