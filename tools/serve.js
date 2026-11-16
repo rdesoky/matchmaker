@@ -3,10 +3,14 @@
 /**
  * Local development server.
  *
- *   node tools/serve.js [--port=8080] [--prod-api]
+ *   node tools/serve.js [--port=8080] [--prod-api] [--spa]
  *
  * Serves dist/ at the root and proxies /cgi-bin/ to the API host so the
  * browser sees a single origin (no CORS in development).
+ *
+ * --spa serves dist/index.html (status 200) for paths that do not exist, so
+ * deep links and client-side routes work in development. Without it, unknown
+ * paths return dist/404.html with status 404, matching production.
  *
  * If the requested port is already in use, the server increments the port and
  * retries until it finds a free one (default starts at 8080).
@@ -26,6 +30,7 @@ const MIME = {
     '.js': 'text/javascript; charset=utf-8',
     '.css': 'text/css; charset=utf-8',
     '.json': 'application/json; charset=utf-8',
+    '.map': 'application/json; charset=utf-8',
     '.xml': 'application/xml; charset=utf-8',
     '.svg': 'image/svg+xml',
     '.png': 'image/png',
@@ -40,11 +45,12 @@ const MIME = {
 };
 
 function parseArgs(argv) {
-    const args = { port: 8080, prodApi: false, lrPort: 35729 };
+    const args = { port: 8080, prodApi: false, lrPort: 35729, spa: false };
     for (const arg of argv.slice(2)) {
         if (arg.startsWith('--port=')) args.port = parseInt(arg.slice(7), 10);
         else if (arg.startsWith('--lr-port=')) args.lrPort = parseInt(arg.slice(10), 10);
         else if (arg === '--prod-api') args.prodApi = true;
+        else if (arg === '--spa') args.spa = true;
     }
     return args;
 }
@@ -77,7 +83,30 @@ function createServer(options) {
             filePath = path.join(filePath, 'index.html');
         }
 
+        const sendHtml = (file) => {
+            let html = fs.readFileSync(file, 'utf8');
+            if (!html.includes('livereload.js')) {
+                html = html.replace('</body>', `<script src="http://127.0.0.1:${lrPort}/livereload.js?snipver=1"></script></body>`);
+            }
+            res.writeHead(200, {
+                'Content-Type': MIME['.html'],
+                'Cache-Control': 'no-store'
+            });
+            res.end(html);
+        };
+
         if (!fs.existsSync(filePath)) {
+            // SPA fallback: serve the shell for extensionless navigation
+            // requests so deep links work. Missing assets still 404 so broken
+            // script/style URLs stay visible in the console.
+            const index = path.join(root, 'index.html');
+            const wantsHtml = /text\/html/.test(req.headers.accept || '');
+            const isRoute = path.extname(url.pathname) === '';
+            if (options.spa && wantsHtml && isRoute && fs.existsSync(index)) {
+                sendHtml(index);
+                return;
+            }
+
             const notFound = path.join(root, '404.html');
             if (fs.existsSync(notFound)) {
                 res.writeHead(404, { 'Content-Type': MIME['.html'] });
@@ -90,18 +119,14 @@ function createServer(options) {
         }
 
         const ext = path.extname(filePath).toLowerCase();
+        if (ext === '.html') {
+            sendHtml(filePath);
+            return;
+        }
         res.writeHead(200, {
             'Content-Type': MIME[ext] || 'application/octet-stream',
             'Cache-Control': 'no-store'
         });
-        if (ext === '.html') {
-            let html = fs.readFileSync(filePath, 'utf8');
-            if (!html.includes('livereload.js')) {
-                html = html.replace('</body>', `<script src="http://127.0.0.1:${lrPort}/livereload.js?snipver=1"></script></body>`);
-            }
-            res.end(html);
-            return;
-        }
         fs.createReadStream(filePath).pipe(res);
     });
 }
@@ -110,7 +135,7 @@ const MAX_PORT = 65535;
 
 if (require.main === module) {
     const args = parseArgs(process.argv);
-    const server = createServer({ lrPort: args.lrPort });
+    const server = createServer({ lrPort: args.lrPort, spa: args.spa });
     // Print once, whatever attempt ultimately binds (the per-listen callback
     // would fire once per retry).
     server.once('listening', () => {

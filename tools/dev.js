@@ -63,7 +63,7 @@ function build() {
     attempt();
   });
 
-  const serve = spawn('node', ['tools/serve.js', `--lr-port=${lrPort}`], {
+  const serve = spawn('node', ['tools/serve.js', `--lr-port=${lrPort}`, '--spa'], {
     stdio: 'inherit',
   });
 

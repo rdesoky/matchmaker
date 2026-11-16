@@ -8,7 +8,7 @@
 
 #AttrBar{
 	margin:4px 0px 8px 0px;
-	background-color: #EEE;
+	background-color: var(--kb-card-bg);
 }
 
 #MTabs{
@@ -31,6 +31,7 @@
 	display:block;
 	padding:0px;
 	margin:0px 0px -1px 0px;
+	/* border-bottom:solid 1px var(--kb-border-strong); */
 }
 
 .ctab{
@@ -43,27 +44,26 @@
 	padding:2px 8px 1px 8px;
 	height:24px;
 	line-height:20px;
-	border-style: solid;
-	border-width: 1px 0px;
-	border-color: white white silver white;
+	border-bottom: solid 1px var(--kb-border-strong);
 	font-size:10pt;
+	margin-bottom:1px;
 }
 
 #MTabs li *{
 	font-size:10pt;
 }
 #MTabs .ctab{
-	border-color:#EEE #EEE silver #EEE;
+	border-color:var(--kb-divider-soft) var(--kb-divider-soft) var(--kb-border-strong) var(--kb-divider-soft);
 	margin:0px 3px 0px 0px;
 	float:left;
 	cursor:default;
-	background-color:#EEE;
+	background-color:var(--kb-surface-3);
 }
 
 #MTabs .ctab.seltab{
-	border-width:1px;
-	background-color:white;
-	border-color:silver silver transparent silver;
+	background-color:var(--kb-surface);
+	border: solid 1px var(--kb-border-strong);
+	border-bottom: none;
 	cursor:default;
 }
 
@@ -79,12 +79,14 @@
 
 
 #MTabPanels{
+	background-color:var(--kb-surface);
 	border-style:solid;
-	border-color:silver;
+	border-color:var(--kb-border-strong);
 	border-width:0px 0px 0px 1px;
-}
-#MTabPanels:lang(ar){
-	border-width:0px 1px 0px 0px;
+
+	&:lang(ar){
+		border-width:0px 1px 0px 0px;
+	}
 }
 
 .attr_panel{
@@ -99,7 +101,7 @@
 }
 
 .tn_frame{
-	border-bottom:solid 1px #F0F0F0;
+	border-bottom:solid 1px var(--kb-divider-soft);
 	margin-bottom:5px;
 }
 
@@ -107,19 +109,19 @@
 	height:50px;
 	width:auto;
 	cursor:pointer;
-	border:solid white;
+	border:solid var(--kb-bevel-light);
 	border-width:5px 1px;
 }
 
 .tn_frame_pic.sel{
-	border-color:silver;
+	border-color:var(--kb-border-strong);
 }
 
 .tn_frame_pic:hover{
-	border-color:#0645AD;
+	border-color:var(--kb-link);
 }
 .pic_frame{
-/*	border:solid 1px red;
+/*	border:solid 1px var(--kb-danger);
 	display:block;
 	min-height:320px;*/
 }
@@ -133,12 +135,12 @@
 }
 
 #MemPicColumn{
-	background-color:white;
+	background-color:var(--kb-surface);
 	padding:0px 5px 5px 0px;
 	min-height:100px;
-}
 
-#MemPicColumn:lang(ar){
-	padding:0px 0px 5px 5px;
+	&:lang(ar){
+		padding:0px 0px 5px 5px;
+	}
 }
 

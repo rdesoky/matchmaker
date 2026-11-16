@@ -1,0 +1,25 @@
+#RightSide, .right_side
+{
+	border-color:var(--kb-skin-border) var(--kb-skin-accent);
+}
+
+.submenu_line, .header_line{
+	background-color:var(--kb-skin-accent);
+}
+
+#Menu .ctab.seltab, #Menu .ctab.seltab:hover{
+	background-color:var(--kb-skin-accent) !important;
+}
+
+#Menu .ctab:hover{
+	background-color:var(--kb-attr-hover-bg) !important;
+}
+
+.href.sel:hover{
+	color:var(--kb-link);
+	background-color:var(--kb-skin-accent) ;
+}
+
+.href:hover{
+	background-color:var(--kb-attr-hover-bg);
+}

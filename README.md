@@ -10,6 +10,7 @@ API base is set per environment in `tools/build.js`.
 
 ```text
 index.html              v3 shell, served at /
+404.html                served for unknown paths; redirects to /index.html
 v2/
   index.html            v2 shell
   pages/*.html          page fragments
@@ -23,6 +24,7 @@ v3/
 shared/
   config.js             runtime config (apiBase, languages, analytics)
   strings.js            string bundle loader and data-* binder
+  theme.scss            dark theme overrides
   data/                 generated countries/options JSON
 images/                 referenced root images
 tools/                  build, serve, proxy, validate
@@ -30,6 +32,24 @@ tests/                  unit and smoke tests
 ```
 
 `dist/` is the build output and is never committed.
+
+## Stylesheets
+
+Stylesheets are authored in Sass and compiled to CSS by the build. Every
+`v2/css/*.scss`, `v3/css/*.scss` and `shared/*.scss` becomes the `.css` the
+pages link, so the HTML keeps referencing `/v3/css/base.css` and the source
+file is `v3/css/base.scss`.
+
+- `shared/theme.scss` uses Sass nesting to keep the dark overrides grouped
+  under `html[data-theme="dark"]`, so they outrank the light rules in the shell
+  stylesheets regardless of load order.
+- `v3/css/font-awesome.css` is vendor CSS: it is copied verbatim and minified
+  by esbuild, not compiled by Sass.
+- Sass output is already compressed and carries its own source map, so the
+  build skips it when minifying. The map's `sources` point at the `.scss` file,
+  so DevTools opens the file that is actually edited.
+- `npm run check` fails if a `.scss` file reaches `dist/`, or if an authored
+  sheet has no compiled `.css` counterpart.
 
 ## Commands
 
@@ -43,6 +63,15 @@ npm run check         # validate dist/ before publishing
 npm run serve         # local server on :8080 (next free port if busy) with a
                       # /cgi-bin/ proxy
 ```
+
+The build compiles every Sass sheet to compressed CSS, then minifies the
+remaining JS and vendor CSS with esbuild, writing a sibling `<name>.map` next
+to each file, linked by a `sourceMappingURL` comment. Each map's `sources` entry
+is the absolute path of the original file in this repo (or of the built file
+when there is no repo counterpart), and `sourcesContent` embeds the code, so
+DevTools shows readable source for a deployed build without a second request.
+Maps are generated after the `--base` and API-base rewrites, so they match the
+shipped file.
 
 Sites are served from a domain root, so URLs are root-absolute
 (`/v3/css/base.css`). To preview a build under a subpath — for example a
@@ -144,6 +173,7 @@ in `shared/config.js`, and `ga()` is a no-op otherwise.
 - a root-absolute `/cgi-bin/` URL in a staging or production page fragment
   (the site origin serves static files only, so it would 404)
 - JavaScript syntax errors
+- a Sass source in `dist/`, or an authored `.scss` with no compiled `.css`
 
 ## Deployment
 

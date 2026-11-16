@@ -17,3 +17,20 @@
 - `v2/` — legacy v2 shell, still reachable at `/v2/`.
 - `shared/` — assets shared by both shells (config, strings, theme).
 - `dist/` — generated build output; do not edit by hand.
+
+## Stylesheets
+
+- Stylesheets are authored in Sass (`.scss`) and compiled to `.css` by the
+  build. Edit the `.scss`; never edit a `.css` under `v2/css`, `v3/css` or
+  `shared/` — those are build output and are not tracked.
+- The HTML keeps linking `.css` paths (`/v3/css/base.css`), so a source file is
+  `v3/css/base.scss`.
+- `shared/theme.scss` uses Sass nesting to group the dark overrides under
+  `html[data-theme="dark"]`, so they outrank the light rules in the shell
+  stylesheets regardless of load order.
+- `v3/css/font-awesome.css` is vendor CSS: copied verbatim and minified by
+  esbuild, not compiled by Sass.
+- Sass output is compressed and carries its own source map pointing at the
+  `.scss`, so the build skips it when minifying.
+- `npm run check` fails if a `.scss` reaches `dist/` or an authored sheet has no
+  compiled `.css`.

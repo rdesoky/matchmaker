@@ -697,8 +697,9 @@ The remaining questions you can send to this member today is: %m%
 	<welcome>Welcome</welcome>
 	<thanks>Thank You</thanks>
 	<copyright><![CDATA[ 
-		&copy; Copyright 2004-2012 KOBOOL.COM, All rights reserved.
+		&copy; Copyright 2004-2026 KOBOOL.COM, All rights reserved.
 	]]></copyright>
+	<newer_app>Newer App</newer_app>
 	<your_match>You and %u% have mutual acceptance</your_match>
 	<lname>Nick</lname>
 	<age>Age</age>

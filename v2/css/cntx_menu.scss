@@ -4,24 +4,22 @@
 	position:relative;
 	min-height:19px;
 	min-width:19px;
-	background-repeat:no-repeat;
-	background-image:url(/images/ddown_arrow.png);
-	background-position:center;
+	background:url(/images/ddown_arrow.png) no-repeat center;
 }
 
 .cntx_menu_btn:hover{
-	background-color:gray;
+	background-color:var(--kb-cntx-btn-hover-bg);
 }
 
 .cntx_menu{
 	position:absolute;
 	top:19px;
-	background-color:gray;
+	background-color:var(--kb-menu-surface);
 	padding:2px;
 }
 
 .cntx_menu_item{
-	color:white;
+	color:var(--kb-on-accent-text);
 	min-width:120px;
 	min-height:14px;
 	font-size:8.5pt;
@@ -31,7 +29,7 @@
 	font-weight:bold;
 }
 .cntx_menu_item:hover{
-	color:black;
-	background-color:white;
+	color:var(--kb-text);
+	background-color:var(--kb-card-bg-raised);
 }
 

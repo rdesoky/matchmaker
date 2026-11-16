@@ -8,16 +8,17 @@
 	/*position:relative;*/
 	max-width: 780px;
 
-	/* border-color: #e5e5e5; */
+	/* border-color: var(--kb-surface-3); */
 	/* border-style:solid; */
 	/* border-width: 1px 1px 1px 1px; */
 	/* border-radius: 3px; */
-	background-color: white;
-	/* box-shadow: 2px 2px silver; */
+	background-color: var(--kb-card-bg-strong);
+	/* box-shadow: 2px 2px var(--kb-border-strong); */
 	/*padding: 3px;*/
-	-webkit-box-shadow: 2px 2px 2px rgba(0,0,0,.05);
-	-moz-box-shadow: 2px 2px 2px rgba(0,0,0,.05);
-	box-shadow: 0 0 5px rgba(0,0,0,0.20);
+	-webkit-box-shadow: calc(2px + var(--kb-shadow-x)) calc(2px + var(--kb-shadow-y)) 2px var(--kb-shadow-faint);
+	-moz-box-shadow: calc(2px + var(--kb-shadow-x)) calc(2px + var(--kb-shadow-y)) 2px var(--kb-shadow-faint);
+	box-shadow: var(--kb-result-item-shadow);
+	padding: 1px;// to preserve the inset shadow of the result item, which is 1px inset shadow
 }
 
 @media (max-width:950px){
@@ -27,12 +28,12 @@
 }
 .answer_result{
 	/* max-width: 600px; */
-	/* background-color: ghostwhite; */
+	/* background-color: var(--kb-chat-body-bg); */
 	box-shadow: none;
 	/* border-radius: 5px; */
-	/* border: solid 1px #DDD; */
+	/* border: solid 1px var(--kb-surface-4); */
 	/* margin: auto; */
-	border-top: solid 1px #DDD;
+	border-top: solid 1px var(--kb-border-soft);
 	margin-top:10px;
 	/* padding: 0 5px; */
 	position: relative;
@@ -48,10 +49,11 @@
 }
 .answer_result .list_ordinal span{
 	right:30px;
-}
-.answer_result .list_ordinal span:lang(ar){
-	right:auto;
-	left: 30px;
+
+	&:lang(ar){
+		right:auto;
+		left: 30px;
+	}
 }
 .detailedSResult>table{
 	width:100%;
@@ -64,7 +66,7 @@
 }
 .detailedSResult>table td.bottom_actions{
 	vertical-align:bottom;
-	background-color: #EFEFEF;
+	background-color: var(--kb-bottom-actions-bg);
 }
 
 .result_item .results_info_col{
@@ -102,8 +104,8 @@
 }
 
 .attr_bar .attr:hover{
-	background-color:#E3E4D2;
-	color:#11151a;
+	background-color:var(--kb-attr-hover-bg);
+	color:var(--kb-attr-hover-text);
 }
 
 .result_item>table{
@@ -111,30 +113,31 @@
 }
 
 .sresult_cmd_bar{
+	color:var(--kb-cmd-bar-text);
 	/*position:absolute;*/
 	bottom:0;
-	border-top:solid 1px #F0F0F0;
+	border-top:solid 1px var(--kb-divider-soft);
 }
 
 #QABody .result_item, #RecentAnswersBody .result_item, #RecentQuestionsBody .result_item{
-	/*border-color:olive;*/
+	/*border-color:var(--kb-warning-text);*/
 	/*border-style:dotted;*/
 }
 
 *[ls="bkm"] .result_item{
-	border-color:orange;
+	border-color:var(--kb-list-bookmark-border);
 }
 
 *[ls="wls"] .result_item{
-	border-color:pink;
+	border-color:var(--kb-list-wishlist-border);
 }
 
 *[ls="wsr"] .result_item{
-	border-color:#AAAAEE;
+	border-color:var(--kb-list-watch-border);
 }
 
 *[ls="blk"] .result_item{
-	border-color:gray;
+	border-color:var(--kb-border-gray);
 }
 
 #ListRoot{
@@ -152,10 +155,10 @@
 	font-weight: bold;
 	padding: 3px 6px;
 	font-size: 12px;
-	/* background-color: lightgray; */
+	/* background-color: var(--kb-status-bg); */
 	line-height: 12px;
 	border-radius: 4px;
-	color: gray;
-	border: solid 1px silver;
+	color: var(--kb-secondary-text);
+	border: solid 1px var(--kb-border-strong);
 	/* vertical-align: middle; */
 }

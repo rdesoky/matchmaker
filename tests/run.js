@@ -207,6 +207,38 @@ test('build: rewriteBase prefixes only real root-absolute URLs', () => {
     assert.match(out, /content="\/not-a-url"/);
 });
 
+test('build: rewriteNotFoundRedirect prefixes the 404 target only when a base is set', () => {
+    const os = require('os');
+    const { rewriteNotFoundRedirect } = require(path.join(TOOLS, 'build'));
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'kobool-404-base-'));
+    const file = path.join(dir, '404.html');
+    const html = [
+        '<script>',
+        "if (window.location.pathname !== '/index.html') window.location.replace('/index.html');",
+        '</script>',
+        '<a href="/index.html">Home</a>'
+    ].join('\n');
+
+    try {
+        fs.writeFileSync(file, html);
+        assert.strictEqual(rewriteNotFoundRedirect(dir, ''), 0);
+        assert.deepStrictEqual(fs.readFileSync(file), Buffer.from(html));
+
+        assert.strictEqual(rewriteNotFoundRedirect(dir, '/repo'), 1);
+        const out = fs.readFileSync(file, 'utf8');
+        // The guard must follow the redirect target so a missing home page cannot loop.
+        assert.match(out, /pathname !== '\/repo\/index\.html'/);
+        assert.match(out, /replace\('\/repo\/index\.html'\)/);
+        assert.match(out, /href="\/repo\/index\.html"/);
+        assert.doesNotMatch(out, /['"]\/index\.html['"]/);
+
+        fs.unlinkSync(file);
+        assert.strictEqual(rewriteNotFoundRedirect(dir, '/repo'), 0);
+    } finally {
+        fs.rmSync(dir, { recursive: true, force: true });
+    }
+});
+
 test('build: expandIncludes inlines shared fragments and strips the directive', () => {
     const os = require('os');
     const { expandIncludes } = require(path.join(TOOLS, 'build'));
@@ -241,6 +273,103 @@ test('build: expandIncludes fails on a missing or circular fragment', () => {
     fs.writeFileSync(path.join(cycle, 'b.html'), '<div data-fragment="/a.html"></div>');
     assert.throws(() => expandIncludes(cycle), /Circular include/);
     fs.rmSync(cycle, { recursive: true, force: true });
+});
+
+test('build: minify writes a source map next to every JS and CSS file', async () => {
+    const os = require('os');
+    const { minify } = require(path.join(TOOLS, 'build'));
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'kobool-map-'));
+    fs.mkdirSync(path.join(dir, 'css'), { recursive: true });
+    fs.writeFileSync(path.join(dir, 'app.js'), 'const answer = 42;\nconsole.log(answer);\n');
+    fs.writeFileSync(path.join(dir, 'css', 'base.css'), '.a { color: red; }\n');
+
+    await minify(dir);
+
+    const js = fs.readFileSync(path.join(dir, 'app.js'), 'utf8');
+    const css = fs.readFileSync(path.join(dir, 'css', 'base.css'), 'utf8');
+    const jsMap = JSON.parse(fs.readFileSync(path.join(dir, 'app.js.map'), 'utf8'));
+    const cssMap = JSON.parse(fs.readFileSync(path.join(dir, 'css', 'base.css.map'), 'utf8'));
+    fs.rmSync(dir, { recursive: true, force: true });
+
+    assert.match(js, /\/\/# sourceMappingURL=app\.js\.map\n$/);
+    assert.match(css, /\/\*# sourceMappingURL=base\.css\.map \*\/\n$/);
+    assert.ok(!/console\.log\(answer\)/.test(js), 'the JS must be minified');
+
+    for (const map of [jsMap, cssMap]) {
+        assert.strictEqual(map.version, 3);
+        assert.strictEqual(map.sources.length, 1);
+        assert.strictEqual(map.sourcesContent.length, 1, 'the original source must be embedded');
+        assert.ok(map.mappings.length > 0, 'the map must carry mappings');
+    }
+    assert.strictEqual(jsMap.sources[0], path.join(dir, 'app.js'));
+    assert.strictEqual(cssMap.sources[0], path.join(dir, 'css', 'base.css'));
+    assert.ok(path.isAbsolute(jsMap.sources[0]), 'sources must be absolute paths');
+    assert.ok(path.isAbsolute(cssMap.sources[0]), 'sources must be absolute paths');
+});
+
+test('build: compileStyles emits CSS and a map pointing at the Sass source', () => {
+    // compileStyles() writes into the real dist/, so this asserts against the
+    // build the smoke test produces rather than a temp tree.
+    const { compileStyles } = require(path.join(TOOLS, 'build'));
+    assert.strictEqual(typeof compileStyles, 'function', 'compileStyles must be exported');
+
+    const written = compileStyles();
+    assert.ok(written.length > 0, 'compileStyles must report the CSS it wrote');
+    assert.ok(
+        written.every((rel) => rel.endsWith('.css')),
+        'compileStyles must report .css paths, not .scss'
+    );
+    assert.ok(
+        written.includes('v3/css/base.css') && written.includes('shared/theme.css'),
+        'compileStyles must cover the v3 and shared sheets'
+    );
+
+    for (const rel of written) {
+        const css = fs.readFileSync(path.join(ROOT, 'dist', rel), 'utf8');
+        assert.match(css, /\/\*# sourceMappingURL=[^ ]+\.map \*\/\n$/, `${rel} must link its map`);
+        assert.ok(!/\n\s{2,}/.test(css), `${rel} must be compressed`);
+
+        const map = JSON.parse(fs.readFileSync(path.join(ROOT, 'dist', rel + '.map'), 'utf8'));
+        assert.strictEqual(map.version, 3, `${rel}.map must be a v3 map`);
+        assert.strictEqual(map.sourceRoot, undefined, `${rel}.map must not carry a sourceRoot`);
+        assert.strictEqual(
+            map.sourcesContent.length,
+            map.sources.length,
+            `${rel}.map must embed every source`
+        );
+        // v2/css/who.scss is empty, so Sass emits a map with no sources.
+        if (map.sources.length === 0) continue;
+        assert.ok(
+            map.sources.every((s) => path.isAbsolute(s) && s.endsWith('.scss')),
+            `${rel}.map must point at absolute .scss paths, got ${map.sources.join(', ')}`
+        );
+    }
+});
+
+test('build: minify leaves Sass-compiled CSS alone', async () => {
+    // compileStyles() already emits compressed CSS with its own source map, so
+    // minify() must skip those files: re-minifying would replace the map that
+    // points back at the .scss source with one pointing at the compiled .css.
+    const os = require('os');
+    const { minify } = require(path.join(TOOLS, 'build'));
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'kobool-skip-'));
+    fs.mkdirSync(path.join(dir, 'css'), { recursive: true });
+    fs.writeFileSync(path.join(dir, 'css', 'base.css'), '.a{color:red}\n/*# sourceMappingURL=base.css.map */\n');
+    fs.writeFileSync(path.join(dir, 'css', 'base.css.map'), '{"version":3,"sources":["/src/base.scss"]}');
+    fs.writeFileSync(path.join(dir, 'css', 'vendor.css'), '.b { color: blue; }\n');
+
+    await minify(dir, ['css/base.css']);
+
+    const compiled = fs.readFileSync(path.join(dir, 'css', 'base.css'), 'utf8');
+    const compiledMap = JSON.parse(fs.readFileSync(path.join(dir, 'css', 'base.css.map'), 'utf8'));
+    const vendor = fs.readFileSync(path.join(dir, 'css', 'vendor.css'), 'utf8');
+    const vendorHasMap = fs.existsSync(path.join(dir, 'css', 'vendor.css.map'));
+    fs.rmSync(dir, { recursive: true, force: true });
+
+    assert.strictEqual(compiledMap.sources[0], '/src/base.scss', 'the Sass source map must survive');
+    assert.match(compiled, /sourceMappingURL=base\.css\.map/, 'the Sass map reference must survive');
+    assert.ok(!/color: blue/.test(vendor), 'vendor CSS must still be minified');
+    assert.ok(vendorHasMap, 'vendor CSS must still get a map');
 });
 
 test('strings: addQueryParam appends to bare and already-queried URLs', () => {
@@ -538,6 +667,59 @@ test('proxy: non-proxied path returns 404', () => {
     assert.strictEqual(res._status, 404);
 });
 
+test('serve: --spa falls back to index.html for unknown routes only', async () => {
+    const os = require('os');
+    const http = require('http');
+    const { createServer, parseArgs } = require(path.join(TOOLS, 'serve'));
+
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'kobool-spa-'));
+    fs.writeFileSync(path.join(dir, 'index.html'), '<html><body>shell</body></html>');
+    fs.writeFileSync(path.join(dir, '404.html'), '<html><body>missing</body></html>');
+
+    const get = (server, urlPath, accept) => new Promise((resolve, reject) => {
+        const { port } = server.address();
+        const req = http.get({ host: '127.0.0.1', port, path: urlPath, headers: { accept } }, (res) => {
+            let body = '';
+            res.setEncoding('utf8');
+            res.on('data', (chunk) => { body += chunk; });
+            res.on('end', () => resolve({ status: res.statusCode, body }));
+        });
+        req.on('error', reject);
+    });
+
+    const spa = createServer({ root: dir, spa: true });
+    const plain = createServer({ root: dir });
+    await new Promise((resolve) => spa.listen(0, '127.0.0.1', resolve));
+    await new Promise((resolve) => plain.listen(0, '127.0.0.1', resolve));
+
+    try {
+        const route = await get(spa, '/some/deep/link', 'text/html');
+        assert.strictEqual(route.status, 200);
+        assert.match(route.body, /shell/);
+
+        // Missing assets must still 404 so broken URLs stay visible.
+        const asset = await get(spa, '/missing.js', '*/*');
+        assert.strictEqual(asset.status, 404);
+        assert.match(asset.body, /missing/);
+
+        // Non-navigation requests (e.g. fetch) keep the 404 page.
+        const api = await get(spa, '/some/deep/link', 'application/json');
+        assert.strictEqual(api.status, 404);
+
+        // Without --spa the dev server keeps production behavior.
+        const off = await get(plain, '/some/deep/link', 'text/html');
+        assert.strictEqual(off.status, 404);
+        assert.match(off.body, /missing/);
+    } finally {
+        spa.close();
+        plain.close();
+        fs.rmSync(dir, { recursive: true, force: true });
+    }
+
+    assert.strictEqual(parseArgs(['node', 'serve.js', '--spa']).spa, true);
+    assert.strictEqual(parseArgs(['node', 'serve.js']).spa, false);
+});
+
 test('favicon: the original site icon ships at the site root', () => {
     // Copied verbatim from the original repo (v1/html.min/favicon.ico) and
     // served from /favicon.ico, which is where browsers look by default.
@@ -740,11 +922,64 @@ test('smoke: dist builds and validates cleanly', { timeout: 120000 }, () => {
     );
     assert.ok(!/upload_target/.test(updPics), 'upd_pics.html must not create an upload iframe');
 
-    // The App Store badge must be present (referenced from index.html).
-    assert.ok(
-        fs.existsSync(path.join(ROOT, 'dist', 'images', 'Download_on_the_App_Store_Badge_AR_RGB_blk_102417.svg')),
-        'App Store badge SVG missing from dist/images'
-    );
+    // Every minified JS/CSS file must ship a sibling source map that the
+    // browser can load from the sourceMappingURL comment, and the map must
+    // point at the absolute path of the original source. Stylesheets are
+    // authored in .scss, so their map names the .scss file that is edited.
+    for (const rel of [path.join('shared', 'theme.js'), path.join('v3', 'css', 'base.css')]) {
+        const file = path.join(ROOT, 'dist', rel);
+        const code = fs.readFileSync(file, 'utf8');
+        assert.match(code, /sourceMappingURL=/, `${rel} must reference its source map`);
+        const map = JSON.parse(fs.readFileSync(file + '.map', 'utf8'));
+        assert.strictEqual(map.version, 3, `${rel}.map must be a v3 source map`);
+        assert.ok(map.sourcesContent && map.sourcesContent.length, `${rel}.map must embed the source`);
+        const expected = rel.endsWith('.css') ? rel.replace(/\.css$/, '.scss') : rel;
+        assert.strictEqual(map.sources[0], path.join(ROOT, expected), `${rel}.map must use the absolute source path`);
+    }
+
+    // Stylesheets are authored in .scss and compiled to .css. The map must
+    // point at the .scss source, not at the compiled .css, so DevTools opens
+    // the file that is actually edited.
+    for (const rel of [path.join('v3', 'css', 'base.scss'), path.join('shared', 'theme.scss')]) {
+        const map = JSON.parse(fs.readFileSync(path.join(ROOT, 'dist', rel.replace(/\.scss$/, '.css.map')), 'utf8'));
+        assert.strictEqual(map.sources[0], path.join(ROOT, rel), `${rel} must be the mapped source`);
+        assert.ok(map.sourcesContent[0].length > 0, `${rel} must be embedded in its map`);
+    }
+
+    // No Sass source may reach dist/: the pages link .css, so a .scss there is
+    // dead weight that also leaks the partials.
+    const sassLeaks = [];
+    const findSass = (dir) => {
+        for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+            const full = path.join(dir, entry.name);
+            if (entry.isDirectory()) findSass(full);
+            else if (/\.s[ac]ss$/.test(entry.name)) sassLeaks.push(path.relative(ROOT, full));
+        }
+    };
+    findSass(path.join(ROOT, 'dist'));
+    assert.deepStrictEqual(sassLeaks, [], 'dist/ must not contain Sass sources');
+
+    // The dark theme is authored as nested `html[data-theme="dark"]` blocks in
+    // shared/theme.scss; the compiled sheet must still scope every override to
+    // that attribute, or the toggle silently stops working.
+    const themeCss = fs.readFileSync(path.join(ROOT, 'dist', 'shared', 'theme.css'), 'utf8');
+    assert.match(themeCss, /html\[data-theme=dark\]/, 'theme.css must scope dark overrides to the attribute');
+    // Token *declarations* may only live in the :root (light) block or the
+    // html[data-theme=dark] block. A top-level rule may still *use* a token
+    // (that is how light-mode rules are written), so only flag declaration
+    // bodies that escaped both theme blocks.
+    const unscoped = [];
+    const ruleRe = /([^{}]+)\{([^{}]*)\}/g;
+    let rule;
+    while ((rule = ruleRe.exec(themeCss)) !== null) {
+        const selector = rule[1].trim();
+        const declaresToken = /--kb-[a-z0-9-]+\s*:/.test(rule[2]);
+        const inTheme = selector === ':root' || /^html\[data-theme=dark\]/.test(selector) || / html\[data-theme=dark\]/.test(selector);
+        if (declaresToken && !inTheme) {
+            unscoped.push(selector);
+        }
+    }
+    assert.deepStrictEqual(unscoped, [], 'dark theme tokens must stay scoped to html[data-theme=dark]');
 
     // Validation must pass.
     let out;

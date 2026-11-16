@@ -9,10 +9,11 @@
  * Steps:
  *   1. clean dist/
  *   2. copy allowed static files (never PHP/Perl/Python/secrets)
- *   3. compile string XML -> JSON
- *   4. write environment-specific config.js
- *   5. minify JS/CSS/HTML
- *   6. write CNAME for the selected environment
+ *   3. compile Sass (.scss) -> CSS
+ *   4. compile string XML -> JSON
+ *   5. write environment-specific config.js
+ *   6. minify JS/HTML and write a source map next to every JS file
+ *   7. write CNAME for the selected environment
  *
  * --base rewrites root-absolute URLs to a subpath so the build can be previewed
  * on a GitHub Pages project site (https://<user>.github.io/<repo>/). Production
@@ -27,6 +28,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { fileURLToPath } = require('url');
 const { compileStrings } = require('./compile-strings');
 const { compileData } = require('./compile-data');
 
@@ -52,9 +54,13 @@ const ENVIRONMENTS = {
 // Never copied into dist/, regardless of where they appear.
 // .xml is excluded because string sources are compiled to JSON; shipping the
 // raw XML would duplicate every string and leak unreferenced content.
+// .scss is excluded because compileStyles() turns it into the .css the pages
+// actually link; copying the source would ship dead weight and leak the
+// partials.
 const BLOCKED_EXTENSIONS = new Set([
     '.php', '.pl', '.pm', '.cgi', '.py', '.pyc', '.lnk', '.bat', '.ps1', '.sh',
-    '.exe', '.dll', '.so', '.db', '.sql', '.log', '.env', '.pem', '.key', '.xml'
+    '.exe', '.dll', '.so', '.db', '.sql', '.log', '.env', '.pem', '.key', '.xml',
+    '.scss'
 ]);
 
 const BLOCKED_DIRS = new Set([
@@ -136,6 +142,29 @@ function rewriteBase(dir, base) {
 }
 
 /**
+ * Point the 404 page's redirect at the build's base.
+ *
+ * The page sends a visitor to `/index.html`. rewriteBase() leaves that alone
+ * because the target is a page at the site root, not a path under one of
+ * BASE_ROOTS, but a `--base=/repo` build serves the home page from
+ * `<base>/index.html`. Without this a missing URL on a project-site preview
+ * bounces the visitor out of the site. Both places the target appears are
+ * rewritten: the string in the redirect script and the manual link.
+ */
+function rewriteNotFoundRedirect(dir, base) {
+    if (!base) return 0;
+    const file = path.join(dir, '404.html');
+    if (!fs.existsSync(file)) return 0;
+
+    const before = fs.readFileSync(file, 'utf8');
+    const after = before.split('/index.html').join(`${base}/index.html`);
+    if (after === before) return 0;
+
+    fs.writeFileSync(file, after, 'utf8');
+    return 1;
+}
+
+/**
  * Point hardcoded `/cgi-bin/kpic.pl` URLs at the environment's API base.
  *
  * Page fragments carry literal `src="/cgi-bin/kpic.pl?..."` attributes, which
@@ -174,6 +203,75 @@ function rewriteApiBase(dir, apiBase) {
     };
     walk(dir);
     return changed;
+}
+
+/**
+ * Compile every authored Sass sheet into the CSS the pages link.
+ *
+ * The shells are plain static HTML, so each sheet is compiled on its own:
+ * `v2/css/base.scss` becomes `dist/v2/css/base.css`, and so on. Vendor CSS
+ * (font-awesome) is not Sass and is copied verbatim by copyTree(). Partials
+ * (a leading underscore) are skipped: they are pulled in by @use and have no
+ * CSS of their own.
+ *
+ * Output is compressed and carries an external source map whose `sources`
+ * point at the .scss file in this repo, so DevTools opens the real source.
+ * `sourcesContent` embeds it, so the map works without a second request.
+ *
+ * Returns the dist-relative paths of the CSS files it wrote, so minify() can
+ * leave them alone and only minify the vendor CSS it did not produce.
+ */
+function compileStyles() {
+    let sass;
+    try {
+        sass = require('sass');
+    } catch (err) {
+        throw new Error('sass is not installed; run npm ci before building');
+    }
+
+    const sheets = [];
+    const written = [];
+    const collect = (dir) => {
+        if (!fs.existsSync(dir)) return;
+        for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+            const full = path.join(dir, entry.name);
+            if (entry.isDirectory()) collect(full);
+            // A leading underscore marks a partial: it is pulled in by @use and
+            // has no CSS of its own, so compiling it would emit a stray file.
+            else if (entry.isFile() && entry.name.endsWith('.scss') && !entry.name.startsWith('_')) {
+                sheets.push(full);
+            }
+        }
+    };
+    for (const dir of ['v2/css', 'v3/css', 'shared']) {
+        collect(path.join(ROOT, dir));
+    }
+
+    for (const source of sheets) {
+        const rel = path.relative(ROOT, source).split(path.sep).join('/');
+        const target = path.join(DIST, rel.replace(/\.scss$/, '.css'));
+        const result = sass.compile(source, {
+            style: 'compressed',
+            sourceMap: true,
+            sourceMapIncludeSources: true
+        });
+
+        // Sass reports `sources` as file:// URLs; the rest of the build (and
+        // the tests) use absolute filesystem paths.
+        const map = result.sourceMap;
+        map.sources = map.sources.map((url) => (
+            url.startsWith('file://') ? fileURLToPath(url) : url
+        ).split(path.sep).join('/'));
+        delete map.sourceRoot;
+
+        fs.mkdirSync(path.dirname(target), { recursive: true });
+        const body = result.css.endsWith('\n') ? result.css : result.css + '\n';
+        fs.writeFileSync(target, body + `/*# sourceMappingURL=${path.basename(target)}.map */\n`, 'utf8');
+        fs.writeFileSync(target + '.map', JSON.stringify(map), 'utf8');
+        written.push(path.relative(DIST, target).split(path.sep).join('/'));
+    }
+
+    return written;
 }
 
 function cleanDist() {
@@ -306,7 +404,24 @@ function writeCname(env, enabled) {
     }
 }
 
-async function minify() {
+/**
+ * Minify every JS file under `dir` (default: dist/) and write a sibling
+ * `<name>.map`, plus any CSS that compileStyles() did not produce.
+ *
+ * Sass output is skipped: compileStyles() already emits compressed CSS with a
+ * source map that points at the .scss source, and re-minifying it would replace
+ * that map with one pointing at the generated CSS. Vendor CSS (font-awesome) is
+ * not Sass, so it is minified here like any other static asset.
+ *
+ * The minified file ends with a sourceMappingURL comment, so a browser loads
+ * the map on demand. `sources` holds the absolute path of the original file in
+ * this repo (falling back to the absolute path of the built file when there is
+ * no repo counterpart), and `sourcesContent` embeds the code, so DevTools
+ * shows the readable source without a second request.
+ */
+async function minify(dir, skipCss) {
+    const root = dir || DIST;
+    const skip = new Set(skipCss || []);
     let esbuild;
     try {
         esbuild = require('esbuild');
@@ -315,35 +430,51 @@ async function minify() {
         return;
     }
 
-    const walk = (dir) => {
-        for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
-            const full = path.join(dir, entry.name);
+    const walk = (current) => {
+        for (const entry of fs.readdirSync(current, { withFileTypes: true })) {
+            const full = path.join(current, entry.name);
             if (entry.isDirectory()) {
                 walk(full);
-            } else if (entry.isFile()) {
-                const ext = path.extname(entry.name).toLowerCase();
-                if (ext === '.js') {
-                    const code = fs.readFileSync(full, 'utf8');
-                    try {
-                        const out = esbuild.transformSync(code, { loader: 'js', minify: true });
-                        fs.writeFileSync(full, out.code, 'utf8');
-                    } catch (err) {
-                        // Leave the file unminified; validate.js reports the syntax error.
-                        console.warn(`Skipped minify (parse error): ${path.relative(DIST, full)}`);
-                    }
-                } else if (ext === '.css') {
-                    const code = fs.readFileSync(full, 'utf8');
-                    try {
-                        const out = esbuild.transformSync(code, { loader: 'css', minify: true });
-                        fs.writeFileSync(full, out.code, 'utf8');
-                    } catch (err) {
-                        console.warn(`Skipped minify (parse error): ${path.relative(DIST, full)}`);
-                    }
-                }
+                continue;
+            }
+            if (!entry.isFile()) continue;
+
+            const ext = path.extname(entry.name).toLowerCase();
+            if (ext !== '.js' && ext !== '.css') continue;
+
+            const rel = path.relative(root, full).split(path.sep).join('/');
+            if (ext === '.css' && skip.has(rel)) continue;
+
+            // Point `sources` at the original file in this repo so a debugger
+            // opens the real source rather than a path relative to the map.
+            // Files generated straight into dist/ have no repo counterpart, so
+            // they fall back to their own absolute path. Forward slashes keep
+            // the map portable across platforms.
+            const original = root === DIST ? path.join(ROOT, rel) : null;
+            const sourcefile = (original && fs.existsSync(original) ? original : full)
+                .split(path.sep).join('/');
+
+            const code = fs.readFileSync(full, 'utf8');
+            try {
+                const out = esbuild.transformSync(code, {
+                    loader: ext === '.js' ? 'js' : 'css',
+                    minify: true,
+                    sourcemap: 'external',
+                    sourcefile
+                });
+                const link = ext === '.js'
+                    ? `//# sourceMappingURL=${entry.name}.map\n`
+                    : `/*# sourceMappingURL=${entry.name}.map */\n`;
+                const body = out.code.endsWith('\n') ? out.code : out.code + '\n';
+                fs.writeFileSync(full, body + link, 'utf8');
+                fs.writeFileSync(full + '.map', out.map, 'utf8');
+            } catch (err) {
+                // Leave the file unminified; validate.js reports the syntax error.
+                console.warn(`Skipped minify (parse error): ${path.relative(root, full)}`);
             }
         }
     };
-    walk(DIST);
+    walk(root);
 }
 
 async function minifyHtml() {
@@ -399,6 +530,12 @@ async function build(options) {
     }
     console.log(`Copied ${copied} static files`);
 
+    // Compile the authored Sass sheets into the CSS the pages link. This runs
+    // before the URL rewrites so the generated CSS is rewritten like any other
+    // stylesheet.
+    const compiled = compileStyles();
+    console.log(`Compiled ${compiled.length} Sass sheets`);
+
     // Shared fragments are expanded after the copy so every page in dist/ is
     // self-contained before URLs are rewritten and the HTML is minified.
     const expanded = expandIncludes(DIST);
@@ -445,7 +582,11 @@ async function build(options) {
         console.log(`Rewrote root-absolute URLs to base "${options.base}" in ${rewritten} files`);
     }
 
-    await minify();
+    if (rewriteNotFoundRedirect(DIST, options.base || '')) {
+        console.log(`Pointed the 404 redirect at base "${options.base}/index.html"`);
+    }
+
+    await minify(DIST, compiled);
     await minifyHtml();
 
     console.log('Build complete');
@@ -458,4 +599,7 @@ if (require.main === module) {
     });
 }
 
-module.exports = { build, parseArgs, rewriteBase, rewriteApiBase, expandIncludes, ENVIRONMENTS, isBlocked };
+module.exports = {
+    build, parseArgs, rewriteBase, rewriteApiBase, rewriteNotFoundRedirect,
+    expandIncludes, compileStyles, minify, ENVIRONMENTS, isBlocked
+};
