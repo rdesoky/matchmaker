@@ -583,7 +583,7 @@ body{
 	/* padding: 0 6px; */
 	background-color: var(--kb-header-bg);
 	line-height: 4rem;
-	box-shadow: 0 2px 2px var(--kb-shadow-soft);
+	box-shadow: var(--kb-header-shadow);
 	top: 0;
 	left: 0;
 	right: 0;
@@ -1100,7 +1100,7 @@ img.small_pic{
 	top: 42px;
 	width: 200px;
 	background-color: var(--kb-menu-bg);
-	box-shadow: 0 3px 10px var(--kb-shadow-soft);
+	box-shadow: var(--kb-shadow-x) calc(3px + var(--kb-shadow-y)) 10px var(--kb-shadow-soft);
 	color: var(--kb-on-accent-text);
 	overflow-y: auto;
 	transition: left .4s, right .4s;
@@ -1376,7 +1376,7 @@ img.small_pic{
 }
 .button:hover{
 	background-color:var(--kb-card-hover-bg);
-	box-shadow: 0 0 5px var(--kb-shadow-soft);
+	box-shadow: var(--kb-shadow-x) var(--kb-shadow-y) 5px var(--kb-shadow-soft);
 }
 .button.sel{
 	background-color:var(--kb-button-selected-bg);
@@ -1493,7 +1493,7 @@ img.small_pic{
 	position: relative;
 	/* background-color: var(--kb-surface-2); */
 	padding: 5px 0;
-	/* box-shadow: 0 0 4px var(--kb-shadow); */
+	/* box-shadow: var(--kb-shadow-x) var(--kb-shadow-y) 4px var(--kb-shadow); */
 	/* border-top-color: var(--kb-surface); */
 	min-height: 400px;
 }
@@ -1603,7 +1603,7 @@ img.small_pic{
 .popup_frame{
 	background-color: var(--kb-popup-bg);
 	border: solid 1px var(--kb-popup-frame-border);
-	box-shadow: 0 0 10px var(--kb-popup-frame-shadow);
+	box-shadow: var(--kb-shadow-x) var(--kb-shadow-y) 10px var(--kb-popup-frame-shadow);
 	max-width: 780px;
 	width:100%;
 	margin: 0 auto 6px auto;
@@ -1661,7 +1661,7 @@ img.small_pic{
 	box-sizing: border-box;
 	background-color: var(--kb-surface);
 	padding: 15px;
-	box-shadow: 0 2px 5px var(--kb-shadow-soft);
+	box-shadow: var(--kb-shadow-x) calc(2px + var(--kb-shadow-y)) 5px var(--kb-shadow-soft);
 	max-width: 400px;
 }
 .form_frame>div, form>div{
@@ -1684,7 +1684,7 @@ img.small_pic{
 	/* color:var(--kb-text-strong); */
 	background-color: var(--kb-menu-bg);
 	padding: 5px;
-	/* box-shadow: 0 0 5px var(--kb-shadow); */
+	/* box-shadow: var(--kb-shadow-x) var(--kb-shadow-y) 5px var(--kb-shadow); */
 	color: var(--kb-text-inverse);
 	max-width: 400px;
 	margin: 0 auto;
@@ -1819,7 +1819,7 @@ img.small_pic{
 #MemberBox .popup_list{
 	background-color:var(--kb-menu-surface);
 	min-width: 150px;
-	box-shadow: 0 4px 9px var(--kb-shadow);
+	box-shadow: var(--kb-shadow-x) calc(4px + var(--kb-shadow-y)) 9px var(--kb-shadow);
 }
 
 #Header a{
@@ -2099,7 +2099,7 @@ ul li{
 
 .big_button:active{
 	background-color:var(--kb-big-button-active-bg);
-	box-shadow: 0 0 2px var(--kb-shadow-strong);;
+	box-shadow: var(--kb-shadow-x) var(--kb-shadow-y) 2px var(--kb-shadow-strong);;
 }
 
 #ShareLogo{

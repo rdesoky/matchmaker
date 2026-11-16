@@ -328,7 +328,7 @@
 	/* border-width:1px 1px 0 1px; */
 	
 	border-radius: 8px 8px 0 0;
-	box-shadow: 0 0 4px var(--kb-shadow);
+	box-shadow: var(--kb-shadow-x) var(--kb-shadow-y) 4px var(--kb-shadow);
 }
 
 .menu_dock{
@@ -675,7 +675,7 @@ border-radius: 50px;
 	background-repeat:no-repeat;
 	background-position:50% 20%;
 	background-color:var(--kb-drill-bg-raised);
-	box-shadow: 2px 2px 2px var(--kb-shadow-faint);
+	box-shadow: calc(2px + var(--kb-shadow-x)) calc(2px + var(--kb-shadow-y)) 2px var(--kb-shadow-faint);
 	line-height: 100px;
 }
 .drill_btn>span{
@@ -718,10 +718,10 @@ border-radius: 50px;
 	border-color:var(--kb-drill-hover-border);
 	background-color:var(--kb-drill-hover-bg-raised);
 	cursor:pointer;
-	box-shadow: 0 0 8px var(--kb-shadow);
+	box-shadow: var(--kb-shadow-x) var(--kb-shadow-y) 8px var(--kb-shadow);
 }
 .drill_btn:active{
-	box-shadow: 0 0 3px var(--kb-shadow);
+	box-shadow: var(--kb-shadow-x) var(--kb-shadow-y) 3px var(--kb-shadow);
 }
 
 .summary_line{
@@ -810,7 +810,7 @@ border-radius: 50px;
 	bottom: 0;
 	left: 0;
 	right: 0;
-	box-shadow: 0 -1px 5px var(--kb-shadow);
+	box-shadow: var(--kb-shadow-x) calc(-1px + var(--kb-shadow-y)) 5px var(--kb-shadow);
 	background-color: var(--kb-surface);
 	opacity: .9;
 }
@@ -963,7 +963,7 @@ border-radius: 50px;
 .dr_st{background-image:url(/images/state_map.jpg);}
 .dr_ci{background-image:url(/images/city.gif);}
 
-.payment_btn{width:110px; /* height: 120px; */font-size:12pt;line-height: 135px;background-color: var(--kb-surface);background-repeat: no-repeat;background-position: center 10px;margin: 10px !important;box-shadow: 0 0 9px var(--kb-shadow);}
+.payment_btn{width:110px; /* height: 120px; */font-size:12pt;line-height: 135px;background-color: var(--kb-surface);background-repeat: no-repeat;background-position: center 10px;margin: 10px !important;box-shadow: var(--kb-shadow-x) var(--kb-shadow-y) 9px var(--kb-shadow);}
 .btn_phone_tr{background-image:url(/images/vodafone_cards.png);}
 
 .edit_icon{
@@ -1598,7 +1598,7 @@ form[name="searchFrm"] select{
 	background-color:var(--kb-card-bg-strong);
 	min-height: 30px;
 	/* max-width: 620px; */
-	box-shadow: 2px 2px 2px var(--kb-shadow-faint);
+	box-shadow: calc(2px + var(--kb-shadow-x)) calc(2px + var(--kb-shadow-y)) 2px var(--kb-shadow-faint);
 }
 
 .drill_hdr_btn{
@@ -1705,7 +1705,7 @@ form[name="searchFrm"] select{
 	background-color: var(--kb-warning-surface);
 	padding: 5px;
 	margin: 10px 0;
-	box-shadow: 0 0 8px var(--kb-shadow);
+	box-shadow: var(--kb-shadow-x) var(--kb-shadow-y) 8px var(--kb-shadow);
 	color: var(--kb-privacy-help-text);
 }
 #PrivacyHelp:lang(ar){
@@ -1842,7 +1842,7 @@ form[name="searchFrm"] select{
 	background-color:var(--kb-qanswers-bg);
 	padding:0;
 	margin-top:15px;
-	box-shadow: 0 0 4px var(--kb-shadow-soft);
+	box-shadow: var(--kb-shadow-x) var(--kb-shadow-y) 4px var(--kb-shadow-soft);
 }
 .profile_menu:lang(ar){
 	left:auto;
@@ -1972,7 +1972,7 @@ form[name="searchFrm"] select{
 }
 
 .answer_simple_result:active{
-	box-shadow: 0 0 1px var(--kb-shadow-strong);
+	box-shadow: var(--kb-shadow-x) var(--kb-shadow-y) 1px var(--kb-shadow-strong);
 }
 
 .answer_simple_result:hover{

@@ -159,7 +159,7 @@ line-height: 40px;
 	/* border-style: solid; */
 	color: var(--kb-text);
 	border-radius: 8px 8px 0px 0px;
-	box-shadow: 0px 0px 4px var(--kb-shadow-soft);
+	box-shadow: var(--kb-shadow-x) var(--kb-shadow-y) 4px var(--kb-shadow-soft);
 }
 
 #MTabs .ctab:lang(ar){

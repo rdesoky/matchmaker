@@ -53,7 +53,7 @@
 	/* border-color: var(--kb-chat-border); */
 	border-radius: 7px;
 	background-color: var(--kb-chat-bubble-bg);
-	box-shadow: 0 0 5px var(--kb-shadow);
+	box-shadow: var(--kb-shadow-x) var(--kb-shadow-y) 5px var(--kb-shadow);
 	padding-bottom: 1px;
 	float: left;
 	max-width: 70%;
@@ -278,7 +278,7 @@ form[name=ChatEditor] select{
 	right: 0;
 	/* height: 160px; */
 	/* background-color: var(--kb-surface); */
-	box-shadow: 0px -1px 10px var(--kb-shadow);
+	box-shadow: var(--kb-shadow-x) calc(-1px + var(--kb-shadow-y)) 10px var(--kb-shadow);
 }
 #ChatBody:lang(ar), .chat_side:lang(ar){
 	/*float:right;*/

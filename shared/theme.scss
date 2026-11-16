@@ -132,7 +132,7 @@
     /* Checked sort chip label: danger-strong in light, link in dark. */
     --kb-sort-checked-text: #800000;
     /* Home call-to-action button: hover-soft in light, raised surfaces in dark. */
-    --kb-big-button-shadow: 0 0 5px var(--kb-shadow);
+    --kb-big-button-shadow: var(--kb-shadow-x) var(--kb-shadow-y) 5px var(--kb-shadow);
     --kb-big-button-hover-bg: #e6e6fa;
     --kb-big-button-active-bg: transparent;
     /* Drill tiles: v2 is transparent, v3 is a raised surface; both go surface-3 in dark. */
@@ -306,6 +306,10 @@
     --kb-shadow-soft: rgba(0, 0, 0, 0.2);
     --kb-shadow: rgba(0, 0, 0, 0.5);
     --kb-shadow-strong: rgba(0, 0, 0, 0.8);
+    /* Shadow direction: every shadow is centred in light and drops right and
+       bottom in dark, where a centred glow would hide under the element. */
+    --kb-shadow-x: 0px;
+    --kb-shadow-y: 0px;
     --kb-overlay: rgba(0, 0, 0, 0.3);
     --kb-blocker-bg: #ffffff;
     /* Result blocker: surface in light, page in dark. */
@@ -333,7 +337,9 @@
     --kb-tip-border: var(--kb-border-contrast);
     --kb-filter-box-border: currentColor;
     --kb-flat-btn-bg: #ffffff;
-    --kb-card-shadow: 0 0 5px var(--kb-shadow-soft);
+    --kb-card-shadow: var(--kb-shadow-x) var(--kb-shadow-y) 5px var(--kb-shadow-soft);
+    /* Header bar shadow: shallow, because the bar is wide and fixed to the top. */
+    --kb-header-shadow: 0 2px 2px var(--kb-shadow-soft);
     --kb-debug-frame-bg: transparent;
     --kb-shadow-box: 5px 5px 10px var(--kb-text-shadow);
     /* Data-view table and row hover: light surfaces, dark row tint. */
@@ -345,7 +351,7 @@
     /* Sort bar: surface in light, transparent in dark. */
     --kb-sort-bar-bg: #ffffff;
     /* Result card shadow: soft in light, stronger in dark. */
-    --kb-result-item-shadow: 0 0 5px var(--kb-shadow-soft);
+    --kb-result-item-shadow: var(--kb-shadow-x) var(--kb-shadow-y) 5px var(--kb-shadow-soft);
     /* Question browser container: transparent in light, surface in dark. */
     --kb-qanswers-bg: transparent;
     /* Question row hover: card surface in light, surface-3 in dark. */
@@ -356,9 +362,9 @@
     /* Button hover bevel: light bevel in light, border-strong in dark. */
     --kb-button-hover-border: var(--kb-bevel-dark) var(--kb-bevel-light) var(--kb-bevel-light) var(--kb-bevel-dark);
     /* Decline form shadow: currentColor in light, strong shadow in dark. */
-    --kb-decline-shadow: 0 0 7px;
+    --kb-decline-shadow: var(--kb-shadow-x) var(--kb-shadow-y) 7px;
     /* Dropdown menu shadow: soft in light, strong in dark. */
-    --kb-menu-shadow: 0 0 10px var(--kb-shadow);
+    --kb-menu-shadow: var(--kb-shadow-x) var(--kb-shadow-y) 10px var(--kb-shadow);
     --kb-popup-list-shadow: none;
     /* Privacy explainer label: strong text in light, warning text in dark. */
     --kb-privacy-help-text: #444444;
@@ -370,9 +376,9 @@
     --kb-login-name-help-border: currentColor;
     /* Member profile card and tab frame: soft edges in light, border/shadow in dark. */
     --kb-profile-border: #dddddd;
-    --kb-profile-shadow: 0px 1px 5px var(--kb-shadow-soft);
+    --kb-profile-shadow: var(--kb-shadow-x) calc(1px + var(--kb-shadow-y)) 5px var(--kb-shadow-soft);
     --kb-tabs-border: var(--kb-bevel-light) var(--kb-border-strong) var(--kb-border-strong) var(--kb-border-strong);
-    --kb-tabs-shadow: 0px 0px 4px var(--kb-shadow-soft);
+    --kb-tabs-shadow: var(--kb-shadow-x) var(--kb-shadow-y) 4px var(--kb-shadow-soft);
 }
 
 html[data-theme="dark"] {
@@ -460,7 +466,7 @@ html[data-theme="dark"] {
     --kb-dv-sel-hover-text: #ffffff;
     --kb-btn-active-text: #7cb7ff;
     --kb-sort-checked-text: #7cb7ff;
-    --kb-big-button-shadow: 0 1px 4px var(--kb-shadow-strong);
+    --kb-big-button-shadow: var(--kb-shadow-x) calc(1px + var(--kb-shadow-y)) 4px var(--kb-shadow-strong);
     --kb-big-button-hover-bg: #35404d;
     --kb-big-button-active-bg: #232b33;
     --kb-drill-bg: #2a333d;
@@ -562,7 +568,7 @@ html[data-theme="dark"] {
     --kb-inactive-bg: #3a3520;
     --kb-total-bg: #2f5f8f;
     --kb-total-text: #ffffff;
-    --kb-total-shadow: 0 1px 6px var(--kb-shadow-strong);
+    --kb-total-shadow: var(--kb-shadow-x) calc(1px + var(--kb-shadow-y)) 6px var(--kb-shadow-strong);
     --kb-hover-accent-bg: #2a333d;
 
     /* Cards, photos, chat and overlays ------------------------------------- */
@@ -601,10 +607,15 @@ html[data-theme="dark"] {
     --kb-scroll-btn-border: #8a4a4a;
 
     /* Effects -------------------------------------------------------------- */
-    --kb-shadow-faint: rgba(0, 0, 0, 0.35);
-    --kb-shadow-soft: rgba(0, 0, 0, 0.2);
-    --kb-shadow: rgba(0, 0, 0, 0.5);
-    --kb-shadow-strong: rgba(0, 0, 0, 0.8);
+    /* Dark surfaces swallow a black shadow, so the dark theme flips the shadow
+       tokens to a bright tint: the edges light up instead of darkening. */
+    --kb-shadow-faint: rgba(124, 183, 255, 0.1);
+    --kb-shadow-soft: rgba(124, 183, 255, 0.16);
+    --kb-shadow: rgba(124, 183, 255, 0.22);
+    --kb-shadow-strong: rgba(124, 183, 255, 0.3);
+    /* Raised off the surface, so the bright tint falls right and bottom. */
+    --kb-shadow-x: 2px;
+    --kb-shadow-y: 2px;
     --kb-overlay: rgba(0, 0, 0, 0.3);
     --kb-blocker-bg: #11151a;
     --kb-res-blocker-bg: #11151a;
@@ -622,7 +633,7 @@ html[data-theme="dark"] {
     --kb-filter-href-hover-text: #ffffff;
     --kb-menu-seltab-border: #4b5765;
     --kb-mempic-border: #3a4551;
-    --kb-mempic-shadow: 0 1px 5px var(--kb-shadow);
+    --kb-mempic-shadow: var(--kb-shadow-x) calc(1px + var(--kb-shadow-y)) 5px var(--kb-shadow);
     --kb-qlist-bg: #1b2229;
     --kb-tn-frame-pic-border: #1b2229;
     --kb-answer-text-border: #3a4551;
@@ -630,7 +641,8 @@ html[data-theme="dark"] {
     --kb-tip-border: #4b5765;
     --kb-filter-box-border: #3a4551;
     --kb-flat-btn-bg: transparent;
-    --kb-card-shadow: 0 0 5px var(--kb-shadow);
+    --kb-card-shadow: var(--kb-shadow-x) var(--kb-shadow-y) 5px var(--kb-shadow);
+    --kb-header-shadow: 2px 2px 2px var(--kb-shadow-soft);
     --kb-debug-frame-bg: #1b2229;
     --kb-shadow-box: 5px 5px 10px var(--kb-shadow-strong);
     --kb-dv-table-bg: #1b2229;
@@ -644,18 +656,18 @@ html[data-theme="dark"] {
     --kb-result-border: #3a4551;
     --kb-tn-frame-border: #3a4551;
     --kb-button-hover-border: var(--kb-bevel-dark) var(--kb-border-strong) var(--kb-border-strong) var(--kb-bevel-dark);
-    --kb-decline-shadow: 0 0 7px var(--kb-shadow-strong);
-    --kb-menu-shadow: 0 0 10px var(--kb-shadow-strong);
-    --kb-popup-list-shadow: 0 0 10px var(--kb-shadow-strong);
+    --kb-decline-shadow: var(--kb-shadow-x) var(--kb-shadow-y) 7px var(--kb-shadow-strong);
+    --kb-menu-shadow: var(--kb-shadow-x) var(--kb-shadow-y) 6px var(--kb-shadow-strong);
+    --kb-popup-list-shadow: var(--kb-shadow-x) var(--kb-shadow-y) 6px var(--kb-shadow-strong);
     --kb-privacy-help-text: #e4d9a4;
     --kb-header-logo-hover-bg: transparent;
     --kb-main-logo-hover-bg: #eeeeee;
     --kb-login-name-help-bg: var(--kb-warning-bg);
     --kb-login-name-help-border: var(--kb-warning-border);
     --kb-profile-border: #3a4551;
-    --kb-profile-shadow: 0 1px 5px var(--kb-shadow);
+    --kb-profile-shadow: var(--kb-shadow-x) calc(1px + var(--kb-shadow-y)) 5px var(--kb-shadow);
     --kb-tabs-border: #3a4551;
-    --kb-tabs-shadow: 0 1px 5px var(--kb-shadow);
+    --kb-tabs-shadow: var(--kb-shadow-x) calc(1px + var(--kb-shadow-y)) 5px var(--kb-shadow);
 
     background-color: var(--kb-page);
 
@@ -834,7 +846,7 @@ html[data-theme="dark"] {
     .form_frame {
         background-color: var(--kb-surface-3);
         border: 1px solid var(--kb-border);
-        box-shadow: 0 2px 8px var(--kb-shadow-strong);
+        box-shadow: var(--kb-shadow-x) calc(2px + var(--kb-shadow-y)) 8px var(--kb-shadow-strong);
     }
 
     .form_title {
@@ -1170,7 +1182,7 @@ html[data-theme="dark"] {
 }
 
 .seltab:not(.tab_panel) {
-    background-color: var(--kb-seltab-bg);
+    /* background-color:var(--kb-seltab-bg); */
 }
 
 .visit_heart.hidden_acceptance,

@@ -15,9 +15,10 @@
 	background-color: var(--kb-card-bg-strong);
 	/* box-shadow: 2px 2px var(--kb-border-strong); */
 	/*padding: 3px;*/
-	-webkit-box-shadow: 2px 2px 2px var(--kb-shadow-faint);
-	-moz-box-shadow: 2px 2px 2px var(--kb-shadow-faint);
+	-webkit-box-shadow: calc(2px + var(--kb-shadow-x)) calc(2px + var(--kb-shadow-y)) 2px var(--kb-shadow-faint);
+	-moz-box-shadow: calc(2px + var(--kb-shadow-x)) calc(2px + var(--kb-shadow-y)) 2px var(--kb-shadow-faint);
 	box-shadow: var(--kb-result-item-shadow);
+	padding: 1px;// to preserve the inset shadow of the result item, which is 1px inset shadow
 }
 
 @media (max-width:950px){
