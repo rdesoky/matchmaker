@@ -1153,17 +1153,25 @@ border-radius: 50px;
 	white-space:nowrap;
 }
 
-.my_visit_box{
-	margin-bottom: 1px;
-	background-position: bottom center;
-	/* min-height: 30px; */
+.visit_box{
+	background-color:var(--kb-visit-box-bg);
+	position:relative;
+	padding: 5px 0 0;
+	min-height: 36px;
 }
 
-.visit_box{
-	background-repeat:no-repeat;
-	background-color:var(--kb-card-bg);
-	position:relative;
-	padding: 5px 0 15px;
+/* Arrow: a square rotated 45deg straddling the box edge. Its colour matches
+   the surface it grows out of, so only the protruding half shows as a V. */
+.my_visit_box::after,
+.visitor_box::after{
+	content:"";
+	position:absolute;
+	left:50%;
+	width:14px;
+	height:14px;
+	margin-left:-7px;
+	transform:rotate(45deg);
+	pointer-events:none;
 }
 
 .visit_box>div{
@@ -1182,15 +1190,24 @@ border-radius: 50px;
 .visitor_box{
 	/* min-height: 30px; */
 	margin-top: 15px;
-	padding: 10px 0 5px;
-	background-position:top center;
-	background-image: url(/images/visit.png);
+	padding: 14px 0 0;
+}
+
+/* The visitor arrow points up at the photo but belongs to the result card, so
+   it takes the card colour. */
+.visitor_box::after{
+	top: -7px;
+	background-color: var(--kb-card-bg-strong);
 }
 
 
 .my_visit_box{
-	background-image: url(/images/my_visit.png);
-	margin-bottom: 6px;
+	margin-bottom: 15px;
+}
+/* The my-visit arrow points down at the photo and shares the box colour. */
+.my_visit_box::after{
+	bottom: -7px;
+	background-color: var(--kb-visit-box-bg);
 }
 @media (max-width:640px){
 	.my_visit_box{
@@ -1225,17 +1242,13 @@ border-radius: 50px;
 }
 .my_visit_box .visit_heart{
 	right:0;
-	/* float: left; */
-	bottom: -18px;
+	bottom: -26px;
 	top: auto;
 
 	&:lang(ar){
 		right:auto;
 		left:0;
 	}
-}
-.visit_heart:lang(ar){
-    /* float: left; */
 }
 .rank_btn{
 	display:inline-block;

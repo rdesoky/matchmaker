@@ -40,6 +40,10 @@
     --kb-card-bg-raised: #ffffff;
     /* Soft raised surface: surface-2 in both themes. */
     --kb-card-bg-soft: var(--kb-surface-2);
+    /* Visit box above/below the profile photo, and its down arrow. A step away
+       from --kb-card-bg-strong (darker in light, brighter in dark) so the box
+       and arrow stay visible on a result item. */
+    --kb-visit-box-bg: #dddddd;
     /* Table header/scroll pad: surface-3 in both themes. */
     --kb-card-bg-status: var(--kb-surface-3);
     /* Hovered card/control: surface-3 in light, surface-hover-strong in dark. */
@@ -395,6 +399,7 @@ html[data-theme="dark"] {
     --kb-card-bg-strong: #232b33;
     --kb-card-bg-raised: #2a333d;
     --kb-card-bg-soft: var(--kb-surface-2);
+    --kb-visit-box-bg: #3a4654;
     --kb-card-bg-status: var(--kb-surface-3);
     --kb-card-hover-bg: #35404d;
     --kb-surface-hover: #313c49;
