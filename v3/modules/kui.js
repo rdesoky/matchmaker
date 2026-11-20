@@ -391,12 +391,12 @@ define(["jquery","page-nav","js-promise","dom-utils","utils","http"],function($,
 		initAnswerHMenu:function(el, $d) {
 			var $menu = $du.initMenuBtn(el, $d);
 			$menu.click(function(e) {
-				var $btn = $(e.target);
+				var $btn = $du.menuItem(e.target);
 				var menu_id = $btn.attr("data-menu-id");
 				switch (menu_id) {
 					case "hide_kobool":
 					case "show_kobool":
-						require(["kaction"],function(kact){
+						require(["kactions"],function(kact){
 							kact.toggleWishVisibility($btn,$d);
 						});
 						break;
@@ -424,7 +424,11 @@ define(["jquery","page-nav","js-promise","dom-utils","utils","http"],function($,
 						module.confirm( "a.sure",
 							function(){
 								$http.postUpdate( $http.api.post_answer,
-									{qid:$d.question, id:$d.member, answer:""},
+									{
+										qid:_N($d.question) || $d.question_text_id,
+										id:_N($d.member) || SSN.id,
+										answer:""
+									},
 									function(t,x){
 										$(el).parent().remove();
 										$("#MNewQ,#MAnswers").attr("memid",null);
@@ -455,7 +459,8 @@ define(["jquery","page-nav","js-promise","dom-utils","utils","http"],function($,
 		initMemberHMenu:function(el, memInfo){
 			var $menu = $du.initMenuBtn(el, memInfo);
 			$menu.click(function(e){
-				var menu_id = $(e.target).attr("data-menu-id");
+				var $btn = $du.menuItem(e.target);
+				var menu_id = $btn.attr("data-menu-id");
 				switch(menu_id){
 					case "accept":
 						require(["kactions"],function(actions){
@@ -469,12 +474,12 @@ define(["jquery","page-nav","js-promise","dom-utils","utils","http"],function($,
 						break;
 					case "block":
 						require(["kactions"],function(actions){
-							actions.onclickBlock(memInfo, e.target);}
+							actions.onclickBlock(memInfo, $btn.dom());}
 						);
 						break;
 					case "unblock":
 						require(["kactions"],function(actions){
-							actions.onclickBlock(memInfo, e.target);
+							actions.onclickBlock(memInfo, $btn.dom());
 						});
 						break;
 					case "ask":
