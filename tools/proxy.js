@@ -1,8 +1,8 @@
 'use strict';
 
 /**
- * Same-origin proxy for /cgi-bin/* -> http://aws.kobool.com/cgi-bin/*
- * (aws.kobool.com is the current dev API host and serves the CGI over http;
+ * Same-origin proxy for /cgi-bin/* -> http://dev.kobool.com/cgi-bin/*
+ * (dev.kobool.com is the current dev API host and serves the CGI over http;
  * it does not accept https connections yet.)
  *
  * Used by tools/serve.js (local development) and by the private admin CLI.
@@ -19,7 +19,7 @@ const http = require('http');
 const https = require('https');
 const { URL } = require('url');
 
-const DEFAULT_TARGET = process.env.KOBOOL_API_TARGET || 'http://aws.kobool.com';
+const DEFAULT_TARGET = process.env.KOBOOL_API_TARGET || 'http://dev.kobool.com';
 const FORWARDED_HEADERS = ['content-type', 'content-length', 'sid', 'accept', 'authorization', 'cookie'];
 
 function createProxy(options) {
