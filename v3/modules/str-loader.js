@@ -75,9 +75,21 @@ define(["js-promise","http","utils","shortcuts"],function(CPromise,http,$u,_){
 				strBase = "str:" + strBase;
 			}
 
-			_H(el,"&nbsp;");
+			// Templates call _HS on every [data-string] node, so a declarative
+			// target (data-string-attr / data-string-template) must be honoured
+			// here too: otherwise a placeholder or button label ends up in the
+			// element's value instead of its attribute.
+			var attr = el.getAttribute && el.getAttribute("data-string-attr");
+			var template = el.getAttribute && el.getAttribute("data-string-template");
 
 			function setTxt(txt){
+				if( template ){
+					txt = template.replace(/\{s\}/g, function(){ return txt; });
+				}
+				if( attr ){
+					el.setAttribute(attr, txt);
+					return;
+				}
 				// tagName is upper-case in HTML documents, so compare case-insensitively.
 				switch((el.tagName || "").toLowerCase()){
 					case "input":
@@ -88,7 +100,13 @@ define(["js-promise","http","utils","shortcuts"],function(CPromise,http,$u,_){
 						el.innerHTML = txt;
 				}
 			}
-			setTxt("&nbsp;");
+
+			// Attribute targets keep the literal value authored in the markup
+			// until the bundle lands; blanking it would flash an empty label.
+			if( !attr ){
+				_H(el,"&nbsp;");
+				setTxt("&nbsp;");
+			}
 
 			self.requireStrings( strBase, function(){
 				var strVal = self.getString(strID);

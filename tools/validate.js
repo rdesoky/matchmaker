@@ -17,7 +17,7 @@
  *   - Sass sources or partials leaking into dist/ (they are build inputs; the
  *     pages link the .css that compileStyles() emits)
  *
- * The API base is scheme-relative (//dev.kobool.com/cgi-bin/), so it inherits
+ * The API base is scheme-relative (//api.kobool.com/cgi-bin/), so it inherits
  * the page's own scheme. An explicit http:// base is warned about: the site is
  * served over https, so the browser would block it as mixed active content.
  */

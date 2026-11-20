@@ -42,13 +42,12 @@ const DIST = path.join(ROOT, 'dist');
 // page is served from localhost or 127.0.0.1, so a local preview of any
 // environment build stays same-origin and goes through the serve proxy.
 //
-// The base is scheme-relative (//dev.kobool.com) so it inherits the page's own
+// The base is scheme-relative (//api.kobool.com) so it inherits the page's own
 // scheme: http today, https once TLS is terminated in front of the API host.
-// Switch to //api.kobool.com/cgi-bin/ once that host serves the CGI.
 const ENVIRONMENTS = {
     dev: { apiBase: '/cgi-bin/', cname: null },
-    staging: { apiBase: '//dev.kobool.com/cgi-bin/', cname: 'staging.kobool.com' },
-    prod: { apiBase: '//dev.kobool.com/cgi-bin/', cname: 'www.kobool.com' }
+    staging: { apiBase: '//api.kobool.com/cgi-bin/', cname: 'staging.kobool.com' },
+    prod: { apiBase: '//api.kobool.com/cgi-bin/', cname: 'www.kobool.com' }
 };
 
 // Never copied into dist/, regardless of where they appear.

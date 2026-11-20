@@ -1000,6 +1000,14 @@ html[data-theme="dark"] {
            icon-only, so no label is affected. */
         filter: invert(1) brightness(1.2);
     }
+
+    /* The header menu handle's drop-down arrow is a near-black 9x9 raster
+       (/images/ddown_arrow.png) that disappears on the dark header. Keep the
+       base rule's position/repeat and swap only the image for a light
+       triangle. */
+    .menu_handle {
+        background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='9' height='9' viewBox='0 0 9 9'><path d='M1 3h7L4.5 7z' fill='%23e6e9ee'/></svg>");
+    }
 }
 
 /* Native form controls --------------------------------------------------- */

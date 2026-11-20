@@ -419,8 +419,67 @@ test('strings binder: language resolution prefers cookie, falls back to default'
     assert.match(src, /supportedLangs: \['ar', 'en'\]/);
 });
 
+test('v3 str-loader: data-string-attr targets are not written as values', () => {
+    // k-template calls _HS on every [data-string] node, so a placeholder or a
+    // button label declared with data-string-attr must land in that attribute,
+    // not in the element's value.
+    const vm = require('vm');
+    const code = fs.readFileSync(path.join(ROOT, 'v3', 'modules', 'str-loader.js'), 'utf8');
+    const strings = { 'str:feedback_link': 'Write personal memo on this member' };
+
+    function StubPromise() {}
+    StubPromise.prototype.resolve = function () { return this; };
+    StubPromise.all = function () { return new StubPromise(); };
+    StubPromise.as = function () { return new StubPromise(); };
+
+    let loader;
+    const sandbox = {
+        window: {
+            KStrings: {
+                loadBundle() { return { then(resolve) { resolve(true); } }; },
+                getString(id) { return strings[id]; }
+            }
+        },
+        define(deps, factory) { loader = factory(StubPromise, {}, {}, {}); },
+        _E(el) { return el; },
+        _H(el, html) { el.innerHTML = html; },
+        _A(el, txt) { el.textContent = txt; return el; },
+        Promise,
+        console
+    };
+    sandbox.globalThis = sandbox;
+    vm.createContext(sandbox);
+    vm.runInContext(code, sandbox);
+
+    function fakeEl(attrs, tagName) {
+        return {
+            tagName,
+            value: '',
+            innerHTML: '',
+            attributes: Object.assign({}, attrs),
+            getAttribute(name) {
+                return this.attributes[name] === undefined ? null : this.attributes[name];
+            },
+            setAttribute(name, val) { this.attributes[name] = val; }
+        };
+    }
+
+    const memo = fakeEl({
+        'data-string': 'str:feedback_link',
+        'data-string-attr': 'placeholder',
+        'data-string-template': '>{s}'
+    }, 'TEXTAREA');
+    loader.setHTML(memo, 'str:feedback_link');
+    assert.strictEqual(memo.value, '', 'the prompt must not become the textarea value');
+    assert.strictEqual(memo.attributes.placeholder, '>Write personal memo on this member');
+
+    const plain = fakeEl({}, 'TEXTAREA');
+    loader.setHTML(plain, 'str:feedback_link');
+    assert.strictEqual(plain.value, 'Write personal memo on this member');
+});
+
 test('proxy: DEFAULT_TARGET points at the current dev API host', () => {
-    assert.strictEqual(DEFAULT_TARGET, 'http://aws.kobool.com');
+    assert.strictEqual(DEFAULT_TARGET, 'http://dev.kobool.com');
 });
 
 test('validate: an http:// API base warns because the site is served over https', () => {
@@ -428,7 +487,7 @@ test('validate: an http:// API base warns because the site is served over https'
     const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'kobool-mixed-'));
     const distShared = path.join(dir, 'shared');
     fs.mkdirSync(distShared, { recursive: true });
-    fs.writeFileSync(path.join(distShared, 'config.js'), 'window.APP_CONFIG={apiBase:"http://dev.kobool.com/cgi-bin/"};');
+    fs.writeFileSync(path.join(distShared, 'config.js'), 'window.APP_CONFIG={apiBase:"http://api.kobool.com/cgi-bin/"};');
     fs.writeFileSync(path.join(dir, 'index.html'), '<html><head></head><body>hi</body></html>');
 
     // staging.kobool.com redirects http -> https, so the page is https and an
@@ -451,7 +510,7 @@ test('validate: a scheme-relative API base is accepted without warnings', () => 
     const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'kobool-https-'));
     const distShared = path.join(dir, 'shared');
     fs.mkdirSync(distShared, { recursive: true });
-    fs.writeFileSync(path.join(distShared, 'config.js'), 'window.APP_CONFIG={apiBase:"//dev.kobool.com/cgi-bin/"};');
+    fs.writeFileSync(path.join(distShared, 'config.js'), 'window.APP_CONFIG={apiBase:"//api.kobool.com/cgi-bin/"};');
     fs.writeFileSync(path.join(dir, 'index.html'), '<html><head></head><body>hi</body></html>');
 
     for (const env of ['staging', 'prod']) {
@@ -475,13 +534,13 @@ test('build: rewriteApiBase points hardcoded kpic.pl URLs at the API host', () =
         '<a href="/v3/pages/home.html">x</a>'
     ].join('\n'));
 
-    const changed = rewriteApiBase(dir, '//dev.kobool.com/cgi-bin/');
+    const changed = rewriteApiBase(dir, '//api.kobool.com/cgi-bin/');
     const out = fs.readFileSync(file, 'utf8');
     fs.rmSync(dir, { recursive: true, force: true });
 
     assert.strictEqual(changed, 1);
-    assert.match(out, /src="\/\/dev\.kobool\.com\/cgi-bin\/kpic\.pl\?tn=1&amp;id=1&amp;g=1"/);
-    assert.match(out, /src="\/\/dev\.kobool\.com\/cgi-bin\/kpic\.pl\?tn=1&amp;id=2&amp;g=0"/);
+    assert.match(out, /src="\/\/api\.kobool\.com\/cgi-bin\/kpic\.pl\?tn=1&amp;id=1&amp;g=1"/);
+    assert.match(out, /src="\/\/api\.kobool\.com\/cgi-bin\/kpic\.pl\?tn=1&amp;id=2&amp;g=0"/);
     // Only kpic.pl URLs are rewritten; the uploader now posts via XHR from
     // APP_CONFIG.apiBase, so its form carries no static /cgi-bin/ action.
     assert.match(out, /action="\/cgi-bin\/upload_pic\.pl"/);
@@ -507,7 +566,7 @@ test('validate: a root-absolute /cgi-bin/ URL in a page fragment is an error', (
     fs.mkdirSync(path.join(dir, 'shared'), { recursive: true });
     fs.writeFileSync(
         path.join(dir, 'shared', 'config.js'),
-        'window.APP_CONFIG={apiBase:"//dev.kobool.com/cgi-bin/"};'
+        'window.APP_CONFIG={apiBase:"//api.kobool.com/cgi-bin/"};'
     );
     fs.writeFileSync(path.join(dir, 'index.html'), '<html><head></head><body>hi</body></html>');
     fs.writeFileSync(path.join(dir, 'page.html'), '<img src="/cgi-bin/kpic.pl?tn=1"/>');
@@ -574,7 +633,7 @@ function evalConfigForHost(host) {
     const vm = require('vm');
     const src = fs.readFileSync(path.join(ROOT, 'shared', 'config.js'), 'utf8');
     // Simulate the build baking a cross-origin API base into the dist config.
-    const built = src.replace(/apiBase:\s*'[^']*'/, "apiBase: '//dev.kobool.com/cgi-bin/'");
+    const built = src.replace(/apiBase:\s*'[^']*'/, "apiBase: '//api.kobool.com/cgi-bin/'");
     const window = {
         location: { hostname: host },
         document: {
@@ -597,7 +656,7 @@ test('config: localhost and 127.0.0.1 force the same-origin API base', () => {
 test('config: other hosts keep the baked API base', () => {
     assert.strictEqual(
         evalConfigForHost('staging.kobool.com'),
-        '//dev.kobool.com/cgi-bin/'
+        '//api.kobool.com/cgi-bin/'
     );
 });
 
@@ -607,7 +666,7 @@ test('validate: shared/config.js host detection is exempt from the localhost rul
     const distShared = path.join(dir, 'shared');
     fs.mkdirSync(distShared, { recursive: true });
     fs.writeFileSync(path.join(distShared, 'config.js'), [
-        'window.APP_CONFIG={apiBase:"//dev.kobool.com/cgi-bin/"};',
+        'window.APP_CONFIG={apiBase:"//api.kobool.com/cgi-bin/"};',
         '(function(g){var h=g.location&&g.location.hostname;if(h==="localhost"||h==="127.0.0.1"){g.APP_CONFIG.apiBase="/cgi-bin/";}})(window);'
     ].join('\n'));
     fs.writeFileSync(path.join(dir, 'index.html'), '<html><head></head><body>hi</body></html>');
@@ -899,9 +958,9 @@ test('smoke: dist builds and validates cleanly', { timeout: 120000 }, () => {
     });
 
     // dist must contain the config pointing at the CORS-enabled API host
-    // (currently dev.kobool.com, scheme-relative).
+    // (currently api.kobool.com, scheme-relative).
     const distConfig = fs.readFileSync(path.join(ROOT, 'dist', 'shared', 'config.js'), 'utf8');
-    assert.match(distConfig, /\/\/dev\.kobool\.com\/cgi-bin\//);
+    assert.match(distConfig, /\/\/api\.kobool\.com\/cgi-bin\//);
 
     // Page fragments must not keep root-absolute /cgi-bin/ URLs: the site
     // origin serves static files only, so those requests 404.
@@ -910,7 +969,7 @@ test('smoke: dist builds and validates cleanly', { timeout: 120000 }, () => {
         !/["']\/cgi-bin\/kpic\.pl/.test(templates),
         'templates.html must not reference /cgi-bin/kpic.pl on the site origin'
     );
-    assert.match(templates, /\/\/dev\.kobool\.com\/cgi-bin\/kpic\.pl/);
+    assert.match(templates, /\/\/api\.kobool\.com\/cgi-bin\/kpic\.pl/);
 
     // The picture uploader must post via XHR to APP_CONFIG.apiBase: a
     // root-absolute form action would hit the static site origin (405), and
