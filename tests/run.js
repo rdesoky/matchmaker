@@ -301,8 +301,9 @@ test('build: minify writes a source map next to every JS and CSS file', async ()
         assert.strictEqual(map.sourcesContent.length, 1, 'the original source must be embedded');
         assert.ok(map.mappings.length > 0, 'the map must carry mappings');
     }
-    assert.strictEqual(jsMap.sources[0], path.join(dir, 'app.js'));
-    assert.strictEqual(cssMap.sources[0], path.join(dir, 'css', 'base.css'));
+    // esbuild writes source-map paths with forward slashes; compare natively.
+    assert.strictEqual(path.normalize(jsMap.sources[0]), path.join(dir, 'app.js'));
+    assert.strictEqual(path.normalize(cssMap.sources[0]), path.join(dir, 'css', 'base.css'));
     assert.ok(path.isAbsolute(jsMap.sources[0]), 'sources must be absolute paths');
     assert.ok(path.isAbsolute(cssMap.sources[0]), 'sources must be absolute paths');
 });
@@ -476,6 +477,105 @@ test('v3 str-loader: data-string-attr targets are not written as values', () => 
     const plain = fakeEl({}, 'TEXTAREA');
     loader.setHTML(plain, 'str:feedback_link');
     assert.strictEqual(plain.value, 'Write personal memo on this member');
+});
+
+test('v3 kui: clicking the Remove Answer label deletes the answer', () => {
+    // The menu items are <li data-menu-id="delete"><span>Remove Answer</span></li>.
+    // The click target is the span, so the handler must resolve the enclosing
+    // menu item instead of reading data-menu-id off e.target (which is null).
+    const vm = require('vm');
+    const calls = [];
+    const httpStub = {
+        api: { post_answer: 'qa/answer.pl' },
+        postUpdate(script, params, onLoad) {
+            calls.push({ script, params, onLoad });
+        }
+    };
+
+    let jq, $du, kui;
+    const sandbox = {
+        window: {},
+        document: { querySelectorAll() { return []; } },
+        HTMLCollection: function HTMLCollection() {},
+        NodeList: function NodeList() {},
+        SSN: { id: 99, gender: 0 },
+        _N(value) { return parseInt(value, 10) || 0; },
+        console,
+        setTimeout,
+        clearTimeout
+    };
+    sandbox.globalThis = sandbox;
+    sandbox.define = function (deps, factory) {
+        if (typeof deps === 'function') {
+            jq = deps();
+            return;
+        }
+        const map = {
+            jquery: jq,
+            'page-nav': {},
+            'js-promise': function StubPromise() {},
+            'dom-utils': $du,
+            utils: {},
+            http: httpStub
+        };
+        const result = factory.apply(null, deps.map((d) => map[d]));
+        if (deps[1] === 'kevents') {
+            $du = result;
+        } else {
+            kui = result;
+        }
+    };
+    sandbox.define.amd = {};
+
+    const read = (rel) => fs.readFileSync(path.join(ROOT, rel), 'utf8');
+    vm.createContext(sandbox);
+    vm.runInContext(read(path.join('v3', 'modules', 'js-query.js')), sandbox);
+    vm.runInContext(read(path.join('v3', 'modules', 'dom-utils.js')), sandbox);
+    vm.runInContext(read(path.join('v3', 'modules', 'kui.js')), sandbox);
+
+    function fakeNode(attrs, parent) {
+        return {
+            className: '',
+            attributes: attrs || {},
+            parentNode: parent || null,
+            getAttribute(name) {
+                return this.attributes[name] === undefined ? null : this.attributes[name];
+            }
+        };
+    }
+
+    const root = fakeNode();
+    root.removeChild = function (child) {
+        child.parentNode = null;
+        root.removed = child;
+    };
+    const card = fakeNode({}, root);
+    const menuList = fakeNode({}, card);
+    const item = fakeNode({ 'data-menu-id': 'delete' }, menuList);
+    const label = fakeNode({}, item);
+
+    const menu = { cb: null, click(cb) { this.cb = cb; } };
+    $du.initMenuBtn = () => menu;
+
+    let confirmMsg, onConfirm;
+    kui.confirm = (msg, cb) => {
+        confirmMsg = msg;
+        onConfirm = cb;
+    };
+
+    kui.initAnswerHMenu(menuList, { question: 42, member: 7, answer_text: 'x' });
+    menu.cb({ target: label });
+
+    assert.strictEqual(confirmMsg, 'a.sure', 'the label click must open the confirmation');
+    assert.strictEqual(typeof onConfirm, 'function');
+
+    onConfirm();
+    assert.strictEqual(calls.length, 1, 'confirming must post the delete');
+    assert.strictEqual(calls[0].script, 'qa/answer.pl');
+    assert.deepStrictEqual({ ...calls[0].params }, { qid: 42, id: 7, answer: '' });
+
+    calls[0].onLoad({}, null);
+    assert.strictEqual(root.removed, card, 'a successful delete must remove the answer item');
 });
 
 test('proxy: DEFAULT_TARGET points at the current dev API host', () => {
@@ -993,7 +1093,7 @@ test('smoke: dist builds and validates cleanly', { timeout: 120000 }, () => {
         assert.strictEqual(map.version, 3, `${rel}.map must be a v3 source map`);
         assert.ok(map.sourcesContent && map.sourcesContent.length, `${rel}.map must embed the source`);
         const expected = rel.endsWith('.css') ? rel.replace(/\.css$/, '.scss') : rel;
-        assert.strictEqual(map.sources[0], path.join(ROOT, expected), `${rel}.map must use the absolute source path`);
+        assert.strictEqual(path.normalize(map.sources[0]), path.join(ROOT, expected), `${rel}.map must use the absolute source path`);
     }
 
     // Stylesheets are authored in .scss and compiled to .css. The map must
@@ -1001,7 +1101,7 @@ test('smoke: dist builds and validates cleanly', { timeout: 120000 }, () => {
     // the file that is actually edited.
     for (const rel of [path.join('v3', 'css', 'base.scss'), path.join('shared', 'theme.scss')]) {
         const map = JSON.parse(fs.readFileSync(path.join(ROOT, 'dist', rel.replace(/\.scss$/, '.css.map')), 'utf8'));
-        assert.strictEqual(map.sources[0], path.join(ROOT, rel), `${rel} must be the mapped source`);
+        assert.strictEqual(path.normalize(map.sources[0]), path.join(ROOT, rel), `${rel} must be the mapped source`);
         assert.ok(map.sourcesContent[0].length > 0, `${rel} must be embedded in its map`);
     }
 

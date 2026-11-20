@@ -578,6 +578,22 @@ define(["jquery","kevents","utils","js-promise"], function($, $evt, $u, CPromise
 			return el;
 		},
 
+		/**
+		 * Nearest ancestor-or-self carrying a data-menu-id. Menu items are
+		 * <li data-menu-id="..."> wrappers whose visible label is a child
+		 * element, so a click event's target is rarely the item itself.
+		 */
+		menuItem: function (el) {
+			var node = el;
+			while (node && node.getAttribute) {
+				if (node.getAttribute("data-menu-id")) {
+					return $(node);
+				}
+				node = node.parentNode;
+			}
+			return $(el);
+		},
+
 		initMenuBtn: function (el, $d) {
 			var $mBtn =$(".brgr_menu",el);
 			if(!$mBtn.dom()){
