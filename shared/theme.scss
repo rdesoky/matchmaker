@@ -356,8 +356,6 @@
     --kb-sort-bar-bg: #ffffff;
     /* Result card shadow: soft in light, stronger in dark. */
     --kb-result-item-shadow: var(--kb-shadow-x) var(--kb-shadow-y) 5px var(--kb-shadow-soft);
-    /* Question browser container: transparent in light, surface in dark. */
-    --kb-qanswers-bg: transparent;
     /* Question row hover: card surface in light, surface-3 in dark. */
     --kb-browse-question-hover-bg: var(--kb-card-bg-strong);
     /* Result frame borders: soft in light, border in dark. */
@@ -657,7 +655,6 @@ html[data-theme="dark"] {
     --kb-tab-panel-bg: transparent;
     --kb-sort-bar-bg: transparent;
     --kb-result-item-shadow: inset 0 0 0 1px var(--kb-border);
-    --kb-qanswers-bg: #1b2229;
     --kb-browse-question-hover-bg: #2a333d;
     --kb-result-border: #3a4551;
     --kb-tn-frame-border: #3a4551;
@@ -796,13 +793,6 @@ html[data-theme="dark"] {
         background-color: var(--kb-warning-bg);
     }
 
-    /* v3 qa pages paint the whole answer list var(--kb-surface) (#QAnswers in v3/css/kui.css).
-       The list is a plain container, so it drops back to the page surface and its
-       card shadow goes with it. */
-    #QAnswers {
-        box-shadow: none;
-    }
-
     #MemViewPanel .self_desc,
     #MemViewPanel .mate_desc,
     .sresult_cmd_bar {
@@ -911,7 +901,8 @@ html[data-theme="dark"] {
  * overridden here rather than through the shadow tokens.
  */
 html[data-theme="dark"] {
-    #Menu,
+    /* #Menu (the v2 header cell) is intentionally left out: it should read as a
+     * flat cell on the nav strip with no border in dark mode. */
     .button:hover,
     .popup_frame,
     #MemberBox .popup_list,
@@ -927,10 +918,13 @@ html[data-theme="dark"] {
     .summary_list,
     #PrivacyHelp,
     .answer_simple_result:active,
-    .result_item {
+    .result_item,
+    .answer_result {
         box-shadow: inset 0 0 0 1px var(--kb-border);
     }
 
+    /* No tabs carry an inset border in dark mode; the selected tab blends
+       into its panel via var(--kb-surface) background and border-bottom: none. */
     #MTabs .ctab.seltab {
         background-color: var(--kb-surface);
         box-shadow: none;
@@ -989,6 +983,17 @@ html[data-theme="dark"] {
         border-color: var(--kb-border);
         border-radius: 3px;
         box-shadow: inset 0 0 0 1px var(--kb-border);
+    }
+
+    /* Selected page button: theme.css loads after the shell's kui.css with
+     * equal specificity, so the generic .pg_nav_btn dark rule above would
+     * otherwise clobber the .btn_active marker colours defined in kui.scss.
+     * Placed here (later in the last-loaded sheet) so the active state keeps
+     * its marker background, border and label in dark mode. */
+    .btn_active {
+        color: var(--kb-btn-active-text);
+        border-color: var(--kb-marker-border);
+        background-color: var(--kb-marker-bg);
     }
 
     .btn:hover,

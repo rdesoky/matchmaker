@@ -1797,6 +1797,15 @@ img.small_pic{
 	/* float: left; */
 }
 
+/* Signed out: collapse the header cell to zero width. renderLogin() empties the
+ * cell and adds this class; renderBox() removes it when filling MemberBox. A
+ * table-cell whose content is empty collapses, so the grid column disappears
+ * instead of leaving the ~4px gap a non-empty cell keeps. */
+#MemberBox.signed-out{
+	width:0;
+	overflow:hidden;
+}
+
 #MemberBox *{
 	vertical-align: top;
 	/* display: inline-block; */

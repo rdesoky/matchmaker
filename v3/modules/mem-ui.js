@@ -34,13 +34,16 @@ define(["http","k-template","kevents","page-nav","utils","dom-utils","jquery"],f
 			_SH("GuestMenu");
 			_HI("MemberMenu,MemberSubmenu");
 
-			$("#MemberBox").html("&nbsp;");
+			// Signed out: empty the cell so its width collapses to zero instead of
+			// keeping the ~4px a non-empty table-cell occupies. HeaderGrid sizes
+			// each cell from its content, so an empty cell is a zero-width cell.
+			$("#MemberBox").html("").addClass("signed-out");
 
 			return _E("MemberBox");//no login form in header
 		},
 
 		renderBox:function(){
-			var headerBox = _CL("MemberBox");
+			var headerBox = _CL("MemberBox").removeClass("signed-out");
 
 			if( ! SSN.id ){
 				_SH("GuestMenu");
