@@ -669,7 +669,7 @@ html[data-theme="dark"] {
     --kb-login-name-help-border: var(--kb-warning-border);
     --kb-profile-border: #3a4551;
     --kb-profile-shadow: inset 0 0 0 1px var(--kb-border);
-    --kb-tabs-border: #3a4551;
+    --kb-tabs-border: #3a4551 #3a4551 #3a4551 transparent;
     --kb-tabs-shadow: inset 0 0 0 1px var(--kb-border);
 
     background-color: var(--kb-page);
@@ -769,6 +769,11 @@ html[data-theme="dark"] {
     .pg_header {
         background-color: var(--kb-surface);
         border-bottom-color: var(--kb-border);
+    }
+
+    .tabs_root {
+        border-color: var(--kb-tabs-border);
+        box-shadow: none;
     }
 
     .sort_bar {
@@ -922,6 +927,7 @@ html[data-theme="dark"] {
     /* The selected tab must blend into its panel below (no bottom edge),
        so it is excluded from the inset border painted on the other tabs. */
     #MTabs .ctab.seltab {
+        background-color: var(--kb-surface);
         box-shadow: none;
     }
 }
