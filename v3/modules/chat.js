@@ -2,6 +2,12 @@ define(["jquery","page-nav", "kui", "k-template", "http","utils","dom-utils","to
 function($, $pgNav, $kui, $ktmpl, $http, $u, $du, $tabs, CSelector,CCheckFrame, _inlineEdit, Promise) {
 	var module, msgSelector = new CSelector();
 
+	// Extract the numeric message index from a compiled string key like
+	// "chat.v2" (the bundle stores <msg value="2"> under key chat.v2).
+	function msgIndex(key) {
+		return _N(key.split(".").pop().slice(1));
+	}
+
 	return module = {
 		requireCSS:["chat"],
 		requireStrings:["options:chat","str:chat","contact:contact_m","contact:points", "contact:contact"],
@@ -155,26 +161,35 @@ function($, $pgNav, $kui, $ktmpl, $http, $u, $du, $tabs, CSelector,CCheckFrame, 
 			window.scrollTo(0,document.body.scrollHeight - window.innerHeight )
 		},
 		initFixedMsgs: function (rootEl) {
-			var ndx = 1;
 			var selected_msg;
 			var sendBtn = _C("button", {"class": "float_right"}, _S("contact:contact_m.submit"));
 			$(sendBtn).click(function(e){
-				document.forms.ChatEditor.msid.value = selected_msg;
+				var frm = document.forms.ChatEditor;
+				e.preventDefault();// the native submit would re-run onsubmit (double post)
+				frm.msid.value = selected_msg;
+				if (typeof frm.onsubmit === "function") {
+					frm.onsubmit();
+				}
 			});
 
 			// The SPA has no server-rendered fixed_msg_* divs in pdm_frame, so
 			// populate it from the options:chat string group (same source v2 used).
-			// Empty messages render as separators (<hr>).
-			var msgs = window.KStrings.getGroup("options:chat");
-			if (msgs.length && !$("div", rootEl).dom()) {
-				msgs.forEach(function (msg) {
-					$du.append(rootEl.dom(), _C("div", {"id": "fixed_msg_" + ndx}, msg || ""));
-					ndx++;
+			// Empty messages render as separators (<hr>). Items are rendered in
+			// numeric message-index order: the compiled bundle sorts keys
+			// lexicographically (v10 before v2), so sort by the v<N> suffix and
+			// write that index into the div id; clicking then sends the right msid.
+			var items = window.KStrings.getGroup("options:chat").sort(function (a, b) {
+				return msgIndex(a.key) - msgIndex(b.key);
+			});
+			if (items.length && !$("div", rootEl).dom()) {
+				items.forEach(function (item) {
+					var msg_id = msgIndex(item.key);
+					$du.append(rootEl.dom(), _C("div", {"id": "fixed_msg_" + msg_id}, item.value || ""));
 				});
 			}
 
 			$("div",rootEl).each(function (el) {
-				var msg_id = _N(el.id.substr(14));
+				var msg_id = _N(el.id.substr(10));// "fixed_msg_" is 10 chars; the rest is the message index
 				if (_D(el.innerHTML)) {
 					if (el.innerHTML.trim().length) {
 						$(el).click(function (e) {
@@ -186,7 +201,6 @@ function($, $pgNav, $kui, $ktmpl, $http, $u, $du, $tabs, CSelector,CCheckFrame, 
 					} else {
 						_A(el, "hr");
 					}
-					ndx++;
 				}
 			});
 

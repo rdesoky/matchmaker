@@ -328,7 +328,7 @@ form[name=ChatEditor] select{
 }
 
 .chat_msg_time.unread_msg{
-	color:var(--kb-text);
+	color:var(--kb-unread-text);
 	background-color:var(--kb-unread-bg);
 }
 
