@@ -918,14 +918,13 @@ html[data-theme="dark"] {
     .summary_list,
     #PrivacyHelp,
     .answer_simple_result:active,
-    #MTabs .ctab:not(.seltab),
     .result_item,
     .answer_result {
         box-shadow: inset 0 0 0 1px var(--kb-border);
     }
 
-    /* The selected tab must blend into its panel below (no bottom edge),
-       so it is excluded from the inset border painted on the other tabs. */
+    /* No tabs carry an inset border in dark mode; the selected tab blends
+       into its panel via var(--kb-surface) background and border-bottom: none. */
     #MTabs .ctab.seltab {
         background-color: var(--kb-surface);
         box-shadow: none;
