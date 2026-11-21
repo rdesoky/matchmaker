@@ -29,17 +29,17 @@
 .answer_result{
 	/* max-width: 600px; */
 	/* background-color: var(--kb-chat-body-bg); */
+	/* Drop the light shadow in light mode: answers read as flat panels on the
+	 * page surface. Dark mode re-applies an inset border via theme.scss. */
 	box-shadow: none;
 	/* border-radius: 5px; */
 	/* border: solid 1px var(--kb-surface-4); */
 	/* margin: auto; */
-	border-top: solid 1px var(--kb-border-soft);
 	margin-top:10px;
 	/* padding: 0 5px; */
 	position: relative;
 }
 .answer_result:first-child{
-	border-top:none;
 	margin-top:0;
 }
 .answer_result .list_ordinal span{

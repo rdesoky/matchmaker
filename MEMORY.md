@@ -1,0 +1,1 @@
+- [memberbox-zero-width-signed-out](.claude/projects/c--Users-rdeso-projects-kobool-com-worktrees-memberbox-zero-width-signed-out/memory/memberbox-zero-width-signed-out.md) — Make MemberBox width zero in signed-out state

@@ -1852,10 +1852,10 @@ form[name="searchFrm"] select{
 #QBrowser input[type=text]{
 	width: 120px;}
 #QAnswers{
-	background-color:var(--kb-qanswers-bg);
+	/* No background and no shadow: the page surface already shows through, so a
+	 * separate background or shadow here would only paint redundant layers. */
 	padding:0;
 	margin-top:15px;
-	box-shadow: var(--kb-shadow-x) var(--kb-shadow-y) 4px var(--kb-shadow-soft);
 }
 .profile_menu:lang(ar){
 	left:auto;
