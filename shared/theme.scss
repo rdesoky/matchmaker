@@ -471,7 +471,7 @@ html[data-theme="dark"] {
     --kb-dv-sel-hover-text: #ffffff;
     --kb-btn-active-text: #7cb7ff;
     --kb-sort-checked-text: #7cb7ff;
-    --kb-big-button-shadow: var(--kb-shadow-x) calc(1px + var(--kb-shadow-y)) 4px var(--kb-shadow-strong);
+    --kb-big-button-shadow: inset 0 0 0 1px var(--kb-border);
     --kb-big-button-hover-bg: #35404d;
     --kb-big-button-active-bg: #232b33;
     --kb-drill-bg: #2a333d;
@@ -573,7 +573,7 @@ html[data-theme="dark"] {
     --kb-inactive-bg: #3a3520;
     --kb-total-bg: #2f5f8f;
     --kb-total-text: #ffffff;
-    --kb-total-shadow: var(--kb-shadow-x) calc(1px + var(--kb-shadow-y)) 6px var(--kb-shadow-strong);
+    --kb-total-shadow: inset 0 0 0 1px var(--kb-border);
     --kb-hover-accent-bg: #2a333d;
 
     /* Cards, photos, chat and overlays ------------------------------------- */
@@ -618,9 +618,10 @@ html[data-theme="dark"] {
     --kb-shadow-soft: rgba(124, 183, 255, 0.16);
     --kb-shadow: rgba(124, 183, 255, 0.22);
     --kb-shadow-strong: rgba(124, 183, 255, 0.3);
-    /* Raised off the surface, so the bright tint falls right and bottom. */
-    --kb-shadow-x: 2px;
-    --kb-shadow-y: 2px;
+    /* No offset: dark-mode shadows are inset only, so they never fall to one
+       side and never read as depth. */
+    --kb-shadow-x: 0px;
+    --kb-shadow-y: 0px;
     --kb-overlay: rgba(0, 0, 0, 0.3);
     --kb-blocker-bg: #11151a;
     --kb-res-blocker-bg: #11151a;
@@ -638,7 +639,7 @@ html[data-theme="dark"] {
     --kb-filter-href-hover-text: #ffffff;
     --kb-menu-seltab-border: #4b5765;
     --kb-mempic-border: #3a4551;
-    --kb-mempic-shadow: var(--kb-shadow-x) calc(1px + var(--kb-shadow-y)) 5px var(--kb-shadow);
+    --kb-mempic-shadow: inset 0 0 0 1px var(--kb-border);
     --kb-qlist-bg: #1b2229;
     --kb-tn-frame-pic-border: #1b2229;
     --kb-answer-text-border: #3a4551;
@@ -646,33 +647,33 @@ html[data-theme="dark"] {
     --kb-tip-border: #4b5765;
     --kb-filter-box-border: #3a4551;
     --kb-flat-btn-bg: transparent;
-    --kb-card-shadow: var(--kb-shadow-x) var(--kb-shadow-y) 5px var(--kb-shadow);
-    --kb-header-shadow: 2px 2px 2px var(--kb-shadow-soft);
+    --kb-card-shadow: inset 0 0 0 1px var(--kb-border);
+    --kb-header-shadow: inset 0 0 0 1px var(--kb-border);
     --kb-debug-frame-bg: #1b2229;
-    --kb-shadow-box: 5px 5px 10px var(--kb-shadow-strong);
+    --kb-shadow-box: inset 0 0 0 1px var(--kb-border);
     --kb-dv-table-bg: #1b2229;
     --kb-dv-cell-hover-bg: #293a4a;
     --kb-dv-row-hover-bg: #293a4a;
     --kb-tab-panel-bg: transparent;
     --kb-sort-bar-bg: transparent;
-    --kb-result-item-shadow: inset 0 0 0 1px var(--kb-border), 0 1px 6px var(--kb-shadow);
+    --kb-result-item-shadow: inset 0 0 0 1px var(--kb-border);
     --kb-qanswers-bg: #1b2229;
     --kb-browse-question-hover-bg: #2a333d;
     --kb-result-border: #3a4551;
     --kb-tn-frame-border: #3a4551;
     --kb-button-hover-border: var(--kb-bevel-dark) var(--kb-border-strong) var(--kb-border-strong) var(--kb-bevel-dark);
-    --kb-decline-shadow: var(--kb-shadow-x) var(--kb-shadow-y) 7px var(--kb-shadow-strong);
-    --kb-menu-shadow: var(--kb-shadow-x) var(--kb-shadow-y) 6px var(--kb-shadow-strong);
-    --kb-popup-list-shadow: var(--kb-shadow-x) var(--kb-shadow-y) 6px var(--kb-shadow-strong);
+    --kb-decline-shadow: inset 0 0 0 1px var(--kb-border);
+    --kb-menu-shadow: inset 0 0 0 1px var(--kb-border);
+    --kb-popup-list-shadow: inset 0 0 0 1px var(--kb-border);
     --kb-privacy-help-text: #e4d9a4;
     --kb-header-logo-hover-bg: transparent;
     --kb-main-logo-hover-bg: #eeeeee;
     --kb-login-name-help-bg: var(--kb-warning-bg);
     --kb-login-name-help-border: var(--kb-warning-border);
     --kb-profile-border: #3a4551;
-    --kb-profile-shadow: var(--kb-shadow-x) calc(1px + var(--kb-shadow-y)) 5px var(--kb-shadow);
+    --kb-profile-shadow: inset 0 0 0 1px var(--kb-border);
     --kb-tabs-border: #3a4551;
-    --kb-tabs-shadow: var(--kb-shadow-x) calc(1px + var(--kb-shadow-y)) 5px var(--kb-shadow);
+    --kb-tabs-shadow: inset 0 0 0 1px var(--kb-border);
 
     background-color: var(--kb-page);
 
@@ -851,7 +852,7 @@ html[data-theme="dark"] {
     .form_frame {
         background-color: var(--kb-surface-3);
         border: 1px solid var(--kb-border);
-        box-shadow: var(--kb-shadow-x) calc(2px + var(--kb-shadow-y)) 8px var(--kb-shadow-strong);
+        box-shadow: inset 0 0 0 1px var(--kb-border);
     }
 
     .form_title {
@@ -896,6 +897,35 @@ html[data-theme="dark"] {
     }
 
     /* Search results list ----------------------------------------------------- */
+}
+
+/*
+ * Dark mode: every drop shadow is inset only, with no offset or blur, so
+ * surfaces read as flat panels rather than raised cards. The shell
+ * stylesheets hardcode outer shadows on these selectors, so they are
+ * overridden here rather than through the shadow tokens.
+ */
+html[data-theme="dark"] {
+    #Menu,
+    .button:hover,
+    .popup_frame,
+    #MemberBox .popup_list,
+    .big_button:active,
+    .chat_bubble,
+    #ChatFooter,
+    .sort_btn.sel,
+    .drill_btn,
+    .drill_btn:hover,
+    .drill_btn:active,
+    .nav_frame,
+    .payment_btn,
+    .summary_list,
+    #PrivacyHelp,
+    .answer_simple_result:active,
+    #MTabs .ctab,
+    .result_item {
+        box-shadow: inset 0 0 0 1px var(--kb-border);
+    }
 }
 
 /* Profile photos sit on var(--kb-surface) in light mode; the shells paint the frames
@@ -956,7 +986,7 @@ html[data-theme="dark"] {
     .pg_nav_btn:hover,
     .filters_btn:hover {
         background-color: var(--kb-surface-hover-strong);
-        box-shadow: inset 0 0 0 1px var(--kb-border-strong), 0 0 6px var(--kb-focus-glow);
+        box-shadow: inset 0 0 0 1px var(--kb-border-strong), inset 0 0 6px var(--kb-focus-glow);
     }
 
     /* Drill filter tiles (v2 #pg=drill) hover to var(--kb-surface-3) in the legacy sheet. */
