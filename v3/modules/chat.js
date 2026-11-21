@@ -1,5 +1,5 @@
-define(["jquery","page-nav", "kui", "k-template", "http","utils","dom-utils","top-tabs","ui-selector","check-frame","inline-edit"],
-function($, $pgNav, $kui, $ktmpl, $http, $u, $du, $tabs, CSelector,CCheckFrame) {
+define(["jquery","page-nav", "kui", "k-template", "http","utils","dom-utils","top-tabs","ui-selector","check-frame","inline-edit","js-promise"],
+function($, $pgNav, $kui, $ktmpl, $http, $u, $du, $tabs, CSelector,CCheckFrame, _inlineEdit, Promise) {
 	var module, msgSelector = new CSelector();
 
 	return module = {
@@ -89,9 +89,7 @@ function($, $pgNav, $kui, $ktmpl, $http, $u, $du, $tabs, CSelector,CCheckFrame) 
 			$tabs.showTab("Menu_Kobool");
 			$tabs.select("Kobool.Chat");
 
-			var $intro = $(".chat_intro_text", viewRoot);
-			$intro.html( $intro.html().replace(/\%m\%/g, SSN.mlogin).replace(/\%h.{1}\%/g, "") );
-
+						
 			this.initFixedMsgs($(".pdm_frame", viewRoot));
 
 			document.forms.ChatEditor.onsubmit = function () {
@@ -124,6 +122,17 @@ function($, $pgNav, $kui, $ktmpl, $http, $u, $du, $tabs, CSelector,CCheckFrame) 
 
 			this.ping();
 			this.onchange(viewRoot);
+			return Promise.as(true);
+		},
+		postRender: function (root, data) {
+			// contact:contact_m bundle is loaded by requireStrings before onload,
+			// so getString resolves synchronously here. Replace %m% (mate login)
+			// and strip %h1%...%h0% (HTML highlights) before setting the intro.
+			var $intro = $(".chat_intro_text", root);
+			var val = window.KStrings.getString("contact:contact_m.intro");
+			if (val) {
+				$intro.html( val.replace(/\%m\%/g, SSN.mlogin).replace(/\%h.{1}\%/g, "") );
+			}
 		},
 		onchange:function(viewRoot){
 			var $root = $("#ChatBody", viewRoot);
