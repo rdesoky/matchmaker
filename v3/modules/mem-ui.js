@@ -43,7 +43,8 @@ define(["http","k-template","kevents","page-nav","utils","dom-utils","jquery"],f
 		},
 
 		renderBox:function(){
-			var headerBox = _CL("MemberBox").removeClass("signed-out");
+			var headerBox = _E("MemberBox");
+			$du.removeClass(headerBox, "signed-out");
 
 			if( ! SSN.id ){
 				_SH("GuestMenu");

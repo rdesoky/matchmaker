@@ -152,6 +152,18 @@ function($, $pgNav, $kui, $ktmpl, $http, $u, $du, $tabs, CSelector,CCheckFrame) 
 			$(sendBtn).click(function(e){
 				document.forms.ChatEditor.msid.value = selected_msg;
 			});
+
+			// The SPA has no server-rendered fixed_msg_* divs in pdm_frame, so
+			// populate it from the options:chat string group (same source v2 used).
+			// Empty messages render as separators (<hr>).
+			var msgs = window.KStrings.getGroup("options:chat");
+			if (msgs.length && !$("div", rootEl).dom()) {
+				msgs.forEach(function (msg) {
+					$du.append(rootEl.dom(), _C("div", {"id": "fixed_msg_" + ndx}, msg || ""));
+					ndx++;
+				});
+			}
+
 			$("div",rootEl).each(function (el) {
 				var msg_id = _N(el.id.substr(14));
 				if (_D(el.innerHTML)) {

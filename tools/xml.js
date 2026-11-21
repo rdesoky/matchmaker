@@ -107,7 +107,12 @@ function parseXml(source) {
             if (source.startsWith('<![CDATA[', pos)) {
                 const end = source.indexOf(']]>', pos);
                 if (end === -1) error('unterminated CDATA section');
-                text += source.slice(pos + 9, end);
+                // Decode entities in CDATA too, matching non-CDATA text (line 130).
+                // <msg_prompt><![CDATA[&gt;Type Message Here]]></msg_prompt> should
+                // yield ">Type Message Here" so it renders correctly whether bound
+                // via innerHTML or via an attribute (setAttribute does not decode
+                // HTML entities, unlike innerHTML).
+                text += decodeEntities(source.slice(pos + 9, end));
                 pos = end + 3;
             } else if (source.startsWith('<!--', pos)) {
                 const end = source.indexOf('-->', pos);
