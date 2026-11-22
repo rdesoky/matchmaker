@@ -1076,6 +1076,16 @@ html[data-theme="dark"] {
         filter: invert(1) brightness(1.2);
     }
 
+    /* The legacy icon16 sprite is dark gray (icons_454545...). Painted on
+       var(--kb-surface-3) it disappears on dark surfaces, so the delete/edit/
+       toggle icons on sent chat messages (and every other icon16) read as
+       invisible. The white sprite is already used on hover, so use it as the
+       resting state in dark mode too; the background color stays
+       var(--kb-surface-3). */
+    .icon16 {
+        background-image: url(/images/icons_FFFFFF_256x240.png);
+    }
+
     /* The header menu handle's drop-down arrow is a near-black 9x9 raster
        (/images/ddown_arrow.png) that disappears on the dark header. Keep the
        base rule's position/repeat and swap only the image for a light
