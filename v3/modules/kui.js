@@ -530,7 +530,16 @@ define(["jquery","page-nav","js-promise","dom-utils","utils","http"],function($,
 		},
 
 		visitorHeartTip:function(info){
-			return "";
+			if(_N(info.wished)){
+				return "help:profile.wisher";
+			}
+			if(_N(info.rank)){
+				return "help:profile.in_wishlist";
+			}
+			if(_N(info.visits_count)>0){
+				return "help:profile.unk_kobool";
+			}
+			return "help:profile.no_kobool_chance";
 		},
 
 		genderIcon:function(info,opt){
