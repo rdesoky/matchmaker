@@ -1576,25 +1576,40 @@ form[name="searchFrm"] select{
 }
 
 .results_pic_col{
+	flex: 0 0 auto;
 	width:100px;
 	/* background: var(--kb-surface-3); */
-	display: table-cell;
 }
 
 .results_info_col{
-	/* display: table; */
-	position: relative;
+	flex: 1 1 auto;
+	min-width: 0;
+	display: flex;
+	flex-direction: column;
 	vertical-align: top;
 	/* padding: 5px; */
 	/* min-height: 190px; */
-	padding-bottom: 30px;
 }
 
-.results_info_col .profile_highlights, .results_info_col .last_login{
-	position: absolute;
-	bottom:0;
-	width:100%;
+/* The action row and the "Seen: ..." line are pinned to the bottom of the
+   column when there is spare height, but stay in normal flow when the profile
+   text is tall, so they never overlap the description. `order` keeps the
+   buttons above the timestamp even though .last_login comes first in the
+   markup. */
+.results_info_col .profile_highlights{
+	order: 1;
+	margin-top: auto;
+	width: 100%;
 	box-sizing: border-box;
+}
+.results_info_col .last_login{
+	order: 2;
+	width: 100%;
+	box-sizing: border-box;
+}
+/* The member page has no highlights block, so pin the login line itself. */
+.results_info_col:not(:has(.profile_highlights)) .last_login{
+	margin-top: auto;
 }
 
 .sresult_top_btns{
@@ -1675,11 +1690,12 @@ form[name="searchFrm"] select{
 
 }
 .profile_layout{
-	display:table;
+	display:flex;
+	align-items: stretch;
 	width: 100%;
 }
 .profile_layout>div{
-	display:table-cell;
+	min-width: 0;
 }
 .brgr_handle{
 	background: url(/images/brgr_menu.png) no-repeat left center;
