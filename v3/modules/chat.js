@@ -38,6 +38,8 @@ function($, $pgNav, $kui, $ktmpl, $http, $u, $du, $tabs, CSelector,CCheckFrame, 
 					case "edit":
 						require(["popup"], function (popup) {
 							var editor = _C("textarea", {style: "width:100%;height:120px"}, $d.body);
+												// Find the page viewRoot (contains #ChatBody) for module.onchange()
+												var viewRoot = el.closest("#Contents") || el.closest(".page") || document.body;
 
 							popup.open("update_msg", _TXT(_S("a.update") + " #" + $d.msg_index), editor, [
 								{
@@ -53,12 +55,7 @@ function($, $pgNav, $kui, $ktmpl, $http, $u, $du, $tabs, CSelector,CCheckFrame, 
 												msg: editor.value
 											},
 											onload: function (t, x) {
-												$d.body = editor.value;
-												$ktmpl.render({
-													$root:$(el).html(""),
-													data:$d,
-													tid:".chat_msg"
-												});
+																	module.onchange(viewRoot);
 											}
 										});
 									}

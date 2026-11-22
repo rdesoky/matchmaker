@@ -603,8 +603,15 @@ define(["jquery","kevents","utils","js-promise"], function($, $evt, $u, CPromise
 			var menuID = $mBtn.attr("data-menu") || ".menu";
 			var submenuID = $mBtn.attr("data-submenu");
 			var $menu;
+					var isIdSelector = menuID.startsWith("#");
 			function findMenu(){
-				$menu = $(menuID, $mBtnParent);//search for sibling menu
+						if(isIdSelector){
+							// ID selectors are global - search entire document
+							$menu = $(menuID);
+						}else{
+							// Search for menu within parent context (querySelectorAll searches all descendants)
+							$menu = $(menuID, $mBtnParent);
+						}
 				if($menu.dom()){
 					return true;
 				}
@@ -622,7 +629,8 @@ define(["jquery","kevents","utils","js-promise"], function($, $evt, $u, CPromise
 				$mBtn.addAfter($menu);
 			}
 			$mBtn.click( function (e) {
-				var $popup = $(menuID, $mBtnParent);
+						// Use the already-found $menu directly instead of re-searching
+						var $popup = $menu;
 				if( $popup.hasClass("show_menu") ){
 					$popup.removeClass("show_menu");
 				}else {
