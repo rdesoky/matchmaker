@@ -4,6 +4,10 @@ var Chat = {
 			return;
 		}
 
+		// The chat page occupies the full viewport: hide the app shell
+		// footer while it is active; ondestroy() restores it on exit.
+		_HI("Footer");
+
 		if(!SSN.mate){
 			PgNav.open("my",undef,true,true);
 		}
@@ -132,6 +136,9 @@ var Chat = {
 	},
 	onchange:function(){
 		this.getPage( _P("p",0) );
+	},
+	ondestroy:function(){
+		_SH("Footer");
 	},
 	ping:function(){
 		this.pinging = 0;

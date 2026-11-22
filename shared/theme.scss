@@ -843,6 +843,10 @@ html[data-theme="dark"] {
         background-color: var(--kb-surface-3);
     }
 
+    #ChatFooter {
+        box-shadow: none;
+    }
+
     /* Popups, tips and overlays ---------------------------------------------- */
 
     .popup_title {
@@ -936,7 +940,6 @@ html[data-theme="dark"] {
     #MemberBox .popup_list,
     .big_button:active,
     .chat_bubble,
-    #ChatFooter,
     .sort_btn.sel,
     .drill_btn,
     .drill_btn:hover,

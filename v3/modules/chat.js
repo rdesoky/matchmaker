@@ -101,6 +101,10 @@ function($, $pgNav, $kui, $ktmpl, $http, $u, $du, $tabs, CSelector,CCheckFrame, 
 				return;
 			}
 
+			// The chat page occupies the full viewport: hide the app shell
+			// footer while it is active; ondestroy() restores it on exit.
+			$("#Footer").addClass("hidden");
+
 			if (!SSN.mate) {
 				$pgNav.open("my", undefined, true, true);
 			}
@@ -141,6 +145,9 @@ function($, $pgNav, $kui, $ktmpl, $http, $u, $du, $tabs, CSelector,CCheckFrame, 
 			this.ping();
 			this.onchange(viewRoot);
 			return Promise.as(true);
+		},
+		ondestroy: function () {
+			$("#Footer").removeClass("hidden");
 		},
 		postRender: function (root, data) {
 			// contact:contact_m bundle is loaded by requireStrings before onload,

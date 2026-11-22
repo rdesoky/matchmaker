@@ -633,6 +633,7 @@ var Packages = {
 		,css:["kui","chat"]
 		,onload:"Chat.onload()"
 		,onchange:"Chat.onchange()"
+		,ondestroy:"Chat.ondestroy()"
 	},
 	svd_srch:{
 		scripts:[ "SavedSearch", "KUI" ]
