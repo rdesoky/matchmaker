@@ -43,7 +43,12 @@ define(["http","k-template","kevents","page-nav","utils","dom-utils","jquery"],f
 		},
 
 		renderBox:function(){
-			var headerBox = _CL("MemberBox").removeClass("signed-out");
+			var headerBox = _E("MemberBox");
+			$du.removeClass(headerBox, "signed-out");
+			// Clear any previous content before rendering so repeated calls
+			// (e.g. page load + onlogin -> refreshSession -> refreshHeader)
+            // don't append duplicate template copies into MemberBox.
+			headerBox.innerHTML = "";
 
 			if( ! SSN.id ){
 				_SH("GuestMenu");

@@ -1,8 +1,14 @@
-define(["jquery","page-nav", "kui", "k-template", "http","utils","dom-utils","top-tabs","ui-selector","check-frame","inline-edit"],
-function($, $pgNav, $kui, $ktmpl, $http, $u, $du, $tabs, CSelector,CCheckFrame) {
+define(["jquery","page-nav", "kui", "k-template", "http","utils","dom-utils","top-tabs","ui-selector","check-frame","inline-edit","js-promise"],
+function($, $pgNav, $kui, $ktmpl, $http, $u, $du, $tabs, CSelector,CCheckFrame, _inlineEdit, Promise) {
 	var module, msgSelector = new CSelector();
 
-	// Fixed messages are rendered server-side into div#fixed_msg_N and are not
+	// Extract the numeric message index from a compiled string key like
+	// "chat.v2" (the bundle stores <msg value="2"> under key chat.v2).
+	function msgIndex(key) {
+		return _N(key.split(".").pop().slice(1));
+	}
+
+	// Fixed messages are rendered/populated into div#fixed_msg_N and are not
 	// covered by the [data-string] binder, so re-apply the translated text
 	// whenever the language changes.
 	KStrings.onLanguageChange(function refreshFixedMsgs() {
@@ -17,7 +23,7 @@ function($, $pgNav, $kui, $ktmpl, $http, $u, $du, $tabs, CSelector,CCheckFrame) 
 		});
 	});
 
-	module = {
+	return module = {
 		requireCSS:["chat"],
 		requireStrings:["options:chat","str:chat","contact:contact_m","contact:points", "contact:contact"],
 
@@ -104,8 +110,6 @@ function($, $pgNav, $kui, $ktmpl, $http, $u, $du, $tabs, CSelector,CCheckFrame) 
 			$tabs.showTab("Menu_Kobool");
 			$tabs.select("Kobool.Chat");
 
-			var $intro = $(".chat_intro_text", viewRoot);
-			$intro.html( $intro.html().replace(/\%m\%/g, SSN.mlogin).replace(/\%h.{1}\%/g, "") );
 
 			this.initFixedMsgs($(".pdm_frame", viewRoot));
 
@@ -139,6 +143,17 @@ function($, $pgNav, $kui, $ktmpl, $http, $u, $du, $tabs, CSelector,CCheckFrame) 
 
 			this.ping();
 			this.onchange(viewRoot);
+			return Promise.as(true);
+		},
+		postRender: function (root, data) {
+			// contact:contact_m bundle is loaded by requireStrings before onload,
+			// so getString resolves synchronously here. Replace %m% (mate login)
+			// and strip %h1%...%h0% (HTML highlights) before setting the intro.
+			var $intro = $(".chat_intro_text", root);
+			var val = window.KStrings.getString("contact:contact_m.intro");
+			if (val) {
+				$intro.html( val.replace(/\%m\%/g, SSN.mlogin).replace(/\%h.{1}\%/g, "") );
+			}
 		},
 		onchange:function(viewRoot){
 			var $root = $("#ChatBody", viewRoot);
@@ -161,16 +176,35 @@ function($, $pgNav, $kui, $ktmpl, $http, $u, $du, $tabs, CSelector,CCheckFrame) 
 			window.scrollTo(0,document.body.scrollHeight - window.innerHeight )
 		},
 		initFixedMsgs: function (rootEl) {
-			var ndx = 1;
 			var selected_msg;
 			var sendBtn = _C("button", {"class": "float_right"}, _S("contact:contact_m.submit"));
 			$(sendBtn).click(function(e){
-				document.forms.ChatEditor.msid.value = selected_msg;
+				var frm = document.forms.ChatEditor;
+				e.preventDefault();// the native submit would re-run onsubmit (double post)
+				frm.msid.value = selected_msg;
+				if (typeof frm.onsubmit === "function") {
+					frm.onsubmit();
+				}
 			});
-			// "fixed_msg_" is exactly 10 chars, so slice(10) extracts the message
-			// number (substr(14) always yields "" and made msg_id always 0).
+
+			// The SPA has no server-rendered fixed_msg_* divs in pdm_frame, so
+			// populate it from the options:chat string group (same source v2 used).
+			// Empty messages render as separators (<hr>). Items are rendered in
+			// numeric message-index order: the compiled bundle sorts keys
+			// lexicographically (v10 before v2), so sort by the v<N> suffix and
+			// write that index into the div id; clicking then sends the right msid.
+			var items = window.KStrings.getGroup("options:chat").sort(function (a, b) {
+				return msgIndex(a.key) - msgIndex(b.key);
+			});
+			if (items.length && !$("div", rootEl).dom()) {
+				items.forEach(function (item) {
+					var msg_id = msgIndex(item.key);
+					$du.append(rootEl.dom(), _C("div", {"id": "fixed_msg_" + msg_id}, item.value || ""));
+				});
+			}
+
 			$("div",rootEl).each(function (el) {
-				var msg_id = _N(el.id.slice(10));
+				var msg_id = _N(el.id.substr(10));// "fixed_msg_" is 10 chars; the rest is the message index
 				if (_D(el.innerHTML)) {
 					if (el.innerHTML.trim().length) {
 						$(el).click(function (e) {
@@ -182,7 +216,6 @@ function($, $pgNav, $kui, $ktmpl, $http, $u, $du, $tabs, CSelector,CCheckFrame) 
 					} else {
 						_A(el, "hr");
 					}
-					ndx++;
 				}
 			});
 
@@ -281,7 +314,7 @@ function($, $pgNav, $kui, $ktmpl, $http, $u, $du, $tabs, CSelector,CCheckFrame) 
 					$root.addClass("mate_point");
 					break;
 				default:
-					$root.addClass("mate_gift");
+					$root.addClass("mate_gift")
 			}
 			if( _N(res.my_cards) + _N(res.mate_cards) > 1) {
 				$root.addClass("no_points_needed");
@@ -299,12 +332,9 @@ function($, $pgNav, $kui, $ktmpl, $http, $u, $du, $tabs, CSelector,CCheckFrame) 
 				$cBox.addClass("show_typing")
 				//$("#ChatTypingBox .chat_editor textarea").focus();
 			}else{
-				$cBox.removeClass("show_typing") 
+				$cBox.removeClass("show_typing")
 			}
 		}
 	};
 
-	return module;
-
 });
-
