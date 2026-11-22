@@ -45,6 +45,7 @@
 .chat_form_line{
 	clear:both;
 	padding:4px;
+	white-space:nowrap;
 }
 #StatusView{
 	background:var(--kb-surface-3);
@@ -205,7 +206,11 @@ form[name=ChatEditor] select{
    below the contents so the last message isn't hidden behind the footer. */
 #Contents{
 	display:flow-root;
-	padding-bottom:160px;
+	padding-bottom:60px;
+}
+
+#ThreadRoot{
+	margin-bottom:160px;
 }
 
 .pdm_frame .href{
