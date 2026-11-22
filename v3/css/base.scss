@@ -1555,12 +1555,12 @@ img.small_pic{
 	width:8px;
 	height:8px;
 	z-index:5113;
-	top:0px;
+	top:-2px;
 	left:10px;
 	transform: rotate(45deg);
 	background-color:var(--kb-tip-bg);
-	border-left:1px solid var(--kb-border-contrast);
-	border-bottom:1px solid var(--kb-border-contrast);
+	border-top:1px solid var(--kb-border-contrast);
+	border-right:1px solid var(--kb-border-contrast);
 	box-sizing:border-box;
 }
 
