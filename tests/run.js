@@ -578,6 +578,71 @@ test('v3 kui: clicking the Remove Answer label deletes the answer', () => {
     assert.strictEqual(root.removed, card, 'a successful delete must remove the answer item');
 });
 
+test('v3 chat: a message without a menu button must not become one', () => {
+    // The chat template removes .brgr_frame (button + menu) for messages with
+    // no available action, e.g. my own message after the other side read it.
+    // initMenuBtn then falls back to the whole .chat_msg as the button and
+    // resolves ".menu" from the chat container, so one click opened every
+    // message's menu at once. initMsgTemplate must not bind a menu to it.
+    const vm = require('vm');
+    let initCalls = 0, clickCalls = 0;
+    const $du = {
+        initMenuBtn() {
+            initCalls++;
+            return { click() { clickCalls++; return this; } };
+        }
+    };
+    const jq = function (q, root) {
+        if (typeof q === 'string' && root) {
+            const nodes = root.querySelectorAll ? root.querySelectorAll(q) : [];
+            return { length: nodes.length, dom() { return nodes[0]; } };
+        }
+        return { length: 1, dom() { return q; }, click() { return this; } };
+    };
+
+    let chat;
+    const sandbox = {
+        window: {},
+        document: { querySelectorAll() { return []; } },
+        KStrings: { onLanguageChange() {} },
+        SSN: {},
+        console,
+        define(deps, factory) {
+            const map = {
+                jquery: jq,
+                'page-nav': {},
+                kui: {},
+                'k-template': {},
+                http: {},
+                utils: {},
+                'dom-utils': $du,
+                'top-tabs': {},
+                'ui-selector': function CSelector() {},
+                'check-frame': {},
+                'inline-edit': {},
+                'js-promise': function StubPromise() {}
+            };
+            chat = factory.apply(null, deps.map((d) => map[d]));
+        }
+    };
+    sandbox.define.amd = {};
+    sandbox.globalThis = sandbox;
+    vm.createContext(sandbox);
+    vm.runInContext(fs.readFileSync(path.join(ROOT, 'v3', 'modules', 'chat.js'), 'utf8'), sandbox);
+
+    const noMenu = { querySelectorAll() { return []; } };
+    chat.initMsgTemplate(noMenu, { id: 1 });
+    assert.strictEqual(initCalls, 0, 'a message with no .brgr_menu must not be treated as the menu button');
+    assert.strictEqual(clickCalls, 0, 'no click handler may be bound to it');
+
+    const withMenu = {
+        querySelectorAll(sel) { return sel === '.brgr_menu' ? [{}] : []; }
+    };
+    chat.initMsgTemplate(withMenu, { id: 2 });
+    assert.strictEqual(initCalls, 1, 'a message that has a .brgr_menu still binds its menu');
+    assert.strictEqual(clickCalls, 1);
+});
+
 test('proxy: DEFAULT_TARGET points at the current dev API host', () => {
     assert.strictEqual(DEFAULT_TARGET, 'http://dev.kobool.com');
 });

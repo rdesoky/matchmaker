@@ -602,7 +602,7 @@ define(["jquery","kevents","utils","js-promise"], function($, $evt, $u, CPromise
 			var $mBtnParent=$mBtn.parent();
 			var menuID = $mBtn.attr("data-menu") || ".menu";
 			var submenuID = $mBtn.attr("data-submenu");
-			var $menu;
+			var $menu, menuAmbiguous = false;
 					var isIdSelector = menuID.startsWith("#");
 			function findMenu(){
 						if(isIdSelector){
@@ -612,8 +612,16 @@ define(["jquery","kevents","utils","js-promise"], function($, $evt, $u, CPromise
 							// Search for menu within parent context (querySelectorAll searches all descendants)
 							$menu = $(menuID, $mBtnParent);
 						}
-				if($menu.dom()){
+				// Same rule as resolveMenu: several matches in one scope are
+				// repeated items' menus, not this button's popup.
+				if($menu.length === 1){
 					return true;
+				}
+				if($menu.dom()){
+					// Ambiguous scope: climbing only widens the set, and no menu
+					// here belongs to this button, so don't invent one either.
+					menuAmbiguous = true;
+					return false;
 				}
 				var $newParent =$mBtnParent.parent();
 				if($newParent.dom()){
@@ -622,11 +630,17 @@ define(["jquery","kevents","utils","js-promise"], function($, $evt, $u, CPromise
 				}
 				return false;
 			}
-			if(!findMenu()){
+			if(!findMenu() && !menuAmbiguous){
 				//create sibling menu
 				$menu = $("<ul class='hmenu menu popup_list'>");
 				menuID = ".menu";
 				$mBtn.addAfter($menu);
+			}
+			if(menuAmbiguous){
+				// No single menu belongs to this button: hand callers an empty
+				// collection so their item handlers are not bound to every menu
+				// in the container.
+				$menu = $();
 			}
 			// Resolve the menu from the live DOM at click time. Template includes
 			// (data-include) replace the menu node asynchronously after init (e.g.
@@ -637,7 +651,10 @@ define(["jquery","kevents","utils","js-promise"], function($, $evt, $u, CPromise
 				var $ctx = $mBtn.parent();
 				while($ctx.dom()){
 					var $found = isIdSelector ? $(menuID) : $(menuID, $ctx);
-					if($found.dom()){
+					// Only an unambiguous match is this button's menu: a container
+					// of repeated items (e.g. one .menu per chat message) matches
+					// many, and none of them belongs to this button.
+					if($found.length === 1){
 						return $found;
 					}
 					$ctx = $ctx.parent();
@@ -647,6 +664,10 @@ define(["jquery","kevents","utils","js-promise"], function($, $evt, $u, CPromise
 			$mBtn.click( function (e) {
 				// Re-resolve at click time so async template includes are reflected
 				var $popup = resolveMenu() || $menu;
+				// Never toggle a set of unrelated menus at once.
+				if(!$popup || $popup.length !== 1){
+					return;
+				}
 				if( $popup.hasClass("show_menu") ){
 					$popup.removeClass("show_menu");
 				}else {
