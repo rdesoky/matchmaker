@@ -64,15 +64,24 @@ var Chat = {
 		var sendBtn = _C("span", {"class":"button float_right"}, _S("contact:contact_m.submit") );
 
 		RS( "options:chat", function(){
-			var ndx = 1;
-			Enum( _E("options:chat").childNodes, function( el ){
-				if( _D(el.innerHTML) ){
-					if(el.innerHTML.trim().length){
-						var msg_id = ndx;
-						var msg = el.innerHTML;
-						var item = _AD(sel);
-						_AD( item, {"class":"href"}, msg );
-						item.onclick=function(e){
+			// Pre-defined messages come from the options:chat string bundle,
+			// not a DOM element. _E("options:chat") returns null because there
+			// is no element with that id; iterate the bundle instead (mirrors
+			// v3's initFixedMsgs which uses KStrings.getGroup).
+			// Sort by numeric message index so display order matches the v<N>
+			// keys and msg_id is the real message index, not a sequential
+			// counter (v3 fixed the same "wrong text" bug today).
+			var items = window.KStrings.getGroup("options:chat").sort(function (a, b) {
+				return _N(a.key.split(".").pop().slice(1)) - _N(b.key.split(".").pop().slice(1));
+			});
+			Enum( items, function( item ){
+				var msg = item.value;
+				var msg_id = _N(item.key.split(".").pop().slice(1));
+				if( _D(msg) ){
+					if(msg.trim().length){
+						var itemEl = _AD(sel);
+						_AD( itemEl, {"class":"href"}, msg );
+						itemEl.onclick=function(e){
 							Chat.select(this);
 							this.insertBefore(sendBtn, this.firstChild);
 							sendBtn.onclick = function(){
@@ -83,7 +92,6 @@ var Chat = {
 					}else{
 						_A(sel, "hr", {style:"margin:9px 0px"});
 					}
-					ndx++;
 				}
 			});
 		});
@@ -235,6 +243,10 @@ var Chat = {
 	},
 	
 	showPage:function(results, root){
+		// Clear any stale content so an empty result renders a clean empty
+		// state instead of appending over leftover messages (mirrors v3
+		// onchange which resets $root before rendering).
+		_CL(root);
 		if(!_N(results.total)){
 			_A(root,"h2",{},_S("contact:contact_m.no_msgs"));
 			return ;

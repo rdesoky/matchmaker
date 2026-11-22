@@ -18,7 +18,7 @@
 }
 
 .chat_box_col.left_col {
-	width:120px;
+	width:175px;
 	padding:0px 3px;
 }
 
@@ -45,6 +45,8 @@
 .chat_form_line{
 	clear:both;
 	padding:4px;
+	white-space:nowrap;
+	text-align:center;
 }
 #StatusView{
 	background:var(--kb-surface-3);
@@ -83,7 +85,6 @@
 	padding:1px;
 }
 form[name=ChatEditor] textarea, .pdm_frame{
-	width:500px;
 	height:100%;
 	overflow:auto;
 	padding:2px;
@@ -91,6 +92,11 @@ form[name=ChatEditor] textarea, .pdm_frame{
 
 form[name=ChatEditor] textarea{
 	width:420px;
+	height:75px;
+}
+
+.pdm_frame{
+	width:600px;
 }
 
 .pdm_frame{
@@ -108,9 +114,14 @@ form[name=ChatEditor] select{
 	display:inline-block;
 	vertical-align:top;
 	min-width:120px;
+	text-align:left;
+}
+
+.chat_box_col:lang(ar){
+	text-align:right;
 }
 .chat_side{
-	width:120px;
+	width:175px;
 	padding:0px 5px;
 	float:left;
 }
@@ -126,14 +137,22 @@ form[name=ChatEditor] select{
 	padding:10px;
 }
 .chat_contents{
-	width:500px;
+	width:600px;
 	min-height:260px;
 	float:left;
 	background-color:var(--kb-chat-body-bg);
 	padding:4px 4px;
 }
 .chat_footer{
-	clear:both;
+	position:fixed;
+	bottom:0;
+	left:0;
+	right:0;
+	background-color:var(--kb-surface);
+	border-top:solid 1px var(--kb-border-strong);
+	box-shadow: var(--kb-shadow-x) calc(-1px + var(--kb-shadow-y)) 10px var(--kb-shadow);
+	z-index:200;
+	padding:6px 0;
 }
 .chat_contents:lang(ar), .chat_side:lang(ar){
 	float:right;
@@ -183,9 +202,22 @@ form[name=ChatEditor] select{
 	/*position:fixed;
 	bottom:20px;
 	*/
-	border-top:solid 1px var(--kb-border-strong);
-	background-color:var(--kb-surface);
-	clear:both;
+	border-top:none;
+	background-color:transparent;
+	clear:none;
+}
+
+/* Snap the chat form + status bar to the bottom of the page. chat.scss only
+   loads on the chat page, so these #Contents rules are chat-scoped. The fixed
+   footer no longer clears the floats, so contain them here, and reserve space
+   below the contents so the last message isn't hidden behind the footer. */
+#Contents{
+	display:flow-root;
+	padding-bottom:60px;
+}
+
+#ThreadRoot{
+	margin-bottom:160px;
 }
 
 .pdm_frame .href{

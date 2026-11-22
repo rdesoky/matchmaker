@@ -2,3 +2,4 @@
 - [fixed-msgs-language-refresh](.claude/projects/c--Users-rdeso-projects-kobool-com-worktrees-div-fixed-msg-1-switching-language-doesn-t/memory/fixed-msgs-language-refresh.md) — Retranslate v3 chat fixed_msg items on language switch
 - [chat-profile-menu-styling](.claude/projects/c--Users-rdeso-projects-kobool-com-worktrees-launch-the-app-in-integrated-browser-d7f71cd1/memory/chat-profile-menu-styling.md) — Styling fixes for chat page, profile photos, and menu popups across v2 and v3 shells
 - [menu-hover-contrast-fix](.claude/projects/c--Users-rdeso-projects-kobool-com-worktrees-launch-the-app-in-integrated-browser-d7f71cd1/memory/menu-hover-contrast-finding.md) — Fix light-mode hover text invisibility on anchored root menu items (Home, Contact us, Use Old Site)
+- [chat-footer-bottom](memory/chat-footer-bottom.md) — Snap v2 chat form + status bar to bottom of page
