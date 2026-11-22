@@ -38,6 +38,10 @@
 			Your text will not be accepted if it contains unproper statements or contains personal contact information like phone number, email, home address or personal messages to other KOBOOL members.
 		]]></rejected>
 		<accept>Add this member to your 'Acceptance List' if you have preliminary acceptance for marriage towards this member.</accept>
+		<promote>Move this member one position higher in your Acceptance List.</promote>
+		<demote>Move this member one position lower in your Acceptance List.</demote>
+		<hide_wish>Hide your acceptance from this member.</hide_wish>
+		<show_wish>Show your acceptance to this member.</show_wish>
 		<ask>Submit annonymous questions to this member.</ask>
 		<gift_points><![CDATA[
 			Purchase Contact Points for this member<br/>

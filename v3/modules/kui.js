@@ -326,6 +326,27 @@ define(["jquery","page-nav","js-promise","dom-utils","utils","http"],function($,
 			$(".question_icon",el).click( function(e){
 				module.openMemPage(context.id,{mtab:"TAnswers"});
 			});
+
+			$(".promote_icon",el).click(function(){
+				require(["kactions"],function(actions){
+					actions.onClickPromote(context);
+				});
+			});
+			$(".demote_icon",el).click(function(){
+				require(["kactions"],function(actions){
+					actions.onClickDemote(context);
+				});
+			});
+			$(".hidden_wish_icon,.visible_wish_icon",el).click(function(e){
+				require(["kactions"],function(actions){
+					actions.toggleWishVisibility($(e.target),context);
+				});
+			});
+			$(".unaccept_icon",el).click(function(){
+				require(["kactions"],function(actions){
+					actions.onClickRemoveKobool(context);
+				});
+			});
 		},
 		initProfileActions:function(el, memInfo){
 			$(".hidden_wish_icon,.visible_wish_icon").click(function(e){

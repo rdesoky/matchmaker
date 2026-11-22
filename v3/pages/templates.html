@@ -31,6 +31,13 @@
             ><a class="href icon question_icon" data-exists-if="{{answers}}"
                   data-js-attr="innerHTML"><span class="btn_title" data-string="str:a.answers"></span>({{answers}})
             </a
+            ><div data-exists-if="(? require('kui').opGender($d) ?)" class="acceptance_btns">
+                <a class="icon promote_icon" tip="help:tips.promote" data-exists-if="(?_N( $d.rank )>1 ?)"><span data-string="str:sbtn.promote"></span></a>
+                <a class="icon demote_icon" tip="help:tips.demote" data-exists-if="(? _N( $d.rank ) ?)"><span data-string="str:sbtn.demote"></span></a>
+                <a class="icon hidden_wish_icon" tip="help:tips.hide_wish" data-exists-if="(? _N($d.rank) && _N($d.visible_wish) != 0 ?)"><span data-string="str:sbtn.mk_hidden_wish"></span></a>
+                <a class="icon visible_wish_icon" tip="help:tips.show_wish" data-exists-if="(? _N($d.rank) && _N($d.visible_wish) == 0 ?)"><span data-string="str:sbtn.mk_visible_wish"></span></a>
+                <a class="icon unaccept_icon" tip="help:tips.unaccept" data-exists-if="(? _N($d.rank) ?)"><span data-string="str:sbtn.unaccept"></span></a>
+            </div
         ></div>
         <div class="actions_bar footer_bar" data-exists-if="(? !SSN.id || require('kui').opGender($d) ?)" data-init="require('kui').initProfileActions"
             ><a class="icon accept_icon" tip="help:tips.accept" data-exists-if="(? _N($d.rank) == 0 ?)"><span data-string="str:a.kobool"></span></a
