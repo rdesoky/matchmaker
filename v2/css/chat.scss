@@ -46,6 +46,7 @@
 	clear:both;
 	padding:4px;
 	white-space:nowrap;
+	text-align:center;
 }
 #StatusView{
 	background:var(--kb-surface-3);
@@ -113,6 +114,11 @@ form[name=ChatEditor] select{
 	display:inline-block;
 	vertical-align:top;
 	min-width:120px;
+	text-align:left;
+}
+
+.chat_box_col:lang(ar){
+	text-align:right;
 }
 .chat_side{
 	width:175px;
