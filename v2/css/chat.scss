@@ -136,7 +136,15 @@ form[name=ChatEditor] select{
 	padding:4px 4px;
 }
 .chat_footer{
-	clear:both;
+	position:fixed;
+	bottom:0;
+	left:0;
+	right:0;
+	background-color:var(--kb-surface);
+	border-top:solid 1px var(--kb-border-strong);
+	box-shadow: var(--kb-shadow-x) calc(-1px + var(--kb-shadow-y)) 10px var(--kb-shadow);
+	z-index:200;
+	padding:6px 0;
 }
 .chat_contents:lang(ar), .chat_side:lang(ar){
 	float:right;
@@ -186,9 +194,18 @@ form[name=ChatEditor] select{
 	/*position:fixed;
 	bottom:20px;
 	*/
-	border-top:solid 1px var(--kb-border-strong);
-	background-color:var(--kb-surface);
-	clear:both;
+	border-top:none;
+	background-color:transparent;
+	clear:none;
+}
+
+/* Snap the chat form + status bar to the bottom of the page. chat.scss only
+   loads on the chat page, so these #Contents rules are chat-scoped. The fixed
+   footer no longer clears the floats, so contain them here, and reserve space
+   below the contents so the last message isn't hidden behind the footer. */
+#Contents{
+	display:flow-root;
+	padding-bottom:160px;
 }
 
 .pdm_frame .href{
