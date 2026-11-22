@@ -326,6 +326,27 @@ define(["jquery","page-nav","js-promise","dom-utils","utils","http"],function($,
 			$(".question_icon",el).click( function(e){
 				module.openMemPage(context.id,{mtab:"TAnswers"});
 			});
+
+			$(".promote_icon",el).click(function(){
+				require(["kactions"],function(actions){
+					actions.onClickPromote(context);
+				});
+			});
+			$(".demote_icon",el).click(function(){
+				require(["kactions"],function(actions){
+					actions.onClickDemote(context);
+				});
+			});
+			$(".hidden_wish_icon,.visible_wish_icon",el).click(function(e){
+				require(["kactions"],function(actions){
+					actions.toggleWishVisibility($(e.target),context);
+				});
+			});
+			$(".unaccept_icon",el).click(function(){
+				require(["kactions"],function(actions){
+					actions.onClickRemoveKobool(context);
+				});
+			});
 		},
 		initProfileActions:function(el, memInfo){
 			$(".hidden_wish_icon,.visible_wish_icon").click(function(e){
@@ -530,7 +551,16 @@ define(["jquery","page-nav","js-promise","dom-utils","utils","http"],function($,
 		},
 
 		visitorHeartTip:function(info){
-			return "";
+			if(_N(info.wished)){
+				return "help:profile.wisher";
+			}
+			if(_N(info.rank)){
+				return "help:profile.in_wishlist";
+			}
+			if(_N(info.visits_count)>0){
+				return "help:profile.unk_kobool";
+			}
+			return "help:profile.no_kobool_chance";
 		},
 
 		genderIcon:function(info,opt){

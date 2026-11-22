@@ -31,6 +31,13 @@
             ><a class="href icon question_icon" data-exists-if="{{answers}}"
                   data-js-attr="innerHTML"><span class="btn_title" data-string="str:a.answers"></span>({{answers}})
             </a
+            ><div data-exists-if="(? require('kui').opGender($d) ?)" class="acceptance_btns">
+                <a class="icon promote_icon" tip="help:tips.promote" data-exists-if="(?_N( $d.rank )>1 ?)"><span data-string="str:sbtn.promote"></span></a>
+                <a class="icon demote_icon" tip="help:tips.demote" data-exists-if="(? _N( $d.rank ) ?)"><span data-string="str:sbtn.demote"></span></a>
+                <a class="icon hidden_wish_icon" tip="help:tips.hide_wish" data-exists-if="(? _N($d.rank) && _N($d.visible_wish) != 0 ?)"><span data-string="str:sbtn.mk_hidden_wish"></span></a>
+                <a class="icon visible_wish_icon" tip="help:tips.show_wish" data-exists-if="(? _N($d.rank) && _N($d.visible_wish) == 0 ?)"><span data-string="str:sbtn.mk_visible_wish"></span></a>
+                <a class="icon unaccept_icon" tip="help:tips.unaccept" data-exists-if="(? _N($d.rank) ?)"><span data-string="str:sbtn.unaccept"></span></a>
+            </div
         ></div>
         <div class="actions_bar footer_bar" data-exists-if="(? !SSN.id || require('kui').opGender($d) ?)" data-init="require('kui').initProfileActions"
             ><a class="icon accept_icon" tip="help:tips.accept" data-exists-if="(? _N($d.rank) == 0 ?)"><span data-string="str:a.kobool"></span></a
@@ -298,7 +305,9 @@
     <div data-tip="visit_info" class="my_visit_box visit_box" data-exists-if="(? $d.id!=0 && SSN.id && $d.gender!=SSN.gender ?)" >
         <div class="visit_heart (? require('kui').myVisitCSS($d) ?)" data-js-attr="className,innerHTML"
              data-init="require('dom-utils').initMenuBtn"
-             data-menu=".profile_menu">(? $d.rank!=0 ? $d.rank:"" ?)</div>
+             data-menu=".profile_menu"
+             tip="(? require('kui').visitorHeartTip($d) ?)"
+             tipw="300">(? $d.rank!=0 ? $d.rank:"" ?)</div>
         <div class="visited visit_counter" data-template="{innerHTML:'my_visits'}"></div>
         <div data-exists-if="(? $d.my_visits !=0 ?)" class="item_date (? require('kui').dateToRange($d.my_last_visit).s ?)" data-js-attr="innerHTML,className">(? require('kui').dateToRange($d.my_last_visit).t ?)</div>
         <div data-exists-if="(? $d.my_visits == 0 ?)" class="item_date past" data-string="str:no_visits"></div>
@@ -313,7 +322,9 @@
     </div>
 
     <div class="visitor_box visit_box" data-exists-if="(? $d.id!=0 && SSN.id && $d.gender != SSN.gender && $d.activated!=0 ?)" >
-        <div class="visit_heart (? require('kui').visitorCSS($d) ?)" data-js-attr="className"></div>
+        <div class="visit_heart (? require('kui').visitorCSS($d) ?)" data-js-attr="className"
+             tip="(? require('kui').visitorHeartTip($d) ?)"
+             tipw="300"></div>
         <div class="visitor visit_counter" data-template="{innerHTML:'visits_count'}"></div>
         <div data-exists-if="(? $d.visits_count!=0 ?)" class="item_date (? require('kui').dateToRange($d.last_visit).s ?)" data-js-attr="innerHTML,className">(? require('kui').dateToRange($d.last_visit).t ?)</div>
         <div data-exists-if="(? $d.visits_count==0 ?)" class="item_date past" data-string="str:no_visits"></div>

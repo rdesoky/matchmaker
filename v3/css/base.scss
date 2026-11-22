@@ -1267,7 +1267,7 @@ img.small_pic{
 	/* line-height:20px; */
 	background-repeat:no-repeat;
 	background-position:4px center;
-	padding: 2px 6px 2px 25px;
+	padding: 2px 6px 2px 22px !important;
 	/* margin: 0 4px; */
 	/* box-sizing: border-box; */
 	/* text-align: center; */
@@ -1283,7 +1283,7 @@ img.small_pic{
 
 .icon:lang(ar){
 	background-position: right 4px center;
-	padding: 0 25px 0 8px;
+	padding: 0 25px 0 8px !important;
 	/* font-size: 14px; */
 }
 
@@ -1552,10 +1552,20 @@ img.small_pic{
 
 .tipArrow{
 	position:absolute;
-	width:13px;
-	height:7px;
+	width:8px;
+	height:8px;
 	z-index:5113;
-	background:url(/images/tooltip_up_arrow.png) no-repeat;
+	top:2px;
+	left:10px;
+	transform: rotate(45deg);
+	background-color:var(--kb-tip-bg);
+	border-top:1px solid var(--kb-border-contrast);
+	border-left:1px solid var(--kb-border-contrast);
+	box-sizing:border-box;
+}
+.tipArrow:lang(ar){
+	left:auto;
+	right:10px;
 }
 
 
@@ -1570,6 +1580,13 @@ img.small_pic{
 	border-radius: 0 0 5px 5px;
 	padding:10px 5px;
 	color:var(--kb-tip-text);
+	font-size:12px;
+	line-height:14px;
+}
+
+.tipContents li{
+	font-size:11px;
+	line-height:13px;
 }
 
 .old_points_icon{

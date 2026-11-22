@@ -8,7 +8,15 @@ define(["jquery", "kevents", "utils", "dom-utils"],function($, KEvents,U, DU){
 
 	var ToolTip =  {
 		init:function(){
-			//KEvents.listen( "mouseMotion", this.handleMouseOver, this );
+			KEvents.listen( "mouseMotion", this.handleMouseOver, this );
+			document.body.onclick = function(e){
+				e = e || window.event;
+				var target = e.target || e.srcElement;
+				var tipped = DU.findAttr(target,"tip");
+				if(tipped){
+					ToolTip.show(tipped);
+				}
+			};
 		},
 		handleMouseOver:function(inf){
 			var target = inf.target;

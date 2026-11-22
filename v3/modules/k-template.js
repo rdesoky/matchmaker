@@ -178,6 +178,20 @@ define(["jquery", "utils", "http","kui","js-promise","inline-edit","dom-utils"],
 				});
 			});
 
+			// Evaluate tip attribute as a k-template expression (e.g.
+			// (? require('kui').visitorHeartTip($d) ?)) and set the result
+			// as the element's tip attribute so the tooltip system can read it.
+			$("[tip]", ret).each( function( node ){
+				var tipExpr = node.getAttribute("tip");
+
+				node.removeAttribute("tip");
+
+				tipExpr.replaceFieldsAsync($d,$actions)
+					.done( function(val){
+						node.setAttribute("tip", val);
+					});
+			});
+
 			// Must run after data-js-attr: assigning innerHTML re-creates the
 			// descendant [data-string] nodes, so binding them earlier would
 			// leave the detached originals filled and the live ones empty.
