@@ -1187,6 +1187,10 @@ img.small_pic{
 .menu > li{
 	padding: 0 10px;
 }
+.menu > li:hover{
+	background-color: var(--kb-surface-hover);
+	color: var(--kb-text);
+}
 
 .popup .white_bg{
 	background-color:var(--kb-popup-white-bg);

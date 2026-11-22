@@ -1232,6 +1232,10 @@ img.small_pic{
 	cursor:pointer;
 	color: var(--kb-text-inverse);
 }
+.menu > li:hover{
+	background-color: var(--kb-surface-hover);
+	color: var(--kb-text);
+}
 
 .cimg{
 	display:inline-block;

@@ -716,9 +716,9 @@ html[data-theme="dark"] {
         background-color: var(--kb-surface-2);
     }
 
-    /* Root menu padding: 1px vertical only in dark mode, 0 in light mode. */
+    /* Root menu padding: 1px all around in dark mode, 0 in light mode. */
     .menu {
-        padding: 1px 0;
+        padding: 1px;
     }
 
     /* The legacy stylesheet paints the nav strip var(--kb-nav-strip) with !important, so the
