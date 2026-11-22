@@ -1261,7 +1261,7 @@ img.small_pic{
 	width:12px;
 	height:12px;
 }
-.icon{
+.menu > li.icon{
 	display:inline-block;
 	/* height:22px; */
 	/* line-height:20px; */
@@ -1281,7 +1281,7 @@ img.small_pic{
 	background-color: var(--kb-card-bg);
 }
 
-.icon:lang(ar){
+.menu > li.icon:lang(ar){
 	background-position: right 4px center;
 	padding: 0 25px 0 8px;
 	/* font-size: 14px; */
