@@ -174,7 +174,7 @@ define(["jquery", "top-tabs", "page-nav", "http", "kui", "check-frame", "dom-uti
 					});
 
 					if (selectAfterUpload !== undefined) {
-						var $target = (selectAfterUpload != null && $selectImg) ? $selectImg : $tn_frame.children().first();
+						var $target = (selectAfterUpload != null && $selectImg) ? $selectImg : $( $tn_frame.dom().firstElementChild );
 						if ($target.length) {
 							$target.click();
 						}

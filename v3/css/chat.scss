@@ -319,12 +319,16 @@ form[name=ChatEditor] select{
 	/* vertical-align: bottom; */
 }
 
+.chat_msg_time > span{
+	font-size: 10px !important;
+}
+
 .chat_msg_time.read_msg{
 	color:var(--kb-success);
 }
 
 .chat_msg_time.unread_msg{
-	color:var(--kb-text);
+	color:var(--kb-unread-text);
 	background-color:var(--kb-unread-bg);
 }
 

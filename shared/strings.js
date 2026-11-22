@@ -143,9 +143,12 @@
         });
     }
 
-    // Returns the values of every key under a group prefix, in bundle order.
-    // Replaces the legacy hidden <div id="str:group"> nodes that the server
-    // used to render for callers that enumerated a string group.
+    // Returns the items of every key under a group prefix, in bundle order.
+    // Each item is {key, value}; the key lets callers recover the original
+    // index (e.g. the `v<N>` suffix of chat message keys) instead of relying
+    // on array position, which the lexicographically-sorted bundle does not
+    // guarantee (v10 sorts before v2). Replaces the legacy hidden
+    // <div id="str:group"> nodes the server used to render.
     function getGroup(strID) {
         var parts = splitKey(strID);
         var bundle = bundles[currentLang + ':' + parts.source];
@@ -153,7 +156,7 @@
         var ret = [];
         if (!bundle) return ret;
         Object.keys(bundle).forEach(function (key) {
-            if (key.indexOf(prefix) === 0) ret.push(bundle[key]);
+            if (key.indexOf(prefix) === 0) ret.push({ key: key, value: bundle[key] });
         });
         return ret;
     }
