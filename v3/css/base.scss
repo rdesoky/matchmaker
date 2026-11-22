@@ -1552,14 +1552,15 @@ img.small_pic{
 
 .tipArrow{
 	position:absolute;
-	width:16px;
-	height:16px;
+	width:8px;
+	height:8px;
 	z-index:5113;
-	top: -4px;
-	left: 50%;
-	transform: translateX(-50%) rotate(45deg);
+	top:0px;
+	left:10px;
+	transform: rotate(45deg);
 	background-color:var(--kb-tip-bg);
-	border:1px solid var(--kb-border-contrast);
+	border-left:1px solid var(--kb-border-contrast);
+	border-bottom:1px solid var(--kb-border-contrast);
 	box-sizing:border-box;
 }
 
