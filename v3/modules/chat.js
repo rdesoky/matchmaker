@@ -2,7 +2,22 @@ define(["jquery","page-nav", "kui", "k-template", "http","utils","dom-utils","to
 function($, $pgNav, $kui, $ktmpl, $http, $u, $du, $tabs, CSelector,CCheckFrame) {
 	var module, msgSelector = new CSelector();
 
-	return module = {
+	// Fixed messages are rendered server-side into div#fixed_msg_N and are not
+	// covered by the [data-string] binder, so re-apply the translated text
+	// whenever the language changes.
+	KStrings.onLanguageChange(function refreshFixedMsgs() {
+		RS("options:chat", function () {
+			$("div[id^='fixed_msg_']").each(function (el) {
+				var msg_id = _N(el.id.slice(10));
+				var text = _S("options:chat.v" + msg_id);
+				if (_D(text) && text.trim().length) {
+					el.innerHTML = text;
+				}
+			});
+		});
+	});
+
+	module = {
 		requireCSS:["chat"],
 		requireStrings:["options:chat","str:chat","contact:contact_m","contact:points", "contact:contact"],
 
@@ -152,8 +167,10 @@ function($, $pgNav, $kui, $ktmpl, $http, $u, $du, $tabs, CSelector,CCheckFrame) 
 			$(sendBtn).click(function(e){
 				document.forms.ChatEditor.msid.value = selected_msg;
 			});
+			// "fixed_msg_" is exactly 10 chars, so slice(10) extracts the message
+			// number (substr(14) always yields "" and made msg_id always 0).
 			$("div",rootEl).each(function (el) {
-				var msg_id = _N(el.id.substr(14));
+				var msg_id = _N(el.id.slice(10));
 				if (_D(el.innerHTML)) {
 					if (el.innerHTML.trim().length) {
 						$(el).click(function (e) {
@@ -286,6 +303,8 @@ function($, $pgNav, $kui, $ktmpl, $http, $u, $du, $tabs, CSelector,CCheckFrame) 
 			}
 		}
 	};
+
+	return module;
 
 });
 
