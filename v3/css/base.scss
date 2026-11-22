@@ -1232,9 +1232,22 @@ img.small_pic{
 	cursor:pointer;
 	color: var(--kb-text-inverse);
 }
-.menu > li:hover{
+#Menu .menu > li:not(.ctab):hover{
 	background-color: var(--kb-surface-hover);
 	color: var(--kb-text);
+	text-shadow: none;
+}
+#Menu .menu > li:not(.ctab):hover > a{
+	/* Hovered root items use a light background (#eeeeee); the anchor's direct
+	 * color rule (var(--kb-text-inverse) = white) would otherwise win over the
+	 * inherited hover text colour and vanish on the light background. Force the
+	 * hovered anchor to var(--kb-text) so the label stays readable, and drop the
+	 * black drop shadow so black text on a light background stays crisp.
+	 * The #Menu prefix is required so text-shadow: none outranks
+	 * #Menu .menu li { text-shadow: 0 0 2px var(--kb-text-shadow-strong) }
+	 * (specificity 1,1,1 vs 0,2,2 without the ID). */
+	color: var(--kb-text);
+	text-shadow: none;
 }
 
 .cimg{
@@ -1824,6 +1837,13 @@ img.small_pic{
 	/* margin: auto 0; */
 	white-space: nowrap;
 	text-shadow: 0 0 2px var(--kb-text-shadow-strong);
+}
+#MemberBox *:hover{
+	/* Hovered items inside #MemberBox use the light default theme text color so
+	 * they stay readable instead of remaining var(--kb-text-inverse) white with
+	 * a black drop shadow. Specificity (1,0,2) beats #MemberBox * (1,0,1). */
+	color: var(--kb-text);
+	text-shadow: none;
 }
 
 #GuestBox{

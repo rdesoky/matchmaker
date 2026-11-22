@@ -1191,6 +1191,13 @@ img.small_pic{
 	background-color: var(--kb-surface-hover);
 	color: var(--kb-text);
 }
+.menu > li:hover > a{
+	/* Hovered root items use a light background (#eeeeee); keep the anchor text
+	 * var(--kb-text) so the label stays readable on the light background, and drop
+	 * the black drop shadow so black text on a light background stays crisp. */
+	color: var(--kb-text);
+	text-shadow: none;
+}
 
 .popup .white_bg{
 	background-color:var(--kb-popup-white-bg);

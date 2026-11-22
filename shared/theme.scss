@@ -711,9 +711,10 @@ html[data-theme="dark"] {
         background-color: var(--kb-surface-hover-soft) !important;
     }
 
-    /* Darken hovered menu-popup items so they stand out on the dark surfaces. */
+    /* Hovered root menu items use the darkest surface-hover token so they stay
+       dark on dark surfaces instead of reading lighter than the menu background. */
     .menu > li:hover {
-        background-color: var(--kb-surface-2);
+        background-color: var(--kb-surface-hover-soft);
     }
 
     /* Root menu padding: 1px all around in dark mode, 0 in light mode. */
@@ -769,7 +770,7 @@ html[data-theme="dark"] {
     }
 
     #Menu .ctab:hover {
-        background-color: var(--kb-surface-2) !important;
+        background-color: var(--kb-surface-hover-soft) !important;
     }
 
     /* Forms and buttons ------------------------------------------------------ */
