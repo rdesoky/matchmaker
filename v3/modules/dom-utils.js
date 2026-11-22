@@ -628,9 +628,25 @@ define(["jquery","kevents","utils","js-promise"], function($, $evt, $u, CPromise
 				menuID = ".menu";
 				$mBtn.addAfter($menu);
 			}
+			// Resolve the menu from the live DOM at click time. Template includes
+			// (data-include) replace the menu node asynchronously after init (e.g.
+			// #MemberStats inside UserBox), so a $menu captured at init may be
+			// detached from the DOM. Re-querying from the live button finds the
+			// currently-rendered menu instead of toggling a stale reference.
+			function resolveMenu(){
+				var $ctx = $mBtn.parent();
+				while($ctx.dom()){
+					var $found = isIdSelector ? $(menuID) : $(menuID, $ctx);
+					if($found.dom()){
+						return $found;
+					}
+					$ctx = $ctx.parent();
+				}
+				return null;
+			}
 			$mBtn.click( function (e) {
-						// Use the already-found $menu directly instead of re-searching
-						var $popup = $menu;
+				// Re-resolve at click time so async template includes are reflected
+				var $popup = resolveMenu() || $menu;
 				if( $popup.hasClass("show_menu") ){
 					$popup.removeClass("show_menu");
 				}else {
