@@ -1182,7 +1182,10 @@ img.small_pic{
 
 
 .menu{
-	padding: 1px 10px;
+	padding: 0;
+}
+.menu > li{
+	padding: 0 10px;
 }
 
 .popup .white_bg{

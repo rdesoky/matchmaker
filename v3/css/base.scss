@@ -1184,7 +1184,10 @@ img.small_pic{
 }
 
 .menu{
-	padding: 1px 10px;
+	padding: 0;
+}
+.menu > li{
+	padding: 0 10px;
 }
 .menu > li, .submenu > li{
 	display:block;
