@@ -28,6 +28,15 @@ function($, $pgNav, $kui, $ktmpl, $http, $u, $du, $tabs, CSelector,CCheckFrame, 
 		requireStrings:["options:chat","str:chat","contact:contact_m","contact:points", "contact:contact"],
 
 		initMsgTemplate:function(el, $d, $actions){// called from template
+			// The template's [data-exists-if] drops .brgr_frame (button + menu)
+			// for messages with no available action (e.g. my own message once
+			// read) before this runs. Without a .brgr_menu inside el,
+			// initMenuBtn falls back to treating the whole .chat_msg as the
+			// button and resolves ".menu" from the chat container, so a click
+			// on that message opened every message's menu at once.
+			if (!$(".brgr_menu", el).dom()) {
+				return;
+			}
 			var $menu = $du.initMenuBtn(el,$d);
 			$menu.click(function(e){
 				var menu_id = $(e.target).attr("data-menu-id");
