@@ -758,6 +758,7 @@ body{
 img.tiny_pic{
 	width:25px;
 	height:auto;
+	background-color: var(--kb-photo-frame-bg);
 }
 
 img.small_pic{
@@ -1179,6 +1180,24 @@ img.small_pic{
 	-webkit-transition:opacity .4s;
 }
 
+
+.menu{
+	padding: 0;
+}
+.menu > li{
+	padding: 0 10px;
+}
+.menu > li:hover{
+	background-color: var(--kb-surface-hover);
+	color: var(--kb-text);
+}
+.menu > li:hover > a{
+	/* Hovered root items use a light background (#eeeeee); keep the anchor text
+	 * var(--kb-text) so the label stays readable on the light background, and drop
+	 * the black drop shadow so black text on a light background stays crisp. */
+	color: var(--kb-text);
+	text-shadow: none;
+}
 
 .popup .white_bg{
 	background-color:var(--kb-popup-white-bg);

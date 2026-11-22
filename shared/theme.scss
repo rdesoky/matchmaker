@@ -172,7 +172,7 @@
     --kb-menu-hover-text: #ffffff;
     /* Dropdown lists and their row hover: transparent in light, dark surfaces in dark. */
     --kb-popup-list-bg: transparent;
-    --kb-menu-item-hover-bg: transparent;
+    --kb-menu-item-hover-bg: #ffffff;
     --kb-submenu-bg: #d3d3d3;
     --kb-submenu-text: #000000;
 
@@ -711,6 +711,17 @@ html[data-theme="dark"] {
         background-color: var(--kb-surface-hover-soft) !important;
     }
 
+    /* Hovered root menu items use the darkest surface-hover token so they stay
+       dark on dark surfaces instead of reading lighter than the menu background. */
+    .menu > li:hover {
+        background-color: var(--kb-surface-hover-soft);
+    }
+
+    /* Root menu padding: 1px all around in dark mode, 0 in light mode. */
+    .menu {
+        padding: 1px;
+    }
+
     /* The legacy stylesheet paints the nav strip var(--kb-nav-strip) with !important, so the
        dark override needs !important too. */
     .submenu_line,
@@ -759,7 +770,7 @@ html[data-theme="dark"] {
     }
 
     #Menu .ctab:hover {
-        background-color: var(--kb-surface-2) !important;
+        background-color: var(--kb-surface-hover-soft) !important;
     }
 
     /* Forms and buttons ------------------------------------------------------ */
@@ -901,8 +912,25 @@ html[data-theme="dark"] {
  * overridden here rather than through the shadow tokens.
  */
 html[data-theme="dark"] {
-    /* #Menu (the v2 header cell) is intentionally left out: it should read as a
-     * flat cell on the nav strip with no border in dark mode. */
+    /* #Menu here is v3's slide-in side panel (div#Menu): give it a one-sided
+     * inset edge on the side that meets the content (the end edge), so it reads
+     * as a flat panel against the page instead of casting a drop shadow. The
+     * padding keeps menu items from touching the divider line, and border-box
+     * keeps the fixed 200px width from growing. v2's #Menu is a header cell
+     * (td#Menu) and stays flat with no border, which is why the selector is
+     * div#Menu. */
+    div#Menu {
+        box-sizing: border-box;
+        box-shadow: inset -1px 0 0 var(--kb-border);
+        padding-right: 1px;
+    }
+    #Menu:lang(ar) {
+        /* Panel is pinned to the right in RTL, so the end edge is the left one. */
+        box-shadow: inset 1px 0 0 var(--kb-border);
+        padding-right: 0;
+        padding-left: 1px;
+    }
+
     .button:hover,
     .popup_frame,
     #MemberBox .popup_list,
