@@ -1127,18 +1127,22 @@ test('v3 chat: switching language re-translates the fixed message items', () => 
     };
     let languageListener;
 
+    const kStrings = {
+        onLanguageChange(fn) { languageListener = fn; },
+        setLanguage() {},
+        getString() { return null; },
+        // initFixedMsgs enumerates the options:chat group; the sandbox test
+        // pre-populates the fixed_msg divs, so an empty group is fine.
+        getGroup() { return []; }
+    };
     const sandbox = {
-        window: {},
+        window: { KStrings: kStrings },
         document: {
             forms: { ChatEditor: { msid: { value: '' } } },
             body: { addEventListener() {}, removeEventListener() {} },
             getElementById(id) { return elements.find((el) => el.id === id) || null; }
         },
-        KStrings: {
-            onLanguageChange(fn) { languageListener = fn; },
-            setLanguage() {},
-            getString() { return null; }
-        },
+        KStrings: kStrings,
         RS(id, cb) { if (cb) cb(); },
         _S(id) { return id in strings ? strings[id] : '[' + id + ']'; },
         _D(v) { return v !== undefined; },
