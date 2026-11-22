@@ -711,6 +711,11 @@ html[data-theme="dark"] {
         background-color: var(--kb-surface-hover-soft) !important;
     }
 
+    /* Darken hovered menu-popup items so they stand out on the dark surfaces. */
+    .menu > li:hover {
+        background-color: var(--kb-surface-2);
+    }
+
     /* The legacy stylesheet paints the nav strip var(--kb-nav-strip) with !important, so the
        dark override needs !important too. */
     .submenu_line,
