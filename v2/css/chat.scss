@@ -18,7 +18,7 @@
 }
 
 .chat_box_col.left_col {
-	width:120px;
+	width:175px;
 	padding:0px 3px;
 }
 
@@ -83,14 +83,17 @@
 	padding:1px;
 }
 form[name=ChatEditor] textarea, .pdm_frame{
-	width:500px;
 	height:100%;
 	overflow:auto;
 	padding:2px;
 }
 
 form[name=ChatEditor] textarea{
-	width:420px;
+	width:600px;
+}
+
+.pdm_frame{
+	width:600px;
 }
 
 .pdm_frame{
@@ -110,7 +113,7 @@ form[name=ChatEditor] select{
 	min-width:120px;
 }
 .chat_side{
-	width:120px;
+	width:175px;
 	padding:0px 5px;
 	float:left;
 }
@@ -126,7 +129,7 @@ form[name=ChatEditor] select{
 	padding:10px;
 }
 .chat_contents{
-	width:500px;
+	width:600px;
 	min-height:260px;
 	float:left;
 	background-color:var(--kb-chat-body-bg);
