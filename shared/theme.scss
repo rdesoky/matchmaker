@@ -901,8 +901,25 @@ html[data-theme="dark"] {
  * overridden here rather than through the shadow tokens.
  */
 html[data-theme="dark"] {
-    /* #Menu (the v2 header cell) is intentionally left out: it should read as a
-     * flat cell on the nav strip with no border in dark mode. */
+    /* #Menu here is v3's slide-in side panel (div#Menu): give it a one-sided
+     * inset edge on the side that meets the content (the end edge), so it reads
+     * as a flat panel against the page instead of casting a drop shadow. The
+     * padding keeps menu items from touching the divider line, and border-box
+     * keeps the fixed 200px width from growing. v2's #Menu is a header cell
+     * (td#Menu) and stays flat with no border, which is why the selector is
+     * div#Menu. */
+    div#Menu {
+        box-sizing: border-box;
+        box-shadow: inset -1px 0 0 var(--kb-border);
+        padding-right: 1px;
+    }
+    #Menu:lang(ar) {
+        /* Panel is pinned to the right in RTL, so the end edge is the left one. */
+        box-shadow: inset 1px 0 0 var(--kb-border);
+        padding-right: 0;
+        padding-left: 1px;
+    }
+
     .button:hover,
     .popup_frame,
     #MemberBox .popup_list,
