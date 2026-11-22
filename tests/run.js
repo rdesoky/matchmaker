@@ -1051,6 +1051,335 @@ test('layout: both shells provide the featured members side panel mounts', () =>
     }
 });
 
+test('v3 chat: switching language re-translates the fixed message items', () => {
+    // div#fixed_msg_N items are rendered server-side and carry no data-string,
+    // so they are outside the [data-string] binder. The chat module must
+    // re-apply the translated text from the options:chat bundle when the
+    // language changes.
+    const vm = require('node:vm');
+    const code = fs.readFileSync(path.join(ROOT, 'v3', 'modules', 'chat.js'), 'utf8');
+
+    const elements = [];
+    function fakeEl(tag, id, html) {
+        const el = {
+            tagName: tag.toUpperCase(),
+            id: id || '',
+            innerHTML: html === undefined ? '' : String(html),
+            children: [],
+            parentNode: null,
+            className: '',
+            style: {},
+            get firstChild() { return this.children[0] || null; },
+            setAttribute() {},
+            getAttribute() { return null; },
+            appendChild(child) { child.parentNode = this; this.children.push(child); return child; },
+            insertBefore(child, ref) {
+                child.parentNode = this;
+                const idx = ref ? this.children.indexOf(ref) : this.children.length;
+                this.children.splice(idx === -1 ? this.children.length : idx, 0, child);
+                return child;
+            },
+            focus() {}, click() {}, addEventListener() {}
+        };
+        elements.push(el);
+        return el;
+    }
+
+    const fixed1 = fakeEl('div', 'fixed_msg_1', 'Salamo Alykom.');
+    const fixed2 = fakeEl('div', 'fixed_msg_2', 'Thanks.');
+    const rootEl = fakeEl('div', 'pdm_frame');
+    rootEl.appendChild(fixed1);
+    rootEl.appendChild(fixed2);
+
+    function descendants(el) {
+        const out = [];
+        (function walk(node) {
+            node.children.forEach((child) => { out.push(child); walk(child); });
+        })(el);
+        return out;
+    }
+
+    function $(selector, context) {
+        const els = [];
+        if (typeof selector !== 'string') {
+            els.push(selector);
+        } else {
+            const haystack = context ? descendants(context) : elements;
+            const prefix = selector.match(/^div\[id\^='(.+)'\]$/);
+            if (prefix) {
+                haystack.forEach((el) => { if (el.id && el.id.indexOf(prefix[1]) === 0) els.push(el); });
+            } else {
+                const tag = selector.toUpperCase();
+                haystack.forEach((el) => { if (el.tagName === tag) els.push(el); });
+            }
+        }
+        return {
+            els,
+            click(fn) { els.forEach((el) => { el._onclick = fn; }); return this; },
+            each(fn) { els.forEach((el) => { fn.call(el, el); }); return this; }
+        };
+    }
+
+    const strings = {
+        'contact:contact_m.submit': 'Send',
+        'options:chat.v1': 'السلام عليكم',
+        'options:chat.v2': 'أشكرك على قبولك لي'
+    };
+    let languageListener;
+
+    const kStrings = {
+        onLanguageChange(fn) { languageListener = fn; },
+        setLanguage() {},
+        getString() { return null; },
+        // initFixedMsgs enumerates the options:chat group; the sandbox test
+        // pre-populates the fixed_msg divs, so an empty group is fine.
+        getGroup() { return []; }
+    };
+    const sandbox = {
+        window: { KStrings: kStrings },
+        document: {
+            forms: { ChatEditor: { msid: { value: '' } } },
+            body: { addEventListener() {}, removeEventListener() {} },
+            getElementById(id) { return elements.find((el) => el.id === id) || null; }
+        },
+        KStrings: kStrings,
+        RS(id, cb) { if (cb) cb(); },
+        _S(id) { return id in strings ? strings[id] : '[' + id + ']'; },
+        _D(v) { return v !== undefined; },
+        _N(v) { const n = parseInt(v, 10); return isNaN(n) ? 0 : n; },
+        _C(tag, attrs, contents) {
+            const el = fakeEl(tag, '', contents === undefined ? '' : String(contents));
+            if (attrs && attrs['class']) el.className = attrs['class'];
+            return el;
+        },
+        _A(parent, child) {
+            if (typeof child === 'string') return parent.appendChild(fakeEl(child));
+            return parent.appendChild(child);
+        },
+        _E(id) { return sandbox.document.getElementById(id); },
+        _TXT(t) { return t; },
+        _HS() {}, _R() {}, _SH() {}, _HI() {},
+        SSN: { id: 1, mlogin: 'mate', gender: 0 },
+        JSN(t) { return JSON.parse(t); },
+        Enum(arr, fn) { if (arr) arr.forEach(fn); },
+        URLSearchParams,
+        $,
+        console,
+        define(deps, factory) {
+            const resolve = (name) => {
+                if (name === 'jquery') return $;
+                if (name === 'ui-selector') {
+                    function CSelector() { this.selItem = null; }
+                    CSelector.prototype.select = function (item) { this.selItem = item; };
+                    return CSelector;
+                }
+                return {};
+            };
+            sandbox.module = factory.apply(null, deps.map(resolve));
+        },
+        setTimeout, clearTimeout, Promise
+    };
+    sandbox.globalThis = sandbox;
+    vm.createContext(sandbox);
+    vm.runInContext(code, sandbox);
+
+    const module = sandbox.module;
+    assert.ok(module, 'chat module loaded');
+    assert.ok(typeof languageListener === 'function', 'a language-change listener was registered');
+
+    module.initFixedMsgs(rootEl);
+
+    // Initial state: items keep their server-translated (English) text.
+    assert.strictEqual(fixed1.innerHTML, 'Salamo Alykom.');
+    assert.strictEqual(fixed2.innerHTML, 'Thanks.');
+
+    // Selecting a fixed message wires it up (validates the id parsing: fixed_msg_1 -> 1).
+    fixed1._onclick.call(fixed1);
+    assert.strictEqual(fixed1.children.length, 1);
+    assert.strictEqual(fixed1.children[0].tagName, 'BUTTON');
+
+    // Switching language reloads the options bundle and re-translates each item.
+    languageListener('ar');
+    assert.strictEqual(fixed1.innerHTML, 'السلام عليكم', 'fixed_msg_1 re-translated to Arabic');
+    assert.strictEqual(fixed2.innerHTML, 'أشكرك على قبولك لي', 'fixed_msg_2 re-translated to Arabic');
+});
+
+test('v3 chat: setLanguage re-translates fixed messages end-to-end', async () => {
+    // Integration through the real shared/strings.js: setLanguage() clears the
+    // bundles before notifying listeners, so the chat module must reload the
+    // options:chat bundle inside its onLanguageChange listener.
+    const vm = require('node:vm');
+    const code = fs.readFileSync(path.join(ROOT, 'v3', 'modules', 'chat.js'), 'utf8');
+    const stringsCode = fs.readFileSync(path.join(ROOT, 'shared', 'strings.js'), 'utf8');
+
+    const elements = [];
+    function fakeEl(tag, id, html) {
+        const el = {
+            tagName: tag.toUpperCase(),
+            id: id || '',
+            innerHTML: html === undefined ? '' : String(html),
+            children: [],
+            parentNode: null,
+            className: '',
+            style: {},
+            get firstChild() { return this.children[0] || null; },
+            setAttribute() {},
+            getAttribute() { return null; },
+            appendChild(child) { child.parentNode = this; this.children.push(child); return child; },
+            insertBefore(child, ref) {
+                child.parentNode = this;
+                const idx = ref ? this.children.indexOf(ref) : this.children.length;
+                this.children.splice(idx === -1 ? this.children.length : idx, 0, child);
+                return child;
+            },
+            focus() {}, click() {}, addEventListener() {}
+        };
+        elements.push(el);
+        return el;
+    }
+
+    const fixed1 = fakeEl('div', 'fixed_msg_1', 'Salamo Alykom.');
+    const fixed2 = fakeEl('div', 'fixed_msg_2', 'Thanks.');
+    const rootEl = fakeEl('div', 'pdm_frame');
+    rootEl.appendChild(fixed1);
+    rootEl.appendChild(fixed2);
+
+    function descendants(el) {
+        const out = [];
+        (function walk(node) {
+            node.children.forEach((child) => { out.push(child); walk(child); });
+        })(el);
+        return out;
+    }
+
+    function $(selector, context) {
+        const els = [];
+        if (typeof selector !== 'string') {
+            els.push(selector);
+        } else {
+            const haystack = context ? descendants(context) : elements;
+            const prefix = selector.match(/^div\[id\^='(.+)'\]$/);
+            if (prefix) {
+                haystack.forEach((el) => { if (el.id && el.id.indexOf(prefix[1]) === 0) els.push(el); });
+            } else {
+                const tag = selector.toUpperCase();
+                haystack.forEach((el) => { if (el.tagName === tag) els.push(el); });
+            }
+        }
+        return {
+            els,
+            click(fn) { els.forEach((el) => { el._onclick = fn; }); return this; },
+            each(fn) { els.forEach((el) => { fn.call(el, el); }); return this; }
+        };
+    }
+
+    function fetchBundle(url) {
+        const m = String(url).match(/\/text\/(ar|en)\/options\.json/);
+        const lang = m ? m[1] : 'en';
+        const compiled = compileSourceFile(path.join(ROOT, 'v3', 'text', lang, 'options.xml'));
+        return Promise.resolve({ ok: true, json: () => Promise.resolve(compiled) });
+    }
+
+    const sandbox = {
+        // strings.js is invoked as (window), so its "global" is sandbox.window;
+        // give window a location so detectLang() at load time does not throw.
+        window: {
+            location: { pathname: '/', search: '' },
+            navigator: { language: 'en' }
+        },
+        location: { pathname: '/', search: '' },
+        navigator: { language: 'en' },
+        document: {
+            cookie: '',
+            documentElement: { lang: '', dir: '', setAttribute() {}, getAttribute() { return null; } },
+            forms: { ChatEditor: { msid: { value: '' } } },
+            body: { addEventListener() {}, removeEventListener() {} },
+            addEventListener() {},
+            querySelectorAll() { return []; },
+            getElementById(id) { return elements.find((el) => el.id === id) || null; }
+        },
+        fetch: fetchBundle,
+        _D(v) { return v !== undefined; },
+        _N(v) { const n = parseInt(v, 10); return isNaN(n) ? 0 : n; },
+        _C(tag, attrs, contents) {
+            const el = fakeEl(tag, '', contents === undefined ? '' : String(contents));
+            if (attrs && attrs['class']) el.className = attrs['class'];
+            return el;
+        },
+        _A(parent, child) {
+            if (typeof child === 'string') return parent.appendChild(fakeEl(child));
+            return parent.appendChild(child);
+        },
+        _E(id) { return sandbox.document.getElementById(id); },
+        _TXT(t) { return t; },
+        _HS() {}, _R() {}, _SH() {}, _HI() {},
+        SSN: { id: 1, mlogin: 'mate', gender: 0 },
+        JSN(t) { return JSON.parse(t); },
+        Enum(arr, fn) { if (arr) arr.forEach(fn); },
+        URLSearchParams,
+        $,
+        console,
+        define(deps, factory) {
+            const resolve = (name) => {
+                if (name === 'jquery') return $;
+                if (name === 'ui-selector') {
+                    function CSelector() { this.selItem = null; }
+                    CSelector.prototype.select = function (item) { this.selItem = item; };
+                    return CSelector;
+                }
+                return {};
+            };
+            sandbox.module = factory.apply(null, deps.map(resolve));
+        },
+        setTimeout, clearTimeout, Promise
+    };
+    sandbox.global = sandbox;
+    sandbox.globalThis = sandbox;
+    vm.createContext(sandbox);
+
+    // Real string loader first so KStrings/_S/RS exist for the chat module.
+    // strings.js is invoked as (window), so it publishes its API on
+    // sandbox.window; chat.js addresses KStrings/_S/RS as bare globals, so
+    // expose them at sandbox top level before the chat module loads.
+    vm.runInContext(stringsCode, sandbox);
+    sandbox.KStrings = sandbox.window.KStrings;
+    sandbox.RS = sandbox.window.RS;
+    sandbox._S = sandbox.window._S;
+    vm.runInContext(code, sandbox);
+
+    const module = sandbox.module;
+    assert.ok(module, 'chat module loaded');
+
+    module.initFixedMsgs(rootEl);
+    assert.strictEqual(fixed1.innerHTML, 'Salamo Alykom.');
+    assert.strictEqual(fixed2.innerHTML, 'Thanks.');
+
+    // Switch language through the real setLanguage(): it clears the bundles and
+    // notifies listeners before re-binding, so the listener must reload the
+    // options bundle itself. The reload is asynchronous (fetch), so flush the
+    // microtask queue before asserting the re-translated text.
+    sandbox.window.KStrings.setLanguage('ar');
+    assert.strictEqual(sandbox.window.KStrings.lang(), 'ar');
+    // The listener reloads the options bundle asynchronously (fetch). Flush the
+    // microtask queue until the re-translation has landed.
+    for (let i = 0; i < 8; i++) await Promise.resolve();
+    assert.strictEqual(fixed1.innerHTML, 'السلام عليكم', 'fixed_msg_1 re-translated to Arabic');
+    assert.strictEqual(fixed2.innerHTML, 'أشكرك على قبولك لي', 'fixed_msg_2 re-translated to Arabic');
+});
+
+test('options bundle: chat fixed messages exist in both languages', () => {
+    const expected = {
+        en: { 'chat.v1': 'Salamo Alykom.', 'chat.v2': 'Thanks for accepting me.' },
+        ar: { 'chat.v1': 'السلام عليكم', 'chat.v2': 'أشكرك على قبولك لي' }
+    };
+    for (const lang of ['en', 'ar']) {
+        const compiled = compileSourceFile(path.join(ROOT, 'v3', 'text', lang, 'options.xml'));
+        for (const [key, value] of Object.entries(expected[lang])) {
+            assert.strictEqual(compiled[key], value, `${lang} options.xml must compile ${key}`);
+        }
+    }
+});
+
 test('smoke: dist builds and validates cleanly', { timeout: 120000 }, () => {
     execFileSync(process.execPath, [path.join(TOOLS, 'build.js'), '--env=prod'], {
         cwd: ROOT,

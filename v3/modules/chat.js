@@ -8,6 +8,21 @@ function($, $pgNav, $kui, $ktmpl, $http, $u, $du, $tabs, CSelector,CCheckFrame, 
 		return _N(key.split(".").pop().slice(1));
 	}
 
+	// Fixed messages are rendered/populated into div#fixed_msg_N and are not
+	// covered by the [data-string] binder, so re-apply the translated text
+	// whenever the language changes.
+	KStrings.onLanguageChange(function refreshFixedMsgs() {
+		RS("options:chat", function () {
+			$("div[id^='fixed_msg_']").each(function (el) {
+				var msg_id = _N(el.id.slice(10));
+				var text = _S("options:chat.v" + msg_id);
+				if (_D(text) && text.trim().length) {
+					el.innerHTML = text;
+				}
+			});
+		});
+	});
+
 	return module = {
 		requireCSS:["chat"],
 		requireStrings:["options:chat","str:chat","contact:contact_m","contact:points", "contact:contact"],
@@ -95,7 +110,7 @@ function($, $pgNav, $kui, $ktmpl, $http, $u, $du, $tabs, CSelector,CCheckFrame, 
 			$tabs.showTab("Menu_Kobool");
 			$tabs.select("Kobool.Chat");
 
-						
+
 			this.initFixedMsgs($(".pdm_frame", viewRoot));
 
 			document.forms.ChatEditor.onsubmit = function () {
@@ -299,7 +314,7 @@ function($, $pgNav, $kui, $ktmpl, $http, $u, $du, $tabs, CSelector,CCheckFrame, 
 					$root.addClass("mate_point");
 					break;
 				default:
-					$root.addClass("mate_gift");
+					$root.addClass("mate_gift")
 			}
 			if( _N(res.my_cards) + _N(res.mate_cards) > 1) {
 				$root.addClass("no_points_needed");
@@ -317,10 +332,9 @@ function($, $pgNav, $kui, $ktmpl, $http, $u, $du, $tabs, CSelector,CCheckFrame, 
 				$cBox.addClass("show_typing")
 				//$("#ChatTypingBox .chat_editor textarea").focus();
 			}else{
-				$cBox.removeClass("show_typing") 
+				$cBox.removeClass("show_typing")
 			}
 		}
 	};
 
 });
-
