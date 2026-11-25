@@ -4,6 +4,7 @@
 define(["jquery", "top-tabs", "dom-utils", "http", "kui", "utils","page-nav"],function($, $tabs, $du, $http, $kui, $u, $pgNav) {
 
 	return {
+	requireCSS: ["register"],
 		onload: function () {
 			if (!$kui.chkLogin({nav: true})) {
 				return;
@@ -18,6 +19,7 @@ define(["jquery", "top-tabs", "dom-utils", "http", "kui", "utils","page-nav"],fu
 
 			$http.postCGI($http.api.member, {mem: _N(_GC("id"))}, function (res) {
 				_E("UpdateAttr").style.visibility = "visible";
+				frm.marital_status.focus();
 				var r = JSN(res);
 				var info = r;
 
