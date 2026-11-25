@@ -1,7 +1,7 @@
 
 /* Hallmark · v2.0.0 · modernize v3 app forms (login + registration)
  *
- * Scope: form_frame / form controls on the login_form and reg_form pages.
+ * Scope: form_frame / form controls on the login and reg_form pages.
  * Shape · Workbench · genre modern-minimal · job: sign in / sign up,
  *   the action on the first screen.
  * Surface · raised card on page, ink anchor on focus and submit.
@@ -11,7 +11,7 @@
  *   logos, quotes, metrics.
  * Waiver 54 · na · labels are `<span data-string>` inside `.input_title`,
  *   which are labels by role (Floor 54 legal), so no waiver needed.
- * Sloplint render needs http://127.0.0.1:8080/#pg=login_form and
+ * Sloplint render needs http://127.0.0.1:8080/#pg=login and
  * http://127.0.0.1:8080/#pg=reg_form to render; run --url once the dev
  * server is up, then fix any FAIL / REFLEX before shipping.
  */
@@ -93,6 +93,7 @@ html[data-theme="dark"] .form_frame input[type="submit"]:hover {
 .form_frame input[type="submit"]:hover {
     background-color: var(--kb-link-hover-bg, var(--kb-link));
     border-color: var(--kb-link-hover-bg, var(--kb-link));
+    color: var(--kb-link-text);
 }
 
 .form_frame button:active,
