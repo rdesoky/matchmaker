@@ -1,5 +1,6 @@
 define(["jquery","kui","top-tabs","http"],function($,$kui,$tabs,$http){
 	return {
+		requireCSS:["register"],
 		requireStrings:["str:contact"],
 		onload:function(){
 
@@ -7,7 +8,9 @@ define(["jquery","kui","top-tabs","http"],function($,$kui,$tabs,$http){
 
 			var frm = document.forms.contact_us;
 
-			//frm.name.focus();
+			// Autofocus the first input on every page show (the autofocus
+			// attribute only fires on initial parse, not on SPA navigation).
+			frm.name.focus();
 
 			frm.onsubmit=function(){
 				var chk = Enum(["email","msg"], function(item){
