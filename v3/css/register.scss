@@ -24,6 +24,11 @@
 	width:340px;
 }
 
+#UpdateAttr .form_frame .info_col {
+	width: calc(50% - 6px);
+	box-sizing: border-box;
+}
+
 /* Form controls ---------------------------------------------------------- */
 
 .form_frame input[type="text"],
