@@ -79,7 +79,6 @@
         home: '/v3/pages/home.html',
         list: '/v3/pages/list.html',
         login: '/v3/pages/login.html',
-        login_form: '/v3/pages/login_form.html',
         logout: '/v3/pages/logout.html',
         matching: '/v3/pages/matching.html',
         mem: '/v3/pages/mem.html',
