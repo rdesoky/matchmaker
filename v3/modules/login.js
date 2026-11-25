@@ -3,6 +3,7 @@
  */
 define(["jquery","kui","top-tabs","utils","dom-utils"],function($, $kui, $tabs, $u, $du){
 	return {
+		requireCSS:["register"],
 		onload:function(){
 			if( SSN.id ){
 				var target = _P("target","my");
