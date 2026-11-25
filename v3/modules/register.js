@@ -11,6 +11,9 @@ define(["jquery","utils","page-nav","top-tabs","kui","http","popup","mem-ui"],fu
 			if(SSN.id){
 				$pgNav.open("upd_attr", undefined, true, true);
 			}
+			// Autofocus the first input on every page show (the autofocus
+			// attribute only fires on initial parse, not on SPA navigation).
+			document.forms.S1RegForm.gender.focus();
 			document.forms.S1RegForm.submt.disabled=true;
 			$tabs.select("GuestMenu.login");
 		},

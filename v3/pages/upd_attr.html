@@ -1,10 +1,10 @@
 <div id="UpdateAttr" class="pg_body" style="visibility:hidden">
-	<form name="updateAttrFrm">
+	<form name="updateAttrFrm" class="form_frame">
 		<div class="info_col">
 			<div class="attr_editor" id="ms_editor">
 				<div class="field_label"><span data-string="str:filters.ms"></span>:</div>
 				<div class="form_field">
-					<select name="marital_status" data-options="options" data-options-group="ms">
+					<select name="marital_status" tabindex="1" autofocus data-options="options" data-options-group="ms">
 						<option value="0" data-string="str:select" data-string-template="---{s}---"></option>
 					</select>
 				</div>
@@ -12,7 +12,7 @@
 			<div class="attr_editor" id="ch_editor">
 				<div class="field_label"><span data-string="str:filters.ch"></span>:</div>
 				<div class="form_field">
-					<select name="children" data-options="options" data-options-group="ch">
+					<select name="children" tabindex="2" data-options="options" data-options-group="ch">
 						<option value="0" data-string="str:select" data-string-template="---{s}---"></option>
 					</select>
 				</div>
@@ -20,7 +20,7 @@
 			<div class="attr_editor" id="ht_editor">
 				<div class="field_label"><span data-string="str:filters.ht"></span>:</div>
 				<div class="form_field">
-					<select name="height" data-options="options" data-options-group="ht">
+					<select name="height" tabindex="3" data-options="options" data-options-group="ht">
 						<option value="0" data-string="str:select" data-string-template="---{s}---"></option>
 					</select>
 				</div>
@@ -28,7 +28,7 @@
 			<div class="attr_editor" id="wt_editor">
 				<div class="field_label"><span data-string="str:filters.wt"></span>:</div>
 				<div class="form_field">
-					<select name="body" data-options="options" data-options-group="wt">
+					<select name="body" tabindex="4" data-options="options" data-options-group="wt">
 						<option value="0" data-string="str:select" data-string-template="---{s}---"></option>
 					</select>
 				</div>
@@ -36,7 +36,7 @@
 			<div class="attr_editor" id="jb_editor">
 				<div class="field_label"><span data-string="str:filters.jb"></span>:</div>
 				<div class="form_field">
-					<select name="job" data-options="options" data-options-group="jb">
+					<select name="job" tabindex="5" data-options="options" data-options-group="jb">
 						<option value="0" data-string="str:select" data-string-template="---{s}---"></option>
 					</select>
 				</div>
@@ -44,7 +44,7 @@
 			<div class="attr_editor" id="nc_editor">
 				<div class="field_label"><span data-string="str:filters.nc"></span>:</div>
 				<div class="form_field">
-					<select name="income" data-options="options" data-options-group="nc">
+					<select name="income" tabindex="6" data-options="options" data-options-group="nc">
 						<option value="0" data-string="str:select" data-string-template="---{s}---"></option>
 					</select>
 				</div>
@@ -52,7 +52,7 @@
 			<div class="attr_editor" id="la_editor">
 				<div class="field_label"><span data-string="str:filters.la"></span>:</div>
 				<div class="form_field">
-					<select name="language" data-options="options" data-options-group="la">
+					<select name="language" tabindex="7" data-options="options" data-options-group="la">
 						<option value="0" data-string="str:select" data-string-template="---{s}---"></option>
 					</select>
 				</div>
@@ -94,7 +94,7 @@
 			<div class="attr_editor">
 				<div class="field_label"><span data-string="profile:profile.birth_year"></span>:</div>
 				<div class="form_field">
-					<select name="birth_year" data-options="birth_years">
+					<select name="birth_year" tabindex="8" data-options="birth_years">
 						<option value="0" data-string="str:select" data-string-template="---{s}---"></option>
 					</select>
 				</div>
@@ -102,7 +102,7 @@
 			<div class="attr_editor">
 				<div class="field_label"><span data-string="str:filters.o"></span>:</div>
 				<div class="form_field">
-					<select name="origin_country" data-options="countries">
+					<select name="origin_country" tabindex="15" data-options="countries">
 						<option value="0" data-string="str:select" data-string-template="---{s}---"></option>
 					</select>
 				</div>
@@ -110,19 +110,19 @@
 			<div class="attr_editor">
 				<div class="field_label"><span data-string="str:filters.c"></span>:</div>
 				<div class="form_field">
-					<select name="country" data-options="countries">
+					<select name="country" tabindex="16" data-options="countries">
 						<option value="0" data-string="str:select" data-string-template="---{s}---"></option>
 					</select>
 				</div>
 			</div>
 			<div class="indent attr_editor" style="display:none" id="StateEditor">
-				<select name="state">
+				<select name="state" tabindex="17">
 					<option value="0" data-string="str:select" data-string-template="---{s}---"></option>
 				</select>
 			</div>
 			<div class="indent">
 				<div class="indent attr_editor" style="display:none" id="CityEditor">
-					<select name="city">
+					<select name="city" tabindex="18">
 						<option value="0" data-string="str:select" data-string-template="---{s}---"></option>
 					</select>
 				</div>
@@ -130,7 +130,7 @@
 			<div class="attr_editor" id="re_editor">
 				<div class="field_label"><span data-string="str:filters.re"></span>:</div>
 				<div class="form_field">
-					<select name="religion" data-options="options" data-options-group="re">
+					<select name="religion" tabindex="9" data-options="options" data-options-group="re">
 						<option value="0" data-string="str:select" data-string-template="---{s}---"></option>
 					</select>
 				</div>
@@ -138,7 +138,7 @@
 			<div class="attr_editor" id="sh_editor">
 				<div class="field_label"><span data-string="str:filters.sh"></span>:</div>
 				<div class="form_field">
-					<select name="shape" data-options="options" data-options-group="sh">
+					<select name="shape" tabindex="10" data-options="options" data-options-group="sh">
 						<option value="0" data-string="str:select" data-string-template="---{s}---"></option>
 					</select>
 				</div>
@@ -146,7 +146,7 @@
 			<div class="attr_editor" id="fc_editor">
 				<div class="field_label"><span data-string="str:filters.fc"></span>:</div>
 				<div class="form_field">
-					<select name="facelook" data-options="options" data-options-group="fc">
+					<select name="facelook" tabindex="11" data-options="options" data-options-group="fc">
 						<option value="0" data-string="str:select" data-string-template="---{s}---"></option>
 					</select>
 				</div>
@@ -154,7 +154,7 @@
 			<div class="attr_editor" id="ds_editor">
 				<div class="field_label"><span data-string="str:filters.ds"></span>:</div>
 				<div class="form_field">
-					<select name="disability" data-options="options" data-options-group="ds">
+					<select name="disability" tabindex="12" data-options="options" data-options-group="ds">
 						<option value="0" data-string="str:select" data-string-template="---{s}---"></option>
 					</select>
 				</div>
@@ -162,7 +162,7 @@
 			<div class="attr_editor" id="po_editor">
 				<div class="field_label"><span data-string="str:filters.po"></span>:</div>
 				<div class="form_field">
-					<select name="polygamy" data-options="options" data-options-group="po">
+					<select name="polygamy" tabindex="13" data-options="options" data-options-group="po">
 						<option value="0" data-string="str:select" data-string-template="---{s}---"></option>
 					</select>
 				</div>
@@ -170,15 +170,15 @@
 			<div class="attr_editor" id="dst_editor">
 				<div class="field_label"><span data-string="str:filters.dst"></span>:</div>
 				<div class="form_field">
-					<select name="district" data-options="options" data-options-group="dst">
+					<select name="district" tabindex="14" data-options="options" data-options-group="dst">
 						<option value="0" data-string="str:select" data-string-template="---{s}---"></option>
 					</select>
 				</div>
 			</div>
 		</div>
 		<div class="clear_left buttons_bar">
-			<input type="submit" name="save" value="" data-string="str:ok" data-string-attr="value"/>
-			<input type="button" value="" data-string="str:cancel" data-string-attr="value" onclick="require('page-nav').open('update',undefined,true)"/>
+			<input type="submit" name="save" value="" tabindex="19" class="button--primary" data-string="str:ok" data-string-attr="value"/>
+			<input type="button" value="" tabindex="20" class="button--secondary" data-string="str:cancel" data-string-attr="value" onclick="require('page-nav').open('update',undefined,true)"/>
 		</div>
 	</form>
 </div>

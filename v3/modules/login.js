@@ -3,6 +3,7 @@
  */
 define(["jquery","kui","top-tabs","utils","dom-utils"],function($, $kui, $tabs, $u, $du){
 	return {
+		requireCSS:["register"],
 		onload:function(){
 			if( SSN.id ){
 				var target = _P("target","my");
@@ -18,7 +19,9 @@ define(["jquery","kui","top-tabs","utils","dom-utils"],function($, $kui, $tabs, 
 				$du.removeClass( "idLoginIntro", "hidden" );
 				$( "#idLoginIntro").html( _S("login.login_required") );
 			}
-			//document.forms.login.lname.focus();
+			// Autofocus the first input on every page show (the autofocus
+			// attribute only fires on initial parse, not on SPA navigation).
+			document.forms.login.lname.focus();
 		},
 
 		onsubmit:function(){
