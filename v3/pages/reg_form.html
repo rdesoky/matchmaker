@@ -1,7 +1,7 @@
 <div id="StepOne">
 	<form id="S1RegForm" name="S1RegForm" class="form_frame" onsubmit="require('register').onsubmit();return false;">
 		<div>
-			<select name="gender">
+			<select name="gender" tabindex="1" autofocus>
 				<option value="-1" data-string="profile:register.gender"></option>
 				<option value="0" data-string="profile:select_gender.v0"></option>
 				<option value="1" data-string="profile:select_gender.v1"></option>
@@ -9,18 +9,18 @@
 		</div>
 		<div>
             <div><span data-string="profile:register.login_name"></span>:</div>
-			<div><input type="text" name="lname" onblur="require('register').checkLoginName()"/></div>
+			<div><input type="text" name="lname" tabindex="2" onblur="require('register').checkLoginName()"/></div>
 			<div id="LoginNameRow" style="display:none;">
 				<div class="user_exists_warning" id="LoginNameHelp"></div>
 			</div>
 		</div>
         <div><span data-string="profile:register.password"></span>:</div>
-		<div><input type="password" name="pw"/></div>
+		<div><input type="password" name="pw" tabindex="3"/></div>
         <div><span data-string="profile:register.confirm_pw"></span>:</div>
-        <div><input type="password" name="pw2"/></div>
+        <div><input type="password" name="pw2" tabindex="4"/></div>
         <div><span data-string="profile:register.email"></span>:</div>
-		<div><input type="text" name="email" style="direction:ltr;"/></div>
-		<div><input id="BtnRegSubmit" type="submit" name="submt"  value="" data-string="profile:register.submit" data-string-attr="value" disabled></div>
+		<div><input type="text" name="email" tabindex="5" style="direction:ltr;"/></div>
+		<div><input id="BtnRegSubmit" type="submit" name="submt" tabindex="6" value="" data-string="profile:register.submit" data-string-attr="value" disabled></div>
 
     </form>
 </div>

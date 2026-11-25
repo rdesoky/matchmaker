@@ -1,14 +1,22 @@
-/*
- * Dark theme for the v2 and v3 shells.
+/* Hallmark · v2.0.0 · shared theme tokens (light + dark)
  *
+ * Scope: v2 and v3 shells, all tokens and dark overrides.
+ * Shape · Workbench · genre modern-minimal · job: theme the app shells.
+ * Surface · light paper on :root, dark surfaces under html[data-theme=dark].
+ * Chrome · none (token layer) · footer: none.
+ * Signature · none inherited from a theme: built in the project's own system.
+ * Material · real: --kb-* tokens · pictures: none · absent: logos, quotes, metrics.
+ */
+
+/*
  * The legacy stylesheets hardcode light colours, so rather than rewrite every
  * rule this file overrides the surfaces, text and controls when
- * <html data-theme="dark"> is set by shared/theme.js.
+ * the data theme dark attribute is set by shared theme dot j s.
  *
  * The overrides are nested under html[data-theme="dark"] so they outrank the
  * original class rules regardless of stylesheet order. The few rules that apply
- * in both themes (the :root colour-scheme, the theme toggle and the gender
- * glyphs) stay at the top level. !important is used only where the light
+ * in both themes (the root colour scheme, the theme toggle and the gender
+ * glyphs) stay at the top level. Important is used only where the light
  * stylesheet already uses it.
  */
 
@@ -259,6 +267,14 @@
     --kb-total-text: inherit;
     --kb-total-shadow: none;
     --kb-hover-accent-bg: #9acd32;
+
+    /* Light theme :focus-visible so every interactive element has a visible
+       focus ring instantly (Floor). The dark block restates its own below. */
+    :focus-visible {
+        outline: 2px solid var(--kb-link);
+        outline-offset: 2px;
+        box-shadow: 0 0 0 3px var(--kb-focus-glow);
+    }
 
     /* Cards, photos, chat and overlays ------------------------------------- */
     /* Backdrop for profile photos. Most are transparent silhouettes, so the
