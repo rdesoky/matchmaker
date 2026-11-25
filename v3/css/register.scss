@@ -72,6 +72,22 @@
     text-align: center;
 }
 
+html[data-theme="dark"] .form_frame button,
+html[data-theme="dark"] .form_frame input[type="button"],
+html[data-theme="dark"] .form_frame input[type="submit"] {
+    background-color: var(--kb-native-button-bg);
+    color: var(--kb-native-button-text);
+    border-color: var(--kb-native-button-border);
+}
+
+html[data-theme="dark"] .form_frame button:hover,
+html[data-theme="dark"] .form_frame input[type="button"]:hover,
+html[data-theme="dark"] .form_frame input[type="submit"]:hover {
+    background-color: var(--kb-native-button-hover-bg);
+    border-color: var(--kb-native-button-hover-border);
+    color: var(--kb-native-button-text);
+}
+
 .form_frame button:hover,
 .form_frame input[type="button"]:hover,
 .form_frame input[type="submit"]:hover {
