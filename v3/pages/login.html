@@ -3,10 +3,10 @@
 
 	<form onsubmit="require('login').onsubmit();return false;" id="idLoginForm" name="login" class="form_frame">
 	    <div class="field_label"><span data-string="str:login.login_name"></span>:</div>
-		<div><input type=text name="lname" id="lname"></div>
+		<div><input type=text name="lname" id="lname" tabindex="1" autofocus></div>
 	    <div class="field_label"><span data-string="str:login.password"></span>:</div>
-		<div><input type="password" name="pw" id="pw"></div>
-		<div class="buttons_bar"><input type="submit" value="" data-string="str:login.submit" data-string-attr="value" ></div>
+		<div><input type="password" name="pw" id="pw" tabindex="2"></div>
+		<div class="buttons_bar"><input type="submit" name="submit" tabindex="3" value="" data-string="str:login.submit" data-string-attr="value" ></div>
 	</form>
 
 	<div><a class="big_button" href="#pg=forgot"><span data-string="str:login.forgot_pass"></span></a></div>
