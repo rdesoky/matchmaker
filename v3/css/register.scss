@@ -24,9 +24,20 @@
 	width:340px;
 }
 
+#UpdateAttr .form_frame {
+	display:flex;
+	flex-wrap:wrap;
+	gap:12px;
+}
+
 #UpdateAttr .form_frame .info_col {
-	width: calc(50% - 6px);
-	box-sizing: border-box;
+	flex:1 1 calc(50% - 12px);
+	box-sizing:border-box;
+	max-width:calc(50% - 12px);
+}
+
+#UpdateAttr .form_frame .clear_left.buttons_bar {
+	flex-basis:100%;
 }
 
 /* Form controls ---------------------------------------------------------- */
