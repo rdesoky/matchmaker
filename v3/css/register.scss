@@ -75,14 +75,17 @@
     padding: 4px 12px;
 }
 
+/* Form buttons ---------------------------------------------------------- */
+
 .form_frame button,
 .form_frame input[type="button"],
 .form_frame input[type="submit"] {
-    width: 100%;
     box-sizing: border-box;
-    background-color: var(--kb-link);
-    color: var(--kb-text-inverse);
-    border: 1px solid var(--kb-link);
+    width: auto;
+    max-width: 400px;
+    background-color: var(--kb-native-button-bg);
+    color: var(--kb-native-button-text);
+    border: 1px solid var(--kb-native-button-border);
     border-radius: var(--kb-radius-md, 6px);
     padding: 8px 12px;
     font: inherit;
@@ -91,28 +94,43 @@
     text-align: center;
 }
 
-html[data-theme="dark"] .form_frame button,
-html[data-theme="dark"] .form_frame input[type="button"],
-html[data-theme="dark"] .form_frame input[type="submit"] {
+/* A lone button in a button bar stretches to fill the bar */
+.buttons_bar > :only-child {
+    width: 100%;
+}
+
+/* Primary button — main action, only one per form */
+.form_frame .button--primary,
+.form_frame button.button--primary,
+.form_frame input[type="button"].button--primary,
+.form_frame input[type="submit"].button--primary {
+    background-color: var(--kb-surface-3);
+    color: var(--kb-text-strong);
+    border-color: var(--kb-border-strong);
+}
+
+.form_frame .button--primary:hover {
+    background-color: var(--kb-surface-hover-strong);
+    border-color: var(--kb-border-strong);
+    color: var(--kb-text-strong);
+}
+
+/* Secondary button — default for all other buttons */
+.form_frame .button--secondary,
+.form_frame button.button--secondary,
+.form_frame input[type="button"].button--secondary,
+.form_frame input[type="submit"].button--secondary {
     background-color: var(--kb-native-button-bg);
     color: var(--kb-native-button-text);
     border-color: var(--kb-native-button-border);
 }
 
-html[data-theme="dark"] .form_frame button:hover,
-html[data-theme="dark"] .form_frame input[type="button"]:hover,
-html[data-theme="dark"] .form_frame input[type="submit"]:hover {
-    background-color: var(--kb-native-button-hover-bg);
-    border-color: var(--kb-native-button-hover-border);
-    color: var(--kb-native-button-text);
-}
-
 .form_frame button:hover,
 .form_frame input[type="button"]:hover,
 .form_frame input[type="submit"]:hover {
-    background-color: var(--kb-link-hover-bg, var(--kb-link));
-    border-color: var(--kb-link-hover-bg, var(--kb-link));
-    color: var(--kb-link-text);
+    background-color: var(--kb-native-button-hover-bg);
+    border-color: var(--kb-native-button-hover-border);
+    color: var(--kb-native-button-text);
 }
 
 .form_frame button:active,
@@ -128,6 +146,22 @@ html[data-theme="dark"] .form_frame input[type="submit"]:hover {
     color: var(--kb-text-strong);
     border-color: var(--kb-surface-4);
     cursor: default;
+}
+
+/* Dark theme button overrides */
+html[data-theme="dark"] .form_frame .button--primary,
+html[data-theme="dark"] .form_frame button.button--primary,
+html[data-theme="dark"] .form_frame input[type="button"].button--primary,
+html[data-theme="dark"] .form_frame input[type="submit"].button--primary {
+    background-color: var(--kb-surface-hover-strong);
+    color: var(--kb-text-inverse);
+    border-color: var(--kb-border-strong);
+}
+
+html[data-theme="dark"] .form_frame .button--primary:hover {
+    background-color: var(--kb-surface-hover);
+    border-color: var(--kb-border-strong);
+    color: var(--kb-text-inverse);
 }
 
 .form_frame input[type="text"]:focus-visible,
