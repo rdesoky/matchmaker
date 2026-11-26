@@ -174,7 +174,14 @@ define(["jquery", "utils", "http","kui","js-promise","inline-edit","dom-utils"],
 
 				$.each(attr_list, function(attr){
 					// use observable style for promised values
-					module.setNodeAttr( node, attr, node[attr].replaceFields($d) );
+					var raw = node[attr];
+					if (attr === "src" && node.hasAttribute("data-src")) {
+						// Read template image URLs from data-src so parsing
+						// templates.html does not trigger requests with raw placeholders.
+						raw = node.getAttribute("data-src");
+						node.removeAttribute("data-src");
+					}
+					module.setNodeAttr( node, attr, raw.replaceFields($d) );
 				});
 			});
 

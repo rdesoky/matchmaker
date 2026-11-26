@@ -47,7 +47,7 @@
             ><a class="icon unaccept_icon" tip="help:tips.unaccept" data-exists-if="(? _N($d.rank) ?)"><span data-string="str:sbtn.unaccept"></span></a
         ></div>
 
-        <div data-init="require('kui').initAttrBar" class="pic25frame"><img class="profilePic" data-js-attr="src" src="/cgi-bin/kpic.pl?tn=1&amp;id={{main_pic}}&amp;g={{gender}}"></div>
+        <div data-init="require('kui').initAttrBar" class="pic25frame"><img class="profilePic" data-js-attr="src" data-src="/cgi-bin/kpic.pl?tn=1&amp;id={{main_pic}}&amp;g={{gender}}"></div>
 
         <div class="profile_title" data-init="require('kui').initMemTemplate" data-exists-if="(? $d.id!=0 ?)">
             <span><a class="href fav_icon flat_btn fav_(? $d.bookmark == 1 ? 'on':'off' ?)" data-js-attr="className" tip="help:tips.bookmark"></a></span>
@@ -154,7 +154,7 @@
                 <div data-include=".points_indicator"></div>
                 <div class="block_icon"></div>
                 <div class="pic100frame">
-                    <img src="/cgi-bin/kpic.pl?tn=1&amp;id={{main_pic}}&amp;g={{gender}}" data-js-attr="src" unselectable="on" class="no_select"/>
+                    <img data-src="/cgi-bin/kpic.pl?tn=1&amp;id={{main_pic}}&amp;g={{gender}}" data-js-attr="src" unselectable="on" class="no_select"/>
                 </div>
                 <div data-include=".visitor_box"></div>
             </div>
@@ -269,7 +269,7 @@
     <ul id="UserBox">
         <li>
             <div class="menu_handle" data-init="require('dom-utils').initMenuBtn">
-                <div class="hdr_profile_pic" ><img id="ProfilePic" class="profilePic" data-js-attr="src" src="/cgi-bin/kpic.pl?tn=1&amp;id={{main_pic}}&amp;g={{gender}}"></div>
+                <div class="hdr_profile_pic" ><img id="ProfilePic" class="profilePic" data-js-attr="src" data-src="/cgi-bin/kpic.pl?tn=1&amp;id={{main_pic}}&amp;g={{gender}}"></div>
             </div>
             <div data-include="#MemberStats" class="menu"></div>
         </li>
@@ -281,13 +281,13 @@
         <ul id="MatchShow">
             <li>
                 <div class="menu_handle" data-init="require('dom-utils').initMenuBtn">
-                    <div class="hdr_profile_pic"><img id="ProfilePic" class="profilePic" data-js-attr="src" src="/cgi-bin/kpic.pl?tn=1&amp;id={{main_pic}}&amp;g={{gender}}"></div>
+                    <div class="hdr_profile_pic"><img id="ProfilePic" class="profilePic" data-js-attr="src" data-src="/cgi-bin/kpic.pl?tn=1&amp;id={{main_pic}}&amp;g={{gender}}"></div>
                 </div>
                 <div data-include="#MemberStats" class="menu"></div>
             </li>
             <li class="ani_heart"></li>
             <li><div class="menu_handle" data-init="require('dom-utils').initMenuBtn" data-menu=".menu.popup_list">
-                    <div class="hdr_profile_pic"><img class="profilePic" data-js-attr="src" src="/cgi-bin/kpic.pl?tn=1&amp;id={{mate_pic}}&amp;g={{mate_gender}}"></div>
+                    <div class="hdr_profile_pic"><img class="profilePic" data-js-attr="src" data-src="/cgi-bin/kpic.pl?tn=1&amp;id={{mate_pic}}&amp;g={{mate_gender}}"></div>
                 </div>
                 <ul class="menu popup_list">
                     <li><a href="#pg=chat"><span data-string="str:mate_menu.contact"></span></a></li>
@@ -331,7 +331,7 @@
     </div>
 
     <div class="user_image pic25frame">
-        <img src="/cgi-bin/kpic.pl?tn=1&amp;id=(?SSN.main_pic?)&amp;g=(?SSN.gender?)" data-js-attr="src" unselectable="on" class="no_select"/>
+        <img data-src="/cgi-bin/kpic.pl?tn=1&amp;id=(?SSN.main_pic?)&amp;g=(?SSN.gender?)" data-js-attr="src" unselectable="on" class="no_select"/>
     </div>
 
     <div class="feedback_frame" data-init="$editor.initFeedback" data-exists-if="(? $d.id!=0 && SSN.id && (SSN.gender != $d.gender) ?)">
@@ -376,7 +376,7 @@
                             tip="help:tips.has_new_cards"
                         ></div>
                     </div>
-                    <img src="/cgi-bin/kpic.pl?tn=1&amp;id={{main_pic}}&amp;g={{gender}}" data-js-attr="src" unselectable="on" class="no_select"/>
+                    <img data-src="/cgi-bin/kpic.pl?tn=1&amp;id={{main_pic}}&amp;g={{gender}}" data-js-attr="src" unselectable="on" class="no_select"/>
                 </td>
                 <td class="vtop">
                     <div class="login_id" data-template="{innerHTML:'login_id'}">{{login_id}}</div>
@@ -406,7 +406,7 @@
 
     <div class="answer_simple_result" data-on-click="require('page-nav').open('mem',{mem:$d.id,mtab:'TAnswers4U'})">
         <div class="user_image pic25frame">
-            <img src="/cgi-bin/kpic.pl?tn=1&amp;id={{main_pic}}&amp;g={{gender}}" data-js-attr="src" unselectable="on" class="no_select"/>
+            <img data-src="/cgi-bin/kpic.pl?tn=1&amp;id={{main_pic}}&amp;g={{gender}}" data-js-attr="src" unselectable="on" class="no_select"/>
         </div>
         <span data-js-attr="innerHTML" class="login_id">{{login_id}}, </span>
         <span data-template="{innerHTML:'question_text'}" class="href"></span>:
@@ -446,7 +446,7 @@
                     <!-- <div data-include=".points_indicator"></div> -->
                     <div class="block_icon"></div>
                     <div class="pic100frame">
-                        <img src="/cgi-bin/kpic.pl?tn=1&amp;id={{main_pic}}&amp;g={{gender}}" data-js-attr="src" unselectable="on" class="no_select"/>
+                        <img data-src="/cgi-bin/kpic.pl?tn=1&amp;id={{main_pic}}&amp;g={{gender}}" data-js-attr="src" unselectable="on" class="no_select"/>
                     </div>
                     <div data-include=".visitor_box"></div>
                 </div>
@@ -523,7 +523,7 @@
         </div>
         <div class="chat_sender">
             <div><img class="tiny_pic" data-js-attr="src" data-on-click="require('page-nav').open('mem',{mem:$d.id_sender})"
-             src="/cgi-bin/kpic.pl?tn=1&amp;id=(?($d.id_sender==SSN.id)?SSN.main_pic:SSN.mate_pic?)&amp;g=(?($d.id_sender==SSN.id)?SSN.gender:((SSN.gender==1)?0:1)?)"></div>
+             data-src="/cgi-bin/kpic.pl?tn=1&amp;id=(?($d.id_sender==SSN.id)?SSN.main_pic:SSN.mate_pic?)&amp;g=(?($d.id_sender==SSN.id)?SSN.gender:((SSN.gender==1)?0:1)?)"></div>
         </div>
         <div class="chat_bubble">
             <div class="chat_msg_box">

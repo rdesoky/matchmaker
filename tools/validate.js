@@ -206,7 +206,7 @@ function validate(options) {
     for (const file of files) {
         if (path.extname(file).toLowerCase() !== '.html') continue;
         const content = fs.readFileSync(file, 'utf8');
-        const re = /(?:href|src)="([^"]+)"/g;
+        const re = /(?:href|data-src|src)="([^"]+)"/g;
         let match;
         while ((match = re.exec(content)) !== null) {
             const ref = match[1];
@@ -262,7 +262,7 @@ function validate(options) {
         for (const file of files) {
             if (path.extname(file).toLowerCase() !== '.html') continue;
             const content = fs.readFileSync(file, 'utf8');
-            const re = /\b(?:href|src)="(\/cgi-bin\/[^"]*)"/g;
+            const re = /\b(?:href|data-src|src)="(\/cgi-bin\/[^"]*)"/g;
             let match;
             while ((match = re.exec(content)) !== null) {
                 errors.push(

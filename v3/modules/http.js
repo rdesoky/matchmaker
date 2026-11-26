@@ -406,7 +406,9 @@ define(["jquery","kevents","dom-utils","js-promise","utils"], function($, evt, $
 			return httpControl;
 		},
 		picSRC:function(id, gender, tn){
-			return this.api.pic + "?tn=" + (tn!==undefined?"1":"0") + "&id=" + id + "&g=" + gender;
+			var picId = (id == null || id === "") ? 0 : id;
+			var g = (gender == null) ? "" : gender;
+			return this.api.pic + "?tn=" + (tn!==undefined?"1":"0") + "&id=" + picId + "&g=" + g;
 		},
 		pageLink:function(pgID){
 			return PgLinks[pgID] || (pgID + ".html?lang=" + $u.lang());
