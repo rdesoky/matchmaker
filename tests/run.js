@@ -1591,3 +1591,113 @@ test('mem-ui: guest menu renders without a successful logout round-trip', () => 
     const renderBox = src.slice(src.indexOf('renderBox:'), src.indexOf('logout:'));
     assert.match(renderBox, /_SH\("GuestMenu"\)/, 'renderBox must reveal the guest menu for anonymous users');
 });
+
+test('v3 templates: kpic.pl images defer src via data-src until interpolated', () => {
+    const html = fs.readFileSync(path.join(ROOT, 'v3', 'pages', 'templates.html'), 'utf8');
+    assert.ok(
+        !/<img\b[^>]*\b(?<!data-)src=["'][^"']*kpic\.pl/.test(html),
+        'templates.html must not place uninterpolated kpic.pl URLs in img[src]'
+    );
+    assert.match(html, /<img\b[^>]*\bdata-src="\/cgi-bin\/kpic\.pl\?tn=1&amp;id=\{\{main_pic\}\}&amp;g=\{\{gender\}\}"/);
+
+    // Verify rewriteApiBase rewrites data-src for staging/prod builds.
+    const os = require('os');
+    const { rewriteApiBase } = require(path.join(TOOLS, 'build'));
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'kobool-datasrc-'));
+    const file = path.join(dir, 'templates.html');
+    fs.writeFileSync(file, '<img data-src="/cgi-bin/kpic.pl?tn=1&amp;id={{main_pic}}&amp;g={{gender}}" data-js-attr="src">');
+    assert.strictEqual(rewriteApiBase(dir, '//api.kobool.com/cgi-bin/'), 1);
+    assert.match(
+        fs.readFileSync(file, 'utf8'),
+        /data-src="\/\/api\.kobool\.com\/cgi-bin\/kpic\.pl\?tn=1&amp;id=\{\{main_pic\}\}&amp;g=\{\{gender\}\}"/
+    );
+    fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('v3 k-template: resolves data-src into src via replaceFields', () => {
+    const vm = require('vm');
+    const attrs = { 'data-js-attr': 'src', 'data-src': '/cgi-bin/kpic.pl?tn=1&id={{main_pic}}&g={{gender}}' };
+    const imgNode = {
+        nodeType: 1,
+        src: '',
+        getAttribute(name) { return Object.prototype.hasOwnProperty.call(attrs, name) ? attrs[name] : null; },
+        hasAttribute(name) { return Object.prototype.hasOwnProperty.call(attrs, name); },
+        removeAttribute(name) { delete attrs[name]; }
+    };
+    const root = {
+        nodeType: 1,
+        getAttribute() { return null; },
+        querySelectorAll() { return []; }
+    };
+    const jq = function (q) {
+        if (q === '[data-js-attr]') {
+            return { each(cb) { cb(imgNode); } };
+        }
+        return { each() {} };
+    };
+    jq.each = (arr, cb) => arr.forEach((item, idx) => cb(item, idx));
+    jq.isArray = Array.isArray;
+
+    let ktmpl;
+    const sandbox = {
+        document: { createDocumentFragment() { return {}; } },
+        _HS() {},
+        _C() { return {}; },
+        _AD() { return {}; },
+        _A() {},
+        define(deps, factory) {
+            const map = {
+                jquery: jq,
+                utils: {},
+                http: {},
+                kui: {},
+                'js-promise': { is: () => false, as: (v) => v },
+                'inline-edit': {},
+                'dom-utils': {}
+            };
+            ktmpl = factory.apply(null, deps.map((d) => map[d]));
+        }
+    };
+    sandbox.define.amd = {};
+    vm.createContext(sandbox);
+    vm.runInContext(
+        'String.prototype.replaceFields = function($d) { return this.replace(/\\{\\{(.*?)\\}\\}/g, function(_, k) { return $d[k] === undefined ? "" : $d[k]; }); };',
+        sandbox
+    );
+    vm.runInContext(fs.readFileSync(path.join(ROOT, 'v3', 'modules', 'k-template.js'), 'utf8'), sandbox);
+
+    ktmpl.processTemplateNode(root, { main_pic: 784819686, gender: 0 });
+    assert.strictEqual(imgNode.src, '/cgi-bin/kpic.pl?tn=1&id=784819686&g=0');
+    assert.strictEqual(imgNode.hasAttribute('data-src'), false);
+    assert.strictEqual(imgNode.hasAttribute('data-js-attr'), false);
+});
+
+test('picSRC: defaults missing id and gender instead of emitting undefined', () => {
+    const vm = require('vm');
+    let v3Http;
+    const v3Sandbox = {
+        window: { APP_CONFIG: { apiBase: '/cgi-bin/' } },
+        define(deps, factory) {
+            v3Http = factory({}, {}, {}, {}, {});
+        }
+    };
+    v3Sandbox.define.amd = {};
+    vm.createContext(v3Sandbox);
+    vm.runInContext(fs.readFileSync(path.join(ROOT, 'v3', 'modules', 'http.js'), 'utf8'), v3Sandbox);
+
+    assert.strictEqual(v3Http.picSRC(undefined, 1, true), '/cgi-bin/kpic.pl?tn=1&id=0&g=1');
+    assert.strictEqual(v3Http.picSRC(null, undefined), '/cgi-bin/kpic.pl?tn=0&id=0&g=');
+    assert.strictEqual(v3Http.picSRC(12345, 0, true), '/cgi-bin/kpic.pl?tn=1&id=12345&g=0');
+
+    const v2Sandbox = {
+        window: {},
+        Defined: (v) => typeof v !== 'undefined',
+        gCGI: { pic: 'kpic.pl' }
+    };
+    vm.createContext(v2Sandbox);
+    vm.runInContext(fs.readFileSync(path.join(ROOT, 'v2', 'utils.js'), 'utf8'), v2Sandbox);
+
+    assert.strictEqual(v2Sandbox.U.picSRC(undefined, 1, true), '/cgi-bin/kpic.pl?tn=1&id=0&g=1');
+    assert.strictEqual(v2Sandbox.U.picSRC(null, undefined), '/cgi-bin/kpic.pl?tn=0&id=0&g=');
+    assert.strictEqual(v2Sandbox.U.picSRC(12345, 0, true), '/cgi-bin/kpic.pl?tn=1&id=12345&g=0');
+});

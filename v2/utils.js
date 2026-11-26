@@ -600,7 +600,9 @@ var Utils = U = {
 	},
 
 	picSRC:function(id, gender, tn){
-		return Http.cgiBase + gCGI.pic + "?tn=" + (Defined(tn)?"1":"0") + "&id=" + id + "&g=" + gender;
+		var picId = (id == null || id === "") ? 0 : id;
+		var g = (gender == null) ? "" : gender;
+		return Http.cgiBase + gCGI.pic + "?tn=" + (Defined(tn)?"1":"0") + "&id=" + picId + "&g=" + g;
 	},
 	SQL2LocaleDate:function( SQLDateStr )
 	{

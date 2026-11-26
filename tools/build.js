@@ -180,7 +180,7 @@ function rewriteNotFoundRedirect(dir, base) {
  */
 function rewriteApiBase(dir, apiBase) {
     if (!apiBase || apiBase === '/cgi-bin/') return 0;
-    const pattern = /(\b(?:href|src|action)=["'])\/cgi-bin\/(kpic\.pl)/g;
+    const pattern = /(\b(?:href|data-src|src|action)=["'])\/cgi-bin\/(kpic\.pl)/g;
     let changed = 0;
 
     const walk = (current) => {
