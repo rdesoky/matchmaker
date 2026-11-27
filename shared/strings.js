@@ -326,8 +326,15 @@
     document.addEventListener('click', function (event) {
         var el = event.target.closest ? event.target.closest('[data-lang-switch]') : null;
         if (!el) return;
+        var lang = el.getAttribute('data-lang-switch');
+        if (lang === currentLang) return;
         event.preventDefault();
-        setLanguage(el.getAttribute('data-lang-switch'));
+        setLanguage(lang);
+        // setLanguage only re-binds [data-string] nodes in the current DOM;
+        // strings baked in by template expressions and module code would keep
+        // the old language. The cookie is already written, so a reload boots
+        // the whole page in the new language.
+        global.location.reload();
     });
 
     if (document.readyState === 'loading') {
