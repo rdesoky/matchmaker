@@ -1,6 +1,7 @@
 define(["jquery", "top-tabs", "page-nav", "http", "kui", "dom-utils", "utils"],function($, $tabs, $pgNav, $http, $kui, $du, $u) {
 	return {
 		requireStrings:["profile:upd_email"],
+		requireCSS:["register"],
 		onload: function () {
 			if (!$kui.chkLogin({nav: true})) {
 				return;

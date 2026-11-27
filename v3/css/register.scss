@@ -70,9 +70,32 @@
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
-    background-image: none;
+    /* appearance:none removes the native arrow, so draw a chevron on the
+       inline-end side: two abutting gradient squares clipped into a filled
+       down triangle, coloured with the input text token so it follows the
+       theme. Gradient angles are physical, so the RTL override swaps the two
+       layer angles (never the shape) alongside the position, keeping the
+       triangle pointing down. */
+    background-image:
+        linear-gradient(45deg, transparent 50%, var(--kb-input-text) 50%),
+        linear-gradient(-45deg, transparent 50%, var(--kb-input-text) 50%);
+    background-position:
+        right 16px center,
+        right 10px center;
+    background-size: 6px 6px;
+    background-repeat: no-repeat;
     background-color: var(--kb-input-bg);
-    padding: 4px 12px;
+    padding: 4px 30px 4px 12px;
+
+    &:lang(ar){
+        background-image:
+            linear-gradient(-45deg, transparent 50%, var(--kb-input-text) 50%),
+            linear-gradient(45deg, transparent 50%, var(--kb-input-text) 50%);
+        background-position:
+            left 16px center,
+            left 10px center;
+        padding: 4px 12px 4px 30px;
+    }
 }
 
 /* Form buttons ---------------------------------------------------------- */

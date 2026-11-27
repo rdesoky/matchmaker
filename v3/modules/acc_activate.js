@@ -3,6 +3,7 @@ function($, $tabs, $pgNav, $http, $kui, $du, $u, $imem) {
 
 	return {
 		requireStrings:["profile:acc_activate"],
+		requireCSS:["register"],
 		onload: function () {
 			if (!$kui.chkLogin({nav: true})) {
 				return;

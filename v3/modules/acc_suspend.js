@@ -2,6 +2,7 @@ define(["jquery", "top-tabs", "page-nav", "http", "kui", "dom-utils", "utils", "
 
 	return {
 		requireStrings:["profile:acc_suspend"],
+		requireCSS:["register"],
 		onload: function () {
 			if (!$kui.chkLogin({nav: true})) {
 				return;

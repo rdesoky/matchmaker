@@ -3,6 +3,7 @@
  */
 define(["jquery", "page-nav","k-template","top-tabs"],function($,pgNav,tmpl,$tabs){
 	return {
+		requireCSS:["register"],
 		onload:function(){
 			if( _N( _GC("id") ) ){
 				$tabs.showTab("Menu.Search");
