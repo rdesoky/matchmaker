@@ -18,8 +18,17 @@ define(["jquery", "top-tabs", "dom-utils", "http", "kui", "utils","page-nav"],fu
 			$tabs.select("Update.attr");
 
 			$http.postCGI($http.api.member, {mem: _N(_GC("id"))}, function (res) {
-				_E("UpdateAttr").style.visibility = "visible";
-				frm.marital_status.focus();
+				var wrap = _E("UpdateAttr");
+				if (!wrap || !frm.isConnected) {
+					return;// the user navigated away before the data landed
+				}
+				wrap.style.visibility = "visible";
+				// Focus the first control only while nothing else holds focus:
+				// the form stays hidden until this point, and yanking focus
+				// here would interrupt any interaction the user started.
+				if (document.activeElement === document.body || !document.activeElement) {
+					frm.marital_status.focus();
+				}
 				var r = JSN(res);
 				var info = r;
 

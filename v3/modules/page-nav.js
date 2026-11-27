@@ -164,11 +164,39 @@ define(["jquery", "http", "utils", "dom-utils","kevents"],function($, $http, $u,
 					if (_D(pageURL)) {
 						// pageURL is a static .html path, so the query string starts with "?".
 						return $http.get(pageURL + "?lang=" + $u.lang() ).then(function(html){
+							// Chrome processes [autofocus] on inserted content with a
+							// deferred step and skips it whenever the document already
+							// has a focused element (the menu link the user just
+							// clicked, or focus left over from the replaced page).
+							// Blur that first so the browser step is never blocked.
+							if (document.activeElement && document.activeElement !== document.body) {
+								document.activeElement.blur();
+							}
 							_H(root, html.responseText);
 							// The fragment is injected after DOMContentLoaded, so the
 							// declarative binder has to run on it explicitly.
 							if (window.KStrings) {
 								window.KStrings.bind(root);
+							}
+							var autoFocus = root.querySelector("[autofocus]");
+							if (autoFocus) {
+								// Fall back to an explicit focus only after the
+								// browser's own step had its chance: it runs before
+								// the next rendering frame, and a frame later our
+								// check sees whether it took the control. Controls
+								// hidden until their module reveals them (upd_attr)
+								// are not focusable yet and keep their own focus
+								// call; non-Chrome engines get the fallback.
+								setTimeout(function () {
+									requestAnimationFrame(function () {
+										if (!autoFocus.isConnected) {
+											return;
+										}
+										if (document.activeElement === document.body || !document.activeElement) {
+											autoFocus.focus();
+										}
+									});
+								}, 0);
 							}
 						});
 					}
