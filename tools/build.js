@@ -176,11 +176,17 @@ function rewriteNotFoundRedirect(dir, base) {
  * APP_CONFIG.apiBase at runtime, and the upload form is left alone because its
  * iframe callback (window.parent.UpdatePics) cannot cross origins.
  *
+ * Template images use data-src instead of src: k-template.js resolves those
+ * against APP_CONFIG.apiBase at render time, so they are deliberately left
+ * root-relative here. That keeps localhost previews of a staging/prod build on
+ * the same-origin proxy instead of pinning the absolute API host into the HTML.
+ *
  * A same-origin base (`/cgi-bin/`, used by dev) is a no-op.
  */
 function rewriteApiBase(dir, apiBase) {
     if (!apiBase || apiBase === '/cgi-bin/') return 0;
-    const pattern = /(\b(?:href|data-src|src|action)=["'])\/cgi-bin\/(kpic\.pl)/g;
+    // The lookbehind keeps `data-src=` from matching as `src=`.
+    const pattern = /(?<![\w-])((?:href|src|action)=["'])\/cgi-bin\/(kpic\.pl)/g;
     let changed = 0;
 
     const walk = (current) => {

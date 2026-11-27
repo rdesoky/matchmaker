@@ -695,6 +695,7 @@ test('build: rewriteApiBase points hardcoded kpic.pl URLs at the API host', () =
     fs.writeFileSync(file, [
         '<img src="/cgi-bin/kpic.pl?tn=1&amp;id=1&amp;g=1"/>',
         '<img src="/cgi-bin/kpic.pl?tn=1&amp;id=2&amp;g=0"/>',
+        '<img data-src="/cgi-bin/kpic.pl?tn=1&amp;id=3&amp;g=0"/>',
         '<form action="/cgi-bin/upload_pic.pl"></form>',
         '<a href="/v3/pages/home.html">x</a>'
     ].join('\n'));
@@ -706,6 +707,9 @@ test('build: rewriteApiBase points hardcoded kpic.pl URLs at the API host', () =
     assert.strictEqual(changed, 1);
     assert.match(out, /src="\/\/api\.kobool\.com\/cgi-bin\/kpic\.pl\?tn=1&amp;id=1&amp;g=1"/);
     assert.match(out, /src="\/\/api\.kobool\.com\/cgi-bin\/kpic\.pl\?tn=1&amp;id=2&amp;g=0"/);
+    // data-src is resolved by k-template against the runtime API base, so the
+    // build leaves it root-relative.
+    assert.match(out, /data-src="\/cgi-bin\/kpic\.pl\?tn=1&amp;id=3&amp;g=0"/);
     // Only kpic.pl URLs are rewritten; the uploader now posts via XHR from
     // APP_CONFIG.apiBase, so its form carries no static /cgi-bin/ action.
     assert.match(out, /action="\/cgi-bin\/upload_pic\.pl"/);
@@ -745,6 +749,40 @@ test('validate: a root-absolute /cgi-bin/ URL in a page fragment is an error', (
     // The dev build proxies /cgi-bin/ same-origin, so it is valid there.
     const dev = validate({ env: 'dev', dist: dir });
     assert.ok(!dev.errors.some((e) => /Root-absolute API URL/.test(e)), 'dev may use /cgi-bin/');
+
+    fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('validate: data-src kpic.pl URLs are resolved at runtime, not an error', () => {
+    const os = require('os');
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'kobool-cgibin-datasrc-'));
+    fs.mkdirSync(path.join(dir, 'shared'), { recursive: true });
+    fs.writeFileSync(
+        path.join(dir, 'shared', 'config.js'),
+        'window.APP_CONFIG={apiBase:"//api.kobool.com/cgi-bin/"};'
+    );
+    fs.writeFileSync(path.join(dir, 'index.html'), '<html><head></head><body>hi</body></html>');
+    fs.writeFileSync(
+        path.join(dir, 'templates.html'),
+        '<img data-src="/cgi-bin/kpic.pl?tn=1&amp;id=1&amp;g=0" data-js-attr="src">'
+    );
+
+    const res = validate({ env: 'staging', dist: dir });
+    assert.ok(
+        !res.errors.some((e) => /Root-absolute API URL/.test(e)),
+        `k-template resolves data-src at runtime, so it must not error: ${res.errors}`
+    );
+
+    // Other root-absolute API URLs still error even in the same attribute.
+    fs.writeFileSync(
+        path.join(dir, 'templates.html'),
+        '<img data-src="/cgi-bin/other.pl?tn=1" data-js-attr="src">'
+    );
+    const other = validate({ env: 'staging', dist: dir });
+    assert.ok(
+        other.errors.some((e) => /Root-absolute API URL/.test(e)),
+        `non-kpic data-src must still error: ${other.errors}`
+    );
 
     fs.rmSync(dir, { recursive: true, force: true });
 });
@@ -1456,14 +1494,16 @@ test('smoke: dist builds and validates cleanly', { timeout: 120000 }, () => {
     const distConfig = fs.readFileSync(path.join(ROOT, 'dist', 'shared', 'config.js'), 'utf8');
     assert.match(distConfig, /\/\/api\.kobool\.com\/cgi-bin\//);
 
-    // Page fragments must not keep root-absolute /cgi-bin/ URLs: the site
-    // origin serves static files only, so those requests 404.
+    // Template image URLs stay root-relative: k-template resolves them from
+    // APP_CONFIG.apiBase at render time, so a staging/prod build previewed on
+    // localhost keeps using the same-origin proxy. The absolute API host must
+    // not be pinned into the fragment.
     const templates = fs.readFileSync(path.join(ROOT, 'dist', 'v3', 'pages', 'templates.html'), 'utf8');
     assert.ok(
-        !/["']\/cgi-bin\/kpic\.pl/.test(templates),
-        'templates.html must not reference /cgi-bin/kpic.pl on the site origin'
+        !/["']\/\/api\.kobool\.com\/cgi-bin\/kpic\.pl/.test(templates),
+        'templates.html must not pin the absolute API host into kpic.pl URLs'
     );
-    assert.match(templates, /\/\/api\.kobool\.com\/cgi-bin\/kpic\.pl/);
+    assert.match(templates, /data-src="\/cgi-bin\/kpic\.pl/);
 
     // The picture uploader must post via XHR to APP_CONFIG.apiBase: a
     // root-absolute form action would hit the static site origin (405), and
@@ -1600,76 +1640,88 @@ test('v3 templates: kpic.pl images defer src via data-src until interpolated', (
     );
     assert.match(html, /<img\b[^>]*\bdata-src="\/cgi-bin\/kpic\.pl\?tn=1&amp;id=\{\{main_pic\}\}&amp;g=\{\{gender\}\}"/);
 
-    // Verify rewriteApiBase rewrites data-src for staging/prod builds.
+    // data-src stays root-relative: k-template resolves it against the runtime
+    // API base, so a staging/prod build previewed on localhost keeps using the
+    // same-origin proxy instead of pinning the absolute API host into the HTML.
     const os = require('os');
     const { rewriteApiBase } = require(path.join(TOOLS, 'build'));
     const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'kobool-datasrc-'));
     const file = path.join(dir, 'templates.html');
-    fs.writeFileSync(file, '<img data-src="/cgi-bin/kpic.pl?tn=1&amp;id={{main_pic}}&amp;g={{gender}}" data-js-attr="src">');
-    assert.strictEqual(rewriteApiBase(dir, '//api.kobool.com/cgi-bin/'), 1);
-    assert.match(
-        fs.readFileSync(file, 'utf8'),
-        /data-src="\/\/api\.kobool\.com\/cgi-bin\/kpic\.pl\?tn=1&amp;id=\{\{main_pic\}\}&amp;g=\{\{gender\}\}"/
-    );
+    const source = '<img data-src="/cgi-bin/kpic.pl?tn=1&amp;id={{main_pic}}&amp;g={{gender}}" data-js-attr="src">';
+    fs.writeFileSync(file, source);
+    assert.strictEqual(rewriteApiBase(dir, '//api.kobool.com/cgi-bin/'), 0);
+    assert.strictEqual(fs.readFileSync(file, 'utf8'), source);
     fs.rmSync(dir, { recursive: true, force: true });
 });
 
-test('v3 k-template: resolves data-src into src via replaceFields', () => {
+test('v3 k-template: resolves data-src into src via replaceFields and the API base', () => {
     const vm = require('vm');
-    const attrs = { 'data-js-attr': 'src', 'data-src': '/cgi-bin/kpic.pl?tn=1&id={{main_pic}}&g={{gender}}' };
-    const imgNode = {
-        nodeType: 1,
-        src: '',
-        getAttribute(name) { return Object.prototype.hasOwnProperty.call(attrs, name) ? attrs[name] : null; },
-        hasAttribute(name) { return Object.prototype.hasOwnProperty.call(attrs, name); },
-        removeAttribute(name) { delete attrs[name]; }
-    };
-    const root = {
-        nodeType: 1,
-        getAttribute() { return null; },
-        querySelectorAll() { return []; }
-    };
-    const jq = function (q) {
-        if (q === '[data-js-attr]') {
-            return { each(cb) { cb(imgNode); } };
-        }
-        return { each() {} };
-    };
-    jq.each = (arr, cb) => arr.forEach((item, idx) => cb(item, idx));
-    jq.isArray = Array.isArray;
 
-    let ktmpl;
-    const sandbox = {
-        document: { createDocumentFragment() { return {}; } },
-        _HS() {},
-        _C() { return {}; },
-        _AD() { return {}; },
-        _A() {},
-        define(deps, factory) {
-            const map = {
-                jquery: jq,
-                utils: {},
-                http: {},
-                kui: {},
-                'js-promise': { is: () => false, as: (v) => v },
-                'inline-edit': {},
-                'dom-utils': {}
-            };
-            ktmpl = factory.apply(null, deps.map((d) => map[d]));
-        }
-    };
-    sandbox.define.amd = {};
-    vm.createContext(sandbox);
-    vm.runInContext(
-        'String.prototype.replaceFields = function($d) { return this.replace(/\\{\\{(.*?)\\}\\}/g, function(_, k) { return $d[k] === undefined ? "" : $d[k]; }); };',
-        sandbox
+    function render(apiPic) {
+        const attrs = { 'data-js-attr': 'src', 'data-src': '/cgi-bin/kpic.pl?tn=1&id={{main_pic}}&g={{gender}}' };
+        const imgNode = {
+            nodeType: 1,
+            src: '',
+            getAttribute(name) { return Object.prototype.hasOwnProperty.call(attrs, name) ? attrs[name] : null; },
+            hasAttribute(name) { return Object.prototype.hasOwnProperty.call(attrs, name); },
+            removeAttribute(name) { delete attrs[name]; }
+        };
+        const root = {
+            nodeType: 1,
+            getAttribute() { return null; },
+            querySelectorAll() { return []; }
+        };
+        const jq = function (q) {
+            if (q === '[data-js-attr]') {
+                return { each(cb) { cb(imgNode); } };
+            }
+            return { each() {} };
+        };
+        jq.each = (arr, cb) => arr.forEach((item, idx) => cb(item, idx));
+        jq.isArray = Array.isArray;
+
+        let ktmpl;
+        const sandbox = {
+            document: { createDocumentFragment() { return {}; } },
+            _HS() {},
+            _C() { return {}; },
+            _AD() { return {}; },
+            _A() {},
+            define(deps, factory) {
+                const map = {
+                    jquery: jq,
+                    utils: {},
+                    http: { api: { pic: apiPic } },
+                    kui: {},
+                    'js-promise': { is: () => false, as: (v) => v },
+                    'inline-edit': {},
+                    'dom-utils': {}
+                };
+                ktmpl = factory.apply(null, deps.map((d) => map[d]));
+            }
+        };
+        sandbox.define.amd = {};
+        vm.createContext(sandbox);
+        vm.runInContext(
+            'String.prototype.replaceFields = function($d) { return this.replace(/\\{\\{(.*?)\\}\\}/g, function(_, k) { return $d[k] === undefined ? "" : $d[k]; }); };',
+            sandbox
+        );
+        vm.runInContext(fs.readFileSync(path.join(ROOT, 'v3', 'modules', 'k-template.js'), 'utf8'), sandbox);
+
+        ktmpl.processTemplateNode(root, { main_pic: 784819686, gender: 0 });
+        assert.strictEqual(imgNode.hasAttribute('data-src'), false);
+        assert.strictEqual(imgNode.hasAttribute('data-js-attr'), false);
+        return imgNode;
+    }
+
+    assert.strictEqual(
+        render('/cgi-bin/kpic.pl').src,
+        '/cgi-bin/kpic.pl?tn=1&id=784819686&g=0'
     );
-    vm.runInContext(fs.readFileSync(path.join(ROOT, 'v3', 'modules', 'k-template.js'), 'utf8'), sandbox);
-
-    ktmpl.processTemplateNode(root, { main_pic: 784819686, gender: 0 });
-    assert.strictEqual(imgNode.src, '/cgi-bin/kpic.pl?tn=1&id=784819686&g=0');
-    assert.strictEqual(imgNode.hasAttribute('data-src'), false);
-    assert.strictEqual(imgNode.hasAttribute('data-js-attr'), false);
+    assert.strictEqual(
+        render('//api.kobool.com/cgi-bin/kpic.pl').src,
+        '//api.kobool.com/cgi-bin/kpic.pl?tn=1&id=784819686&g=0'
+    );
 });
 
 test('picSRC: defaults missing id and gender instead of emitting undefined', () => {
