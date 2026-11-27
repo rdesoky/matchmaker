@@ -1591,21 +1591,24 @@ form[name="searchFrm"] select{
 	/* min-height: 190px; */
 }
 
-/* The action row and the "Seen: ..." line are pinned to the bottom of the
-   column when there is spare height, but stay in normal flow when the profile
-   text is tall, so they never overlap the description. `order` keeps the
-   buttons above the timestamp even though .last_login comes first in the
-   markup. */
+/* The highlights block is pinned to the bottom of the column when there is
+   spare height, but stays in normal flow when the profile text is tall, so it
+   never overlaps the description. */
 .results_info_col .profile_highlights{
 	order: 1;
 	margin-top: auto;
 	width: 100%;
 	box-sizing: border-box;
 }
-.results_info_col .last_login{
-	order: 2;
-	width: 100%;
-	box-sizing: border-box;
+/* Pictures/Answers share their line with the "Seen: ..." login time; the
+   login time keeps its own text-align so it lands on the far side in both
+   LTR and RTL. */
+.results_info_col .highlights_row{
+	display: flex;
+	align-items: baseline;
+}
+.results_info_col .highlights_row .last_login{
+	flex: 1 1 auto;
 }
 /* The member page has no highlights block, so pin the login line itself. */
 .results_info_col:not(:has(.profile_highlights)) .last_login{

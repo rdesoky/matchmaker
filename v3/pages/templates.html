@@ -25,18 +25,21 @@
         <div id="InActiveMsg" data-exists-if="(? SSN.activated!=1 ?)"><a href="#pg=acc_activate" data-string="str:a.inactive"></a></div>
 
         <div class="profile_highlights" data-init="require('kui').initProfileHighlights"  data-exists-if="(? $d.activated==1 ?)"
-            ><a class="href icon pics_icon" data-exists-if="{{pics_count}}"
-                  data-js-attr="innerHTML"><span class="btn_title" data-string="str:a.pictures"></span>({{pics_count}})
-            </a
-            ><a class="href icon question_icon" data-exists-if="{{answers}}"
-                  data-js-attr="innerHTML"><span class="btn_title" data-string="str:a.answers"></span>({{answers}})
-            </a
             ><div data-exists-if="(? require('kui').opGender($d) ?)" class="acceptance_btns">
                 <a class="icon promote_icon" tip="help:tips.promote" data-exists-if="(?_N( $d.rank )>1 ?)"><span data-string="str:sbtn.promote"></span></a>
                 <a class="icon demote_icon" tip="help:tips.demote" data-exists-if="(? _N( $d.rank ) ?)"><span data-string="str:sbtn.demote"></span></a>
                 <a class="icon hidden_wish_icon" tip="help:tips.hide_wish" data-exists-if="(? _N($d.rank) && _N($d.visible_wish) != 0 ?)"><span data-string="str:sbtn.mk_hidden_wish"></span></a>
                 <a class="icon visible_wish_icon" tip="help:tips.show_wish" data-exists-if="(? _N($d.rank) && _N($d.visible_wish) == 0 ?)"><span data-string="str:sbtn.mk_visible_wish"></span></a>
                 <a class="icon unaccept_icon" tip="help:tips.unaccept" data-exists-if="(? _N($d.rank) ?)"><span data-string="str:sbtn.unaccept"></span></a>
+            </div
+            ><div class="highlights_row"
+                ><a class="href icon pics_icon" data-exists-if="{{pics_count}}"
+                      data-js-attr="innerHTML"><span class="btn_title" data-string="str:a.pictures"></span>({{pics_count}})
+                </a
+                ><a class="href icon question_icon" data-exists-if="{{answers}}"
+                      data-js-attr="innerHTML"><span class="btn_title" data-string="str:a.answers"></span>({{answers}})
+                </a
+                ><span data-include=".last_login"></span>
             </div
         ></div>
         <div class="actions_bar footer_bar" data-exists-if="(? !SSN.id || require('kui').opGender($d) ?)" data-init="require('kui').initProfileActions"
@@ -165,7 +168,6 @@
 
                 <div data-exists-if="(? $d.self_desc && $d.self_desc.length ?)" class="self_desc" data-js-attr="innerHTML">{{self_desc}}</div>
                 <div data-exists-if="(? $d.mate_desc && $d.mate_desc.length ?)" class="mate_desc" data-js-attr="innerHTML">{{mate_desc}}</div>
-                <div data-include=".last_login"></div>
                 <div data-include=".profile_highlights"></div>
 
                 <div class="inactive_member_msg" data-exists-if="(? $d.activated==0 ?)"><span data-string="str:a.inactive"></span></div>
