@@ -256,17 +256,23 @@ function validate(options) {
         // /cgi-bin/ URL in a page fragment 404s. The build rewrites these to
         // the environment's API base; anything left is a missed endpoint.
         //
+        // data-src kpic.pl URLs are excluded: k-template.js resolves those
+        // against APP_CONFIG.apiBase at render time, so they intentionally stay
+        // root-relative (including in staging/prod builds and localhost
+        // previews, which must keep using the same-origin proxy).
+        //
         // Form actions are excluded because the picture uploader no longer
         // carries a hardcoded action: it uploads via XHR to
         // APP_CONFIG.apiBase at runtime, so no static URL to rewrite or check.
         for (const file of files) {
             if (path.extname(file).toLowerCase() !== '.html') continue;
             const content = fs.readFileSync(file, 'utf8');
-            const re = /\b(?:href|data-src|src)="(\/cgi-bin\/[^"]*)"/g;
+            const re = /\b(href|data-src|src)="(\/cgi-bin\/[^"]*)"/g;
             let match;
             while ((match = re.exec(content)) !== null) {
+                if (match[1] === 'data-src' && match[2].startsWith('/cgi-bin/kpic.pl')) continue;
                 errors.push(
-                    `Root-absolute API URL "${match[1]}" in ${rel(file)}: the site origin ` +
+                    `Root-absolute API URL "${match[2]}" in ${rel(file)}: the site origin ` +
                     'serves static files only, so this request 404s. Build it from ' +
                     'APP_CONFIG.apiBase instead.'
                 );

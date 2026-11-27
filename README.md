@@ -98,10 +98,12 @@ the build writes the `CNAME` that claims the domain.
 node tools/build.js --env=staging --api-base=https://api.example.com/cgi-bin/
 ```
 
-The build also rewrites hardcoded `src="/cgi-bin/kpic.pl?..."` attributes in
-the page fragments to the environment's API base. Those fragments are shared by
-every environment, and the site origin serves static files only, so without the
-rewrite every profile picture 404s on staging and production. The picture
+Profile-picture URLs in page fragments stay root-relative
+(`data-src="/cgi-bin/kpic.pl?..."`). At render time `v3/modules/k-template.js`
+resolves them against `APP_CONFIG.apiBase` — the same API base domain every
+other CGI call uses — so staging and production load pictures from the API host
+without pinning an absolute URL into the built HTML. A staging/prod build
+previewed on localhost therefore keeps using the same-origin proxy. The picture
 uploader form is deliberately left same-origin: it posts into an iframe whose
 response calls `window.parent.UpdatePics`, which a cross-origin response cannot
 reach.

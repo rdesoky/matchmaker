@@ -16,6 +16,17 @@ define(["jquery", "utils", "http","kui","js-promise","inline-edit","dom-utils"],
 			return module.renderTemplate(dom, record, actions);
 		}
 	}
+	// Template image URLs are authored as root-relative /cgi-bin/kpic.pl so the
+	// same fragment works in every environment. Resolve them against the
+	// runtime API base (which localhost previews point at the same-origin
+	// proxy) instead of baking the API host into the built HTML.
+	function apiSrc(val){
+		var prefix = "/cgi-bin/kpic.pl";
+		if( typeof val === "string" && val.indexOf(prefix) === 0 ){
+			return $http.api.pic + val.slice(prefix.length);
+		}
+		return val;
+	}
 	function checkReviewMarks(txt){
 		if(txt) {
 			if (txt.substr(0, 3) == "|u|") {
@@ -181,7 +192,11 @@ define(["jquery", "utils", "http","kui","js-promise","inline-edit","dom-utils"],
 						raw = node.getAttribute("data-src");
 						node.removeAttribute("data-src");
 					}
-					module.setNodeAttr( node, attr, raw.replaceFields($d) );
+					var val = raw.replaceFields($d);
+					if (attr === "src") {
+						val = CPromise.is(val) ? val.then(apiSrc) : apiSrc(val);
+					}
+					module.setNodeAttr( node, attr, val );
 				});
 			});
 
