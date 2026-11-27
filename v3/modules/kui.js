@@ -551,16 +551,27 @@ define(["jquery","page-nav","js-promise","dom-utils","utils","http"],function($,
 		},
 
 		visitorHeartTip:function(info){
+			// The visitor heart shows the OTHER member's state towards the
+			// current user, mirroring v2's renderVisitation: their acceptance
+			// (wished) first, then whether they visited at all.
 			if(_N(info.wished)){
 				return "help:profile.wisher";
-			}
-			if(_N(info.rank)){
-				return "help:profile.in_wishlist";
 			}
 			if(_N(info.visits_count)>0){
 				return "help:profile.unk_kobool";
 			}
 			return "help:profile.no_kobool_chance";
+		},
+
+		myVisitHeartTip:function(info){
+			// The my-visit heart shows the CURRENT USER's own acceptance of the
+			// shown profile (rank), mirroring v2's renderVisitation: in the
+			// wishlist with a rank, or not accepted yet. It must not read
+			// `wished`, which is the other member's acceptance of us.
+			if(_N(info.rank)){
+				return "help:profile.in_wishlist";
+			}
+			return "help:profile.no_kobool";
 		},
 
 		genderIcon:function(info,opt){
