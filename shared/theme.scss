@@ -91,6 +91,9 @@
     --kb-bevel-light: #ffffff;
     /* Button bevel highlight: white in light, border-strong in dark. */
     --kb-button-bevel-light: #ffffff;
+    /* Primary form button outline: border-strong in light, divider in dark so
+       the border stays visible against the raised button surface. */
+    --kb-form-primary-border: var(--kb-border-strong);
     --kb-bevel-light-soft: #e0e0e0;
     --kb-bevel-dark: #808080;
     --kb-bevel-dark-soft: #a0a0a0;
@@ -444,6 +447,7 @@ html[data-theme="dark"] {
     --kb-section-border: #3a4551;
     --kb-bevel-light: #4b5765;
     --kb-button-bevel-light: #4b5765;
+    --kb-form-primary-border: var(--kb-divider);
     --kb-bevel-light-soft: #4b5765;
     --kb-bevel-dark: #10151a;
     --kb-bevel-dark-soft: #10151a;

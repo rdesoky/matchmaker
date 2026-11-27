@@ -85,7 +85,10 @@
     max-width: 400px;
     background-color: var(--kb-native-button-bg);
     color: var(--kb-native-button-text);
-    border: 1px solid var(--kb-native-button-border);
+    /* --kb-native-button-border is a four-value bevel in dark mode, which is
+       invalid inside the border shorthand; use a single colour here so the
+       border is actually drawn, and let .button--primary raise it further. */
+    border: 1px solid var(--kb-border-strong);
     border-radius: var(--kb-radius-md, 6px);
     padding: 8px 12px;
     font: inherit;
@@ -106,12 +109,12 @@
 .form_frame input[type="submit"].button--primary {
     background-color: var(--kb-surface-3);
     color: var(--kb-text-strong);
-    border-color: var(--kb-border-strong);
+    border-color: var(--kb-form-primary-border);
 }
 
 .form_frame .button--primary:hover {
     background-color: var(--kb-surface-hover-strong);
-    border-color: var(--kb-border-strong);
+    border-color: var(--kb-form-primary-border);
     color: var(--kb-text-strong);
 }
 
@@ -155,12 +158,12 @@ html[data-theme="dark"] .form_frame input[type="button"].button--primary,
 html[data-theme="dark"] .form_frame input[type="submit"].button--primary {
     background-color: var(--kb-surface-hover-strong);
     color: var(--kb-text-inverse);
-    border-color: var(--kb-border-strong);
+    border-color: var(--kb-form-primary-border);
 }
 
 html[data-theme="dark"] .form_frame .button--primary:hover {
     background-color: var(--kb-surface-hover);
-    border-color: var(--kb-border-strong);
+    border-color: var(--kb-form-primary-border);
     color: var(--kb-text-inverse);
 }
 
