@@ -29,7 +29,7 @@
     <div id="PgBody">
         <div id="Header">
             <ul id="HeaderGrid">
-                <li><div id="HeaderLogo" data-init="require('dom-utils').initMenuBtn" data-menu="#Menu" data-submenu="#Menu .ctab"></div></li>
+                <li><div id="HeaderLogo" role="button" tabindex="0" aria-label="Menu" data-string="str:main_menu.title" data-string-attr="aria-label" data-init="require('dom-utils').initMenuBtn" data-menu="#Menu" data-submenu="#Menu .ctab"></div></li>
                 <li id="MemberBox"></li>
                 <li><div id="PageActions"></div></li>
                 <li><div id="ThemeToggle" data-theme-toggle>Dark mode</div></li>
@@ -39,13 +39,13 @@
         <div id="Menu">
             <ul id="MemberMenu" style="display:none" class="menu">
                 <li id="Menu.home"><a href="#pg=my" data-string="str:main_menu.home">Home</a></li>
-                <li id="Menu_Kobool" data-string="str:mate_menu.my_match">My match</li>
+                <li id="Menu_Kobool" role="button" tabindex="0" data-string="str:mate_menu.my_match">My match</li>
                 <ul id="SubMenu.Kobool" class="submenu">
-                    <li id="Kobool.MatchPage"><a data-on-click="require('page-nav').open('mem',{mem:SSN.mate})" data-string="str:mate_menu.visit_page">Visit page</a></li>
+                    <li id="Kobool.MatchPage"><a role="link" tabindex="0" data-on-click="require('page-nav').open('mem',{mem:SSN.mate})" data-string="str:mate_menu.visit_page">Visit page</a></li>
                     <li id="Kobool.Chat"><a href="#pg=chat" data-string="str:mate_menu.contact">Contact</a></li>
                     <li id="Kobool.Decline"><a href="#pg=decline" data-string="str:mate_menu.decline">Decline</a></li>
                 </ul>
-                <li id="Menu.Search" class="seltab" data-string="str:browse">Browse</li>
+                <li id="Menu.Search" class="seltab" role="button" tabindex="0" data-string="str:browse">Browse</li>
                 <ul id="SubMenu.Search" class="submenu">
                     <li id="Search.Simple"><a href="#pg=search" data-string="str:search">Search</a></li>
                     <li id="Search.wsr"><a href="#pg=list&amp;ls=wsr&amp;ob=ra" data-string="str:member_menu.wishers">Wishers</a></li>
@@ -53,27 +53,27 @@
                     <li id="Search.nvr"><a href="#pg=list&amp;ls=nvr&amp;ob=rv" data-string="str:member_menu.new_visitors">New visitors</a></li>
                     <li id="Search.online"><a href="#pg=list&amp;ls=act&amp;ob=rl" data-string="str:last_login">Online now</a></li>
                 </ul>
-                <li id="Menu.Profile" data-string="str:my_activities">My activities</li>
+                <li id="Menu.Profile" role="button" tabindex="0" data-string="str:my_activities">My activities</li>
                 <ul id="SubMenu.Profile" class="submenu">
                     <li id="Profile.wls"><a tip="help:tips.wishlist" href="#pg=list&amp;ls=wls&amp;ob=ra" data-string="str:member_menu.wishlist">Wishlist</a></li>
                     <li id="Profile.bkm"><a tip="help:tips.bookmarks" href="#pg=list&amp;ls=bkm&amp;ob=rl" data-string="str:member_menu.watchlist">Watchlist</a></li>
                     <li id="Profile.vtd"><a href="#pg=list&amp;ls=vtd&amp;ob=rv" data-string="str:member_menu.visited">Visited</a></li>
                     <li id="Profile.blk"><a href="#pg=list&amp;ls=blk&amp;ob=rl" data-string="str:member_menu.blocklist">Blocklist</a></li>
                 </ul>
-                <li id="Menu.QA" data-string="str:QandA">Q&amp;A</li>
+                <li id="Menu.QA" role="button" tabindex="0" data-string="str:QandA">Q&amp;A</li>
                 <ul id="SubMenu.QA" class="submenu">
                     <li id="QA.answers"><a href="#pg=qa" data-string="str:a.answer_lists">Answers</a></li>
                     <li id="QA.my_recent_questions"><a href="#pg=my_recent_questions" data-string="str:qa_menu.recent_questions">Recent questions</a></li>
-                    <li id="QA.my_q_by_member"><a onclick="require(['my_q_by_member'],function(o){o.openBrowser();});return false;" data-string="str:qa_menu.by_member">By member</a></li>
+                    <li id="QA.my_q_by_member"><a role="button" tabindex="0" onclick="require(['my_q_by_member'],function(o){o.openBrowser();});return false;" data-string="str:qa_menu.by_member">By member</a></li>
                 </ul>
-                <li id="Menu.CPoints" data-string="str:points_menu.title">Points</li>
+                <li id="Menu.CPoints" role="button" tabindex="0" data-string="str:points_menu.title">Points</li>
                 <ul id="SubMenu.CPoints" class="submenu">
                     <li id="CP.report"><a href="#pg=cp_report" data-string="str:points_menu.info">Info</a></li>
                     <li id="CP.eula"><a href="#pg=cp_eula" data-string="str:points_menu.eula">Terms</a></li>
                     <li id="CP.buy"><a href="#pg=cp_buy" data-string="str:points_menu.buy">Buy</a></li>
                     <li id="CP.help"><a href="#pg=cp_help" data-string="str:points_menu.help">Help</a></li>
                 </ul>
-                <li id="Menu.Update" data-string="str:member_menu.edit">Edit</li>
+                <li id="Menu.Update" role="button" tabindex="0" data-string="str:member_menu.edit">Edit</li>
                 <ul id="SubMenu.Update" class="submenu">
                     <li id="Update.attr"><a href="#pg=upd_attr" data-string="str:profile.update_attr">Attributes</a></li>
                     <li id="Update.text"><a href="#pg=upd_txt" data-string="str:profile.update_text">Text</a></li>
@@ -83,10 +83,10 @@
                     <li id="Update.account"><a href="#pg=acc_suspend" data-string="str:profile.activation">Account</a></li>
                 </ul>
                 <li id="Menu.ContactUs"><a href="#pg=contact" data-string="str:contact_us">Contact us</a></li>
-                <li id="Menu.Logout" data-on-click="require('kui').onBtnLogout()" data-string="str:a.logout">Logout</li>
-                <li onclick="require(['mem-ui'],function(imem){imem.refreshHeader(true)});return false;" data-string="str:refresh">Refresh</li>
-                <li data-lang-switch="en" data-visible-if="ar">English</li>
-                <li data-lang-switch="ar" data-visible-if="en">عربي</li>
+                <li id="Menu.Logout" role="button" tabindex="0" data-on-click="require('kui').onBtnLogout()" data-string="str:a.logout">Logout</li>
+                <li role="button" tabindex="0" onclick="require(['mem-ui'],function(imem){imem.refreshHeader(true)});return false;" data-string="str:refresh">Refresh</li>
+                <li role="button" tabindex="0" data-lang-switch="en" data-visible-if="ar">English</li>
+                <li role="button" tabindex="0" data-lang-switch="ar" data-visible-if="en">عربي</li>
                 <li id="Menu.OldSite"><a href="/v2/" data-string="str:downgrade">Old site</a></li>
             </ul>
 
@@ -97,9 +97,9 @@
                 <li id="GuestMenu.online"><a href="#pg=list&amp;ls=act&amp;ob=rl" data-string="str:last_login">Online now</a></li>
                 <li id="GuestMenu.qa"><a href="#pg=qa" data-string="str:QandA">Q&amp;A</a></li>
                 <li id="Menu.ContactUs"><a href="#pg=contact" data-string="str:contact_us">Contact us</a></li>
-                <li onclick="require(['mem-ui'],function(imem){imem.refreshHeader(true)});return false;" data-string="str:refresh">Refresh</li>
-                <li data-lang-switch="en" data-visible-if="ar">English</li>
-                <li data-lang-switch="ar" data-visible-if="en">عربي</li>
+                <li role="button" tabindex="0" onclick="require(['mem-ui'],function(imem){imem.refreshHeader(true)});return false;" data-string="str:refresh">Refresh</li>
+                <li role="button" tabindex="0" data-lang-switch="en" data-visible-if="ar">English</li>
+                <li role="button" tabindex="0" data-lang-switch="ar" data-visible-if="en">عربي</li>
                 <li id="GuestMenu.OldSite"><a href="/v2/" data-string="str:downgrade">Old site</a></li>
             </ul>
         </div>

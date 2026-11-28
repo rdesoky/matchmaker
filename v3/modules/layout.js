@@ -52,6 +52,42 @@ define(["jquery"],function($){
 					}
 				});
 
+				// Keyboard activation for custom menu items. Side-menu group
+				// headers, Logout, Refresh, the language switches and the no-href
+				// action links carry click handlers on <li>/<a> elements that the
+				// browser does not activate natively, so Enter and Space did
+				// nothing on them. A focused element with an explicit tabindex
+				// that is not a native control gets a synthetic click, which
+				// reaches its onclick / jQuery / delegated handlers exactly like
+				// a tap does.
+				$(document).on("keydown",function(e){
+					if(e.key != "Enter" && e.key != " " && e.keyCode != 13 && e.keyCode != 32){
+						return;
+					}
+					if(e.altKey || e.ctrlKey || e.metaKey){
+						return;
+					}
+					var el = e.target;
+					if(!el || el == document.body || el.disabled){
+						return;
+					}
+					var tag = (el.tagName || "").toLowerCase();
+					if((tag == "a" && el.getAttribute("href"))
+						|| tag == "button" || tag == "input" || tag == "select"
+						|| tag == "textarea" || tag == "iframe" || tag == "object"
+						|| el.isContentEditable || el.getAttribute("contenteditable") != null){
+						return;
+					}
+					if(el.getAttribute("tabindex") === null){
+						return;
+					}
+					if(e.key == " " || e.keyCode == 32){
+						// keep Space from scrolling the page
+						e.preventDefault();
+					}
+					el.click();
+				});
+
 				document.body.oncontextmenu = function(e){
 					if(e.target.src && e.target.src.indexOf("kpic")!=-1){
 						return false;

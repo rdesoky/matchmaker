@@ -1196,11 +1196,16 @@ img.small_pic{
 .submenu{
 	background-color: var(--kb-submenu-bg);
 	height: 0;
-	transition: opacity .6s;
+	/* Collapsed sections keep rendering (height 0, overflow hidden) for the
+	 * opacity fade, so their links stay in the tab order and steal keyboard
+	 * focus while invisible. visibility:hidden takes them out of it; it joins
+	 * the transition so the fade still runs and flips only at the end. */
+	transition: opacity .6s, visibility .6s;
 	opacity:0;
 	padding: 0 !important;
 	color: var(--kb-text);
 	overflow: hidden;
+	visibility: hidden;
 }
 
 .submenu li{
@@ -1210,6 +1215,7 @@ img.small_pic{
 .submenu.seltab{
 	height:auto;
 	opacity:1;
+	visibility:visible;
 	/* display: inherit; */
 }
 
